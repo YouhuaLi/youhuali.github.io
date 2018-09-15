@@ -1,0 +1,835 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>画树画出一个大数--TREE(3)漫谈 - 大老李聊数学</title>
+
+<meta name="description" content="画树画出一个大数--TREE(3)漫谈大家好，上期我们讲了一个大数，叫葛立恒数。今天我们再接再厉，再讲一个超大数，叫TREE(3)。这里TREE就是英文里树木的那个单词TREE。TREE(3)其实就是一个函数，函数名称叫TREE，而函数自变量取值是3。上期讲过，TREE(3)跟葛立恒数比的话，葛立恒数是属于忽略不...">
+<link rel="canonical" href="http://localhost:4000/2017/12/13/e7-94-bb-e6-a0-91-e7-94-bb-e5-87-ba-e4-b8-80-e4-b8-aa-e5-a4-a7-e6-95-b0-tree3-e6-bc-ab-e8-b0-88.html"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main has-aside">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div></aside></div>
+
+            <div class="col-main cell--auto"><article><div class="article__header"><header><h1>画树画出一个大数--TREE(3)漫谈</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="在 Github 上修改"
+            href="https://github.com/dalaoli-shuxue/dalaoli-shuxue/tree/master/_posts/2017-12-12-%e7%94%bb%e6%a0%91%e7%94%bb%e5%87%ba%e4%b8%80%e4%b8%aa%e5%a4%a7%e6%95%b0-tree3%e6%bc%ab%e8%b0%88.html">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="画树画出一个大数--TREE(3)漫谈"><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2017年 12月13日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2017-12-13T02:05:51+00:00"><div class="js-article-content"><p>画树画出一个大数--TREE(3)漫谈</p>
+<p>大家好，上期我们讲了一个大数，叫葛立恒数。今天我们再接再厉，再讲一个超大数，叫TREE(3)。这里TREE就是英文里树木的那个单词TREE。TREE(3)其实就是一个函数，函数名称叫TREE，而函数自变量取值是3。</p>
+<p>上期讲过，TREE(3)跟葛立恒数比的话，葛立恒数是属于忽略不计的。更为神奇的是，TREE(3)的定义比葛立恒数更简单，简单来说，它就是一个画“树”的游戏，树林的树。这里，这个“树”的概念，对计算机专业的听众来说再熟悉不过了，什么二叉树，查找树等等。如果你不是计算机专业的，也不要紧。你应该也看到过公司的组织架构图，或是某个人的家谱等等，也是用类似一棵树的结构展示的，这就是我们今天要谈的树的概念。我在节目介绍里也放了一个树的简单示意图。</p>
+<p><img class="alignnone size-full wp-image-760" src="https://dalaoliblog.files.wordpress.com/2017/12/tree_demo.png" alt="tree_demo" width="303" height="166" /></p>
+<p>然后TREE(3)这个数，就可以用一种画树的游戏来导出，画的时候，我们会给每个节点，俗称叶子的东西，画上某种颜色。而对线段，俗称树枝，我们不关心它的颜色。而TREE(3)，意思就是用三种颜色来画这颗树。</p>
+<p>我们还有一些画树的规则。这个画树的游戏只有两个规则。第一条规则是这样，你画的第一棵树，只能有一个节点，第二棵树，不能超过2个节点，第三棵树不能超过3个节点...第n棵树，不能超过n个节点。也就是，越到后面，你树中的节点可以越来越多，但不能多过你画的树的序号。</p>
+<p>第二个条件，你后面画的树，不能“包含”前面的树。这里“包含”的概念是这样的，比如你后面的树去掉若干叶子后，就是之前的树，用术语说，就是前面的树是这颗树的子树，那就犯规的。但我们这里“包含”的意思要比“子树”的定义更宽泛点，我们还要求以下这种情况也不允许，就是当前的树中如果取若干节点，这若干节点如果可以跟之前的某棵树的节点建立一一对应关系，而且两颗树中，任意对应两个节点的最近共同祖先是同一颜色，那也不允许。所谓最近共同“祖先”的概念也是很好理解的，就是两个叶子同时向根节点回溯，那它们迟早会在某个节点汇合，最迟也是根节点，那这个结点就叫“最近共同祖先”，如果你把树看作一个家谱的话，那你就更好理解了。现在的要求就是，如果两棵树之间，如果对应节点的最近共同祖先是同一颜色，那游戏结束。其实这种“包含”在数学上有个术语叫inf-embeddable. Embeddable 就是可嵌入的意思，这个词搞嵌入式系统的再熟悉不过。INF是什么意思呢，它其实是下确界，或者说最大下界的拉丁文缩写。为什么用这个词，因为如果你把一棵树某个枝条上的节点当做一个大小排序的话，且根节点最小，那么两个节点的最近祖先其实就是最大的且比这两个节点都小的的节点， 所以叫下确界，INF。这就是inf-embeddable的全部意思。</p>
+<p>(下图：左边的树包含右边的树)</p>
+<p><img class="alignnone size-full wp-image-762" src="https://dalaoliblog.files.wordpress.com/2017/12/gallery-1508517115-screen-shot-2017-10-20-at-123047-pm.jpg" alt="gallery-1508517115-screen-shot-2017-10-20-at-123047-pm.jpg" width="768" height="361" /></p>
+<p>OK，以上就是画树游戏的全部规则。那我跟大家在节目里演示下，玩玩看。当然很推荐你现在拿支笔和纸，一起来玩玩看，你可以用不同的符号来表示颜色。那我们先从TREE(1)这个游戏开始玩，也就是只用一种颜色，假设你用的是红色。先画第一棵树，那你明显只能画一个根节点是红色。你会发现你没办法再画第二棵树了，因为第二棵树，你最多画两个节点。你重画一个红色的根结点，那跟第一棵树一样，肯定不行。你如果画两个红色节点，那也包含第一棵树，也不行。所以游戏结束，你只能画出一棵树，那我们知道TREE(1)=1。</p>
+<p>(下图: TREE(1)游戏示意，右边的树包含左边的树，所以游戏结束。TREE(1)=1)</p>
+<p><img class="alignnone size-full wp-image-763" src="https://dalaoliblog.files.wordpress.com/2017/12/gallery-1508517464-screen-shot-2017-10-20-at-123548-pm.jpg" alt="gallery-1508517464-screen-shot-2017-10-20-at-123548-pm.jpg" width="768" height="368" /></p>
+<p>接下来玩下TREE(2)，用两种颜色，红色和绿色。那你第一棵树，比如还是用红色画一个根节点，第二棵树你如果用绿色画一个根结点，那你会发现你第三棵树就没法画了，因为第三棵树无论怎么画，必然包含第一颗或第二棵树。但我们还有一个更好的做法。那就是第二棵树画成绿色的根节点接一个绿色的叶子。这样，我们第三棵树就可以画成只有一个绿色根结点的树，就一个根。因为我们规则只限制后面的树不能包含前面的树，没有规定前面的树不能包含后面的树。这样虽然我们第二棵树包含了第三棵树，但是第三棵树没有包含之前的树，所以这是允许的。这之后，你会发现你无法再画出第四颗树了。所以TREE(2)=3。</p>
+<p>(下图：TREE(2)游戏示例，你最多画出如下三颗树，所以TREE(2)=3)</p>
+<p><img class="alignnone size-full wp-image-765" src="https://dalaoliblog.files.wordpress.com/2017/12/gallery-1508517877-screen-shot-2017-10-20-at-124359-pm.jpg" alt="gallery-1508517877-screen-shot-2017-10-20-at-124359-pm" width="768" height="317" /></p>
+<p>&nbsp;</p>
+<p>好TREE(1) ，TREE(2)的游戏我们都玩过了，现在到见证奇迹的时刻了，我们要玩TREE(3)了，比如你可以再加入一个颜色，蓝色。用红，绿，蓝三色来玩这个画树的游戏。你会发现，这次你似乎发挥余地大多了，你可以画非常多的树。我在节目介绍里，也放了TREE(3)游戏开始的12棵树的可能画法：</p>
+<p><img class="alignnone size-full wp-image-761" src="https://dalaoliblog.files.wordpress.com/2017/12/gallery-1508518282-screen-shot-2017-10-20-at-124954-pm.jpg" alt="gallery-1508518282-screen-shot-2017-10-20-at-124954-pm.jpg" width="768" height="430" /></p>
+<p>但是我劝你不要继续了，因为你无法画到它结束的时刻，因为这个TREE(3)的值实在太大了，大到惊天地泣鬼神，比葛林恒数还大。当然，你可能此时会质疑，你怎么证明TREE(3)是一个有限值，而不是无穷大的，也就是我可以无穷的玩下去呢？</p>
+<p>这里要用到一个定理，叫克鲁斯科尔树定理。克鲁斯科尔这个名字计算机系的听众又是太熟悉了，克鲁斯科尔算法是考试必考的对不对。克鲁斯科尔算我们计算机系学生膜拜的大神了，他已于2010年去世，这里我们也顺带缅怀一下。我们今天不考最小生成树算法，而是克鲁斯科尔发现的这个树定理。这个定理有个粗糙但简单的说法就是如果你给我无穷多个树，那其中必然有一个树是另一颗的INF-embeddable，同下确界意义上的嵌入。那TREE(3)是一个有限的数其实就这个定理的直接推论了，是不是？</p>
+<p>你可能关心TREE(3)这个有限的数到底有多大？不管你信不信，这其实是今天节目最难点了。上一期葛立恒数我用箭号表示法，大概还能说明下葛立恒数有多大，但是在TREE(3)面前，箭号表示法已经完全不管用了。但是我们还是可以参考下，上期我们说了葛立恒数可以用64重箭号表示法来表示，那TREE(3)如果要用多重箭号表示法表示，那需要的层数将远远大于葛立恒数。这大概是我最好的形容了，再往下我都不知道怎么说了，因为再怎么用语言或符号表达，我都感觉都是很徒劳了。当然，如果你有兴趣还是可以上网搜搜有关TREE(3)的符号表示，为了表示它的大，得用各种专门的运算符号才行，虽然这些符号对普通人来说，已经没什么感觉了。</p>
+<p>关于TREE(3)还有好玩的一点，就是根据克鲁斯科尔树定理，TREE(4), TREE(5)，TREE(100)都是有限的对不对？那TREE(TREE(3)呢，就是用用TREE(3)个颜色玩这个画树游戏，那它还是有限的。那如果TREE(TREE(3))我如此嵌套TREE(3)重呢? 对这个数我表示我大脑系统崩溃了。</p>
+<p>OK，今天有关TREE(3)话题就聊到这了，我还是很喜欢TREE(3)这个数，因为它定义是如此之简单，而且从平淡无奇的TREE(1)，TREE(2）, 到TREE(3)如同宇宙大爆炸式的转变，实在太让人吃惊了。另外各位以后写情书也可以考虑写“我爱你TREE(3)年”等等。下周再见！</p>
+<p>收听“大老李聊数学”音频                                        关注“大老李聊数学”</p>
+<div id="gallery-755-1" class="gallery galleryid-755 gallery-columns-2 gallery-size-thumbnail">
+<figure class="gallery-item">
+<div class="gallery-icon landscape"><a class="no-underline" href="https://dalaoliblog.wordpress.com/2017/10/24/%e4%bd%a0%e8%bf%bd%e6%88%91%e8%b5%b6%e7%9a%84%e8%9c%97%e7%89%9b-%e6%9c%89%e5%85%b3%e5%af%b9%e6%95%b0%e8%9e%ba%e7%ba%bf/ximalaya/"><img class="attachment-thumbnail size-thumbnail" src="https://dalaoliblog.files.wordpress.com/2017/10/ximalaya.png?w=150&amp;h=144" alt="" width="150" height="144" /></a></div>
+</figure>
+<figure class="gallery-item">
+<div class="gallery-icon landscape"><a class="no-underline" href="https://dalaoliblog.wordpress.com/about/qrcode_for_gh_130ed4d8263c_344/"><img class="attachment-thumbnail size-thumbnail" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg?w=150&amp;h=150" alt="" width="150" height="150" /></a></div>
+</figure>
+</div>
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

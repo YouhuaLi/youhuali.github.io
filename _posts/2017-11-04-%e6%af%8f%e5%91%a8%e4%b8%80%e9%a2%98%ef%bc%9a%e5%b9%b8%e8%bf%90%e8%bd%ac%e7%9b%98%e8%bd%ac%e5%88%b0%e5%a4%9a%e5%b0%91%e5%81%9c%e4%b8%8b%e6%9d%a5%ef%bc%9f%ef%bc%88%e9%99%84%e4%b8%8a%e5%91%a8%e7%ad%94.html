@@ -1,0 +1,47 @@
+---
+layout: post
+title: 每周一题：幸运转盘转到多少停下来？（附上周答案）
+date: 2017-11-04 03:56:42.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '11064288864'
+author:
+  login: webcraft2013
+  email: webcraft@gmail.com
+  display_name: webcraft2013
+  first_name: ''
+  last_name: ''
+---
+<h1>本周题目：幸运转盘转到多少停下来？</h1>
+<p>(来源：fivethirtyeight.com)</p>
+<p><img class="alignnone size-full wp-image-559" src="https://dalaoliblog.files.wordpress.com/2017/11/30114548_vcc2.jpg" alt="30114548_vCC2" width="862" height="836" /></p>
+<p>你在参加一个电视游戏节目，节目中有一次摇大奖机会，但你要与另两名参与者竞争！游戏规则如下：有一个大转盘，转盘上有20格，每一格标注有5，10，15...，100。每人可以转动一次或两次转盘，你的目标是两次旋转后，转盘停止时（转盘会停在一个随机位置，每个位置机会均等），两个数字相加值尽可能接近100，但是一旦大于100则立即出局（最后若有玩家相等，则再转一次，数字高者胜）。最接近但不超过100的玩家可获得大奖！</p>
+<p>你现在抽签后是第一个转动转盘，请问你在第一次转动后，当转盘数字大于多少时，应该放弃第二次转动？假设后面的两个玩家都会采用最佳策略，且他们能看到之前的玩家的数字结果。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>你正在跟一个女孩约会，你想给她买一部手机作为礼物。你挑选了一部手机型号，不过你不知道女孩最喜欢哪种颜色的手机。手机可选颜色分别是红，黄，蓝，绿。但女孩并不想直接告诉你她喜欢的颜色，而是要考验你一下。女孩已经将四种颜色从最喜欢到最不喜欢在心里排好序。她允许你每次将任一个颜色序列向她询问，然后她会回答里面有几种颜色正好是她心目中的位置。比如，女孩心中的颜色序列是：红，黄，蓝，绿。如果你问：“蓝绿黄红”，则女孩回答“0”，你若问：“红绿蓝黄”，则女孩回答“2”。</p>
+<p>请问，在最不走运的情况下，你至少需要问几次，可以完全确定女孩心中的颜色偏好排列？注：为明确起见，需要一直问到女孩回答“4”算结束，尽管实际上最后一次你可能是已经确定排列顺序了。</p></blockquote>
+<p>&nbsp;</p>
+<p>有读者回答24次，这是四种颜色全排列数量，那就太多了，女孩可能会觉得你太笨：）。正确答案是<strong>5次</strong>！比如，你一开始把颜色排成ABCD：</p>
+<ol>
+<li>女孩回答0，则你交换AB，询问BACD</li>
+<li>女孩回答0， 则知道AB不可能是第1第2，则询问CDBA</li>
+<li>女孩回答2，则交换CD，询问DCBA</li>
+<li>女孩回答0,   则CD, AB分别交换，询问CDAB。（根据规则，必须再询问一次，虽然你知道这肯定是正确答案）</li>
+<li>女孩肯定回答4！</li>
+</ol>
+<p>看这个分支图就可以应对所有情况了：</p>
+<p><img class="alignnone size-full wp-image-550" src="https://dalaoliblog.files.wordpress.com/2017/11/beier.jpeg" alt="beier.jpeg" width="1150" height="673" /></p>
+<p>恭喜<strong>Magician</strong>答对了，下周再见！</p>
+<p>收听“大老李聊数学”音频节目：</p>
+<p><img class="alignnone size-full wp-image-319" src="https://dalaoliblog.files.wordpress.com/2017/10/qr_ximalaya.png" alt="qr_ximalaya" width="183" height="172" /></p>

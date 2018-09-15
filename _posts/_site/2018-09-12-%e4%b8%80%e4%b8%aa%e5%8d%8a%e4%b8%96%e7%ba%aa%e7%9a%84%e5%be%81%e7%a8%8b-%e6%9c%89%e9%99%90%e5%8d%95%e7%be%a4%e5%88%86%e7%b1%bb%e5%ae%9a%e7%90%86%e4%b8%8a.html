@@ -1,0 +1,86 @@
+<p>大家好，我是大老李。在连续两期有关群的话题之后，顺理成章的想跟大家聊聊群论中非常重要和有意思，也是整个数学中最为宏大的一个定理：有限单群分类定理。</p>
+<p>说它宏大，一个是时间上，从问题提出到解决大约经历了一个半多世纪时间，中间曾经在1983年有人宣布它被证明了，但后来发现其中还有些遗漏的地方，全部漏洞被完整填补又花了25年，到2008年左右人们才普遍认为它真的是被证明了。</p>
+<p>另外一方面说它的宏大是提醒在空间上，因为这个定理的证明包含了100多位数学家的500多篇论文，总页数多达15,000页。这个数量已经多到任何一个人穷尽一生都难以阅读完的地步。后来有数学家决定用当今最新数学工具和语言重新写一遍它的证明，但最终产生的证明还是多达5000多页。所以从证明长度来讲，我们排除那些用计算机辅助证明的那些命题，只考虑真正写出来供人阅读的证明，那这个定理的证明总长度绝对是最长的。</p>
+<p>那什么是“有限单群”分类定理？顾名思义，就是对有限的单群进行分类。好吧，这是废话。但是听过最近两期节目的听众应该对有限单群有所了解了，因为我提到过素数阶的循环群都是单群，因为它们再也没有一个子集可以构成群了。</p>
+<hr />
+<p>(有限单群的分类，摘自维基百科)<br />
+若结果是正确的话，分类表示<a href="https://zh.wikipedia.org/w/index.php?title=%E6%9C%89%E9%99%90%E7%B0%A1%E5%96%AE%E7%BE%A4%E5%88%97%E8%A1%A8&amp;action=edit&amp;redlink=1" title="有限简单群列表（页面不存在）">每个有限简单群</a>都会是下列每类型的其中一种：</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%B3%AA%E6%95%B8" title="素数">素数</a><a href="https://zh.wikipedia.org/wiki/%E9%98%B6" title="阶">阶</a><a href="https://zh.wikipedia.org/wiki/%E5%BE%AA%E7%92%B0%E7%BE%A4" title="循环群">循环群</a></li>
+<li>至少5阶的<a href="https://zh.wikipedia.org/wiki/%E4%BA%A4%E6%9B%BF%E7%BE%A4" title="交替群">交替群</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E5%85%B8%E5%9E%8B%E7%BE%A4" title="典型群">典型群</a></li>
+<li>例外或缠绕<a href="https://zh.wikipedia.org/wiki/%E6%9D%8E%E7%BE%A4" title="李群">李群</a></li>
+<li>剩下26种被称为<strong>散在群</strong>的其中之一</li>
+</ul>
+<hr />
+<p>但确切的说，并不是一个群没有子群的群就是单群，而是没有所谓"正规子群"的群才叫单群。正规子群的具体定义我不说了，有点抽象，但我可以说下为什么要有正规子群。因为数学家发现在一个群里找子群很像对一个整数作因子分解，但人们还希望找出来的子群能够像“因子”一样去除原来的群，得到另一个群。而只有正规子群可以让人们很方便的定义一个群与某个子群之间的除法，而这个除出来的群确实被命名成“商群”。但一个群除以非正规的子群是得不到群结构的。总之，你只要了解正规子群很像一个群的因子就可以了。</p>
+<p>为什么数学家要对单群特别关注？你想单群没有正规子群，也就是没有“因子“，那单群是不是就很像素数？而又有几个数学家能抵抗素数的诱惑？所以单群对数学家来说，就好比素数对于整数，也好比基本粒子对于物理学家或者化学元素对于化学家，都是一个基本单位。既然是基本单位，当然想搞查清它的户口，搞清楚它到底有几种。</p>
+<p>但也有人反对把“单群”比作“素数”，他们认为应该比作“对称性”的原子。因为对称性就是自身到自身的一种映射，是一种置换，所以一种对称性就能找到一种有限群的表示。就像上期大老李也是感觉到五行学说中隐含的对称性，所以才设法挖掘出用群来表现五行，总之，任何群都体现了一种对称性。</p>
+<p>你也可以把正规子群想象成一个群的对称轴，就是它可以把群里的元素映射成两份一样的东西。而如果一个群含有正规子群，就表示它的整体对称性中，包含有更小的对称性。如果它没有正规子群了，那就表示了一种最根本的对称。所以有限单群的分类就可以看做对宇宙中有多少种对称性进行分类，所以有人认为“单群”可以被称作“对称性”的原子。</p>
+<hr />
+<p>(正规子群定义，摘自维基百科)<br />
+<a href="https://zh.wikipedia.org/wiki/%E7%BE%A4" title="群">群</a>G的<a href="https://zh.wikipedia.org/wiki/%E5%AD%90%E7%BE%A4" title="子群">子群</a>N是<strong>正规子群</strong>，如果它在<a href="https://zh.wikipedia.org/w/index.php?title=%E5%85%B1%E8%BD%AD%E5%8F%98%E6%8D%A2&amp;action=edit&amp;redlink=1" title="共轭变换（页面不存在）">共轭变换</a>下不变；就是说对于每个N中元素n和每个G中的元素g，元素<span class="katex--inline"><span class="katex"><span class="katex-mathml">gng−1gng^{−1}</span><span class="katex-html"><span class="base"><span class="strut" style="height:1.00855em;vertical-align:-.19444em;"></span><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="mord mathit">n</span><span class="mord"><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.814108em;"><span class="" style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></span>仍在N中。我们写为：</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml">N◃G⇔∀n∈N,∀g∈G&nbsp;,gng−1∈NN \triangleleft G\,\,\Leftrightarrow\,\forall\,n\in{N},\forall\,g\in{G}\ , gng^{-1}\in{N}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.68333em;vertical-align:0;"></span><span style="margin-right:.10903em;" class="mord mathit">N</span><span class="mspace" style="margin-right:.222222em;"></span><span class="mbin">◃</span><span class="mspace" style="margin-right:.222222em;"></span></span><span class="base"><span class="strut" style="height:.68333em;vertical-align:0;"></span><span class="mord mathit">G</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mspace thinspace"></span><span class="mspace thinspace"></span><span class="mrel">⇔</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mspace thinspace"></span></span><span class="base"><span class="strut" style="height:.73354em;vertical-align:-.0391em;"></span><span class="mord">∀</span><span class="mspace thinspace"></span><span class="mord mathit">n</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.88888em;vertical-align:-.19444em;"></span><span class="mord"><span style="margin-right:.10903em;" class="mord mathit">N</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:.166667em;"></span><span class="mord">∀</span><span class="mspace thinspace"></span><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:1.05855em;vertical-align:-.19444em;"></span><span class="mord"><span class="mord mathit">G</span></span><span class="mspace">&nbsp;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:.166667em;"></span><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="mord mathit">n</span><span class="mord"><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.864108em;"><span class="" style="top:-3.113em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.68333em;vertical-align:0;"></span><span class="mord"><span style="margin-right:.10903em;" class="mord mathit">N</span></span></span></span></span></span></span></p>
+<hr />
+<p>你可能还记得我上期节目说过：”所有素数阶的循环群都是单群”，而“所有有限群都同构与某个置换群”。这两条你结合起来，你可能会想到是否有一个逆命题：所有有限单群都是素数阶的循环群。很可惜不是，虽然素数阶的循环群都是单群，但确实有些单群不是素数阶的循环群，否则这个定理就太简单根本不成定理了嘛。但你也别小看“所有素数阶的循环群都是单群” 这个命题，这个命题是所谓的“拉格朗日定理”的一个推论，用它证明数论中著名的“费马小定理”，你会发现太简单了。当群论经过十分繁复的定义和铺垫之后，对原先比较难的数学命题一下子有了简单的证明，这也是侧面反映群论作为一个新的工具是十分强大的，所以它一开始的繁复是值得的。</p>
+<hr />
+<p>(费马小定理，摘自维基百科)<br />
+费马小定理是数论中的一个定理：假如a是一个整数，p是一个质数，那么<span class="katex--inline"><span class="katex"><span class="katex-mathml">ap−aa^{p}-a</span><span class="katex-html"><span class="base"><span class="strut" style="height:.747722em;vertical-align:-.08333em;"></span><span class="mord"><span class="mord mathit">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.664392em;"><span class="" style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">p</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:.222222em;"></span></span><span class="base"><span class="strut" style="height:.43056em;vertical-align:0;"></span><span class="mord mathit">a</span></span></span></span></span>是p的倍数，可以表示为</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml">ap≡a(modp)a^{p}\equiv a{\pmod {p}}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.714392em;vertical-align:0;"></span><span class="mord"><span class="mord mathit">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.714392em;"><span class="" style="top:-3.113em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">p</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord mathit">a</span><span class="mord"><span class="mspace quad"></span>(mod<span class="mspace sixmuspace"></span><span class="mord mathit">p</span>)</span></span></span></span></span></span></p>
+<p>如果a不是p的倍数，这个定理也可以写成<br />
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml">ap−1≡1(modp)a^\equiv 1{\pmod  {p}}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.864108em;vertical-align:0;"></span><span class="mord"><span class="mord mathit">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.864108em;"><span class="" style="top:-3.113em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight">p</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord">1</span><span class="mord"><span class="mspace quad"></span>(mod<span class="mspace sixmuspace"></span><span class="mord mathit">p</span>)</span></span></span></span></span></span></p>
+<hr />
+<p>那我们继续有限单群的话题，前面虽然我们发现并不是所有单群都是的素数阶的循环群，但这个命题稍微修改下，加上“可交换”三个字，就能成立：所有有限可交换单群都是素数阶循环群。“可交换”就是符合交换律。上几期介绍过的循环群都是可交换的，但确实还有些置换群是不可交换的。其中有一大类是要追溯到伽罗瓦刚发明群概念时发现的一类有限群，叫交错群。</p>
+<p>交换群概念可以先考虑这样一道智力题：比如有三个人排队，先按某种顺序排好了，比如1,2,3,这样的顺序。然后考虑这三个人互相之间任意交换位置，变成另一种排队方式，问一共有几种不同的交换位置的方法？这道题可以这样考虑，虽然问的是不同交换位置的方法，但是交换后，三个人总还是按某种顺序排好队了。而且我们很容一直到，3个人的不同排队方式有<span class="katex--inline"><span class="katex"><span class="katex-mathml">3!=63!=6</span><span class="katex-html"><span class="base"><span class="strut" style="height:.69444em;vertical-align:0;"></span><span class="mord">3</span><span class="mclose">!</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span></span></span></span></span>种。那不管怎么换位，总是从当前位置换到另一种方式，所以很自然就有<span class="katex--inline"><span class="katex"><span class="katex-mathml">3!=63!=6</span><span class="katex-html"><span class="base"><span class="strut" style="height:.69444em;vertical-align:0;"></span><span class="mord">3</span><span class="mclose">!</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span></span></span></span></span>种换位方式，其中包括一种不变换，就是自己跟自己“交换”的方式。</p>
+<p>那好，我们现在就把这<span class="katex--inline"><span class="katex"><span class="katex-mathml">3!=63!=6</span><span class="katex-html"><span class="base"><span class="strut" style="height:.69444em;vertical-align:0;"></span><span class="mord">3</span><span class="mclose">!</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span></span></span></span></span>种变换组成一个集合，然后很显然这些置换能构成一个群，这种群被叫做对称群。因为是三个元素的所有置换构成的群，所以它又被称为3次对称群。现在问题又来了，这种3次对称群里有没有正规子群呢？我可以提示你，把6个置换里去掉一半，留下三种置换，还是能构成一个群，而且确实是正规子群。这个三个置换是：自己跟自己交换的恒等置换肯定要留下；第二种置换是1换到2号位，2换到3号位，3换到1号位；第三种置换是1换到3号位，3换到2号位，2换到1号位。请你自行确认这3种置换无论哪两种连续变换，都可以直接用其中某种置换来表示。好了，你现在发现的这个3个置换构成的群，就被称为3次交错群。每个交错群的元素个数都是同次对称群的一半，就是n次交错群有n!/2个元素。</p>
+<p>–<br />
+(3次交错群（同构于3次循环群）的运算表)</p>
+<table>
+<thead>
+<tr>
+<th>C_3</th>
+<th>1</th>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>B</td>
+<td>1</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+<p>–</p>
+<p>现在问题是，3次交错群是单群吗？是！但是可惜三次交错群其实与3阶循环群是同构的，所以这算不上什么新发现。但是别灰心，我们继续研究4次交错群，就是4个人排队换位。4次交错群有<span class="katex--inline"><span class="katex"><span class="katex-mathml">4!/2=124!/2=12</span><span class="katex-html"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord">4</span><span class="mclose">!</span><span class="mord">/</span><span class="mord">2</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">1</span><span class="mord">2</span></span></span></span></span>个元素，你如果有兴趣可以暂停构造一下这个12各元素的4次交错群。那它是单群吗？很可惜，不是！因为它还有正规子群。但也别灰心，4次交错群已经有点特别的性质，它已经不是可交换的了，就是其中有些置换的交换律不成立了，这已经是很特别的发现了，因为我们之前了解的所有置换群都是有交换律的。其实这个群很重要，它的正规子群叫"克莱因四元群"，是元素最少的非交换群。伽罗瓦也是用了4次交错群有正规子群的性质证明了4次方程有根式解。</p>
+<hr />
+<h2 id="到4次交错群的一种图示法，转自wolfram.com">(2到4次交错群的一种图示法，<a href="http://xn--wolfram-um0t965g.com">转自wolfram.com</a>)<br />
+<img src="http://oy876kcmf.bkt.clouddn.com/FojrEdiA_30hbLB-Rf3Mzq1NiXYF" alt="" /></h2>
+<p>那我们再次不能灰心，开始考查5次交错群，5次交错群有<span class="katex--inline"><span class="katex"><span class="katex-mathml">5!/2=605!/2=60</span><span class="katex-html"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord">5</span><span class="mclose">!</span><span class="mord">/</span><span class="mord">2</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span><span class="mord">0</span></span></span></span></span>个元素了。那它是单群吗？我们会很高兴的发现，它是！它确实没有正规子群了，而且同样它是不可交换群。而且继续上去，人们发现5次及以上的交错群就都是单群了，这个发现正是当年伽罗瓦证明一般的5次及以上次数的方程没有根式解的思路。</p>
+<p>之前人们发现2，3，4次方程的根式解都是将方程化为较低次数的方程，而伽罗瓦发现这一过程可以抽象为给一个群找正规子群的过程。而既然5次及以上交错群没有正规子群了，所以5次及以上方程就没有根式解。而且他的这个思路还可以被用来判定一个方程有没有根式解，因为一般的5次方程无根式解，但某些特别形式的5此方程当然会有根式解。你没有一种感觉解方程时对方程的变换其实就是一种置换操作？而用群论只要考察某种形式的方程所对应的置换群是否属于所谓“可解群”就可以进行判定。</p>
+<p>那好，现在我们已经知道了素数阶置换群和5次及以上交错群都是单群，那事情完了吗？还没，还有一大类群也是单群，这就是“李群”中的“典型群”和“例外李群”。这个李群是用大老李的“本家”，19世纪挪威数学家，索菲斯·李的名字命名的。“李群”的概念实在太难了，远超大老李可以解释的程度。有意思的是“李群”这个名词不是索菲斯李本人创立的，而是他去世多年后，后人继承了他的工作，为了纪念他，而把这一大族群命名为李群。而把李群中的单群分类清楚要等到1950年代才完成，因为李群里面虽然有一大组所谓典型群，但还有些例外，叫“例外李群”，这说明它真的很复杂。</p>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/Fuuocvd0QKUIZbcWCk4b6ABGJDU4" alt="" /><br />
+(上图：挪威数学家, 索菲斯·李（1842-1899）)<br />
+而现在李群在量子物理中作用却十分巨大。物理学目前有一个最重大的问题就是寻找所谓“大统一理论”，就是用一个理论去解释完事万物。但现在物理里面的所谓“标准模型”理论实在是太繁复了，人们当然不喜欢复杂的理论，而认为宇宙的基础运行机制应该是很简单和美观的。那要找到简单和美观，就要找对称。要找对称，就会想到群，而人们发现好几种李群蕴含的对称性是可以用来解释一些基本粒子的性质的，所以你在一些物理书里经常看到的所谓“酉群”，“辛群”都是李群的家族的。所以李群也是非常强大的工具。</p>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/Frh9i-nRNdvfuB-BPbdRtxD4g5iJ" alt="" /><br />
+(上图：李群E8的一个图示)</p>
+<p>好了，我们前面说了四种单群了，素数阶循环群，5次以及上交错群，典型群和一些例外李群。事情玩了吗？还没有！如果说前面这几种单群还是常人所能理解的单群的话，数学家还发现了26个独立于前面这些群的所谓“散在单群”，意思就是“闲在游荡”的群。这26个群是如此神奇也略带神秘，它们的阶数少则几千，多则达到<span class="katex--inline"><span class="katex"><span class="katex-mathml">105310^{53}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.814108em;vertical-align:0;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.814108em;"><span class="" style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></span>次方，以致于被命名为“怪兽群”。而他们之间有些或多或少的联系，但有几个与其他完全没有关系。这也解释了为什么有限单群分类定理工程为什么如此好大，因为这26个散在单群要一个个对付过来。</p>
+<p>有时我也在想，上帝为什么在宇宙间安排了这个26个散在单群了，为什么是26这个数字？外星人找到这些散在单群了吗？这些群为什么看上去这么特别？我们确定没有更多散在单群了吗？这些问题都是很令人遐想联翩的。因此下一期节目我就来好好说说这个26个散在单群。</p>
+<hr />
+<h3 id="订阅公众号：dalaoli_shuxue">订阅公众号：dalaoli_shuxue</h3>
+<h3 id="收听大老李聊数学：">收听大老李聊数学：</h3>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/FkChojg_hAY_L4mua1t82UhHErDA" alt="" /></p>

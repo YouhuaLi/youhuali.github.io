@@ -1,0 +1,1068 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>主页 - 大老李聊数学</title>
+
+<meta name="description" content="Your Site Description
+">
+<link rel="canonical" href="http://localhost:4000/page3/"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"></div>
+
+            <div class="col-main cell--auto"><article itemscope itemtype="http://schema.org/WebPage"><div class="article__header"><header style="display:none;"><h1>主页</h1></header></div><meta itemprop="headline" content="主页"><meta itemprop="author" content="大老李"/><div class="js-article-content"><div class="layout--home"><div class="items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/07/03/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-9c-ba-e5-9c-ba-e8-87-aa-e5-8a-a8-e6-ad-a5-e9-81-93-e6-9c-ba-e7-9a-84-e9-80-9f-e5-ba-a6-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：机场自动步道机的速度（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：机场自动步道机的速度（附上周答案）</h1>
+<p><img class="alignnone size-full wp-image-973" src="https://dalaoliblog.files.wordpress.com/2018/07/sfo_moving_walkway.jpg" alt="SFO_moving_walkway.JPG" width="2816" height="2112" /></p>
+<p>（题目来源：fivethirtyeight.com）</p>
+<p>上周张三想在机场简短锻炼下身体，他选择了一条自动步道机（机场常见的类似自动扶梯或传送带的装置，设置于地面用于加速行走的），在上面<strong>逆向</strong>行走了100米时，张三不慎将登机牌掉落在步道机上，张三并未意识到。张三又走了90秒后，发现遗失了登机牌，急忙回转去寻找登机牌。此时他是顺向在步道机上行走，且速度是之前的2倍。终于，他在登机牌距离步道机起点只有10米时找到了登机牌。问步道机的移动速度是多少？</p>
+<p>请直接留言作答。</p>
+<p>&nbsp;</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>3岁的小孩在ipad上玩一个记忆配对游戏：一开始有20张（10对）面向下的卡牌，当你点击一张时，这张卡牌会显示。当你点击第二张时，如果卡牌图案与前一张一样，则两张卡牌会闪烁一次，并保持显示状态，否则两张卡牌会翻转盖上。你的目标就是以最短时间点开所有10对20张卡牌（大老李最近一次玩到这种游戏是在“植物大战僵尸里”）。</p>
+<p>已知点击显示一张卡牌需要1秒，卡牌闪烁或盖上需要1秒。而这个小孩点击卡牌是完全<strong>随机</strong>选择一张<strong>盖着</strong>的卡牌，问他平均完成一次游戏需要多少时间？</p>
+<p>提示：从接近游戏结束的情况倒推较为容易。</p>
+<p>附加题：如果玩的人的记忆是完美的，就是能记住每一张已经打开过的牌，平均完成一次游戏需要多少时间？</p></blockquote>
+<p>答案是：答案是<strong>200秒</strong>。</p>
+<p>这个问题我们可以用所谓“动态编程”（Dynamic Programming）来解决。让我们用 T(i)表示桌面还有i对卡牌面朝下时，我们还需要多少秒来完成游戏。我们的问题就是要求T(10)。</p>
+<p>很显然T(0)=0。然后让我们考虑一下还有i对卡牌向上的情况，我们可以导出如下公式：</p>
+<p>$latex T(i)=2+\frac{1}{2i-1}T(i-1)+(1-\frac{1}{2i-1})T(i)$</p>
+<p>这个公式的意思就是我们至少需要2秒完成本轮，之后有$latex \frac{1}{2i-1}$的机会我们翻对了，之后需要T(i-1)秒，另有$latex 1-\frac{1}{2i-1}$的机会我们翻错了，需要继续花费T(i)秒完成游戏。</p>
+<p>将上式化简后，可得T(i)的递推公式：$latex T(i)=4i-2+T(i-1)$。进一步可推导出T(i)的通项公式为$latex T(i)=2i^{2}$</p>
+<p>所以$latex T(10)=2\times 10^{2}=200$。</p>
+<p>(因为原题有些歧义，对第二次点击是否花1秒未明确，答200和300的都算对了)</p>
+<p>恭喜：黄亮，Lian，阿标，Stones答对了！</p>
+<p>附加题是一个很难的问题，有数学家专门研究过，结论是玩家有完美记忆时，并采用最佳策略，则当桌面有n对卡牌时，平均所需行动次数约为2<em>1.61</em>n。我们的问题中，n=10，所以需要约32秒到33秒。具体可看此论文：https://goo.gl/QnQdDe。</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/07/03/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-9c-ba-e5-9c-ba-e8-87-aa-e5-8a-a8-e6-ad-a5-e9-81-93-e6-9c-ba-e7-9a-84-e9-80-9f-e5-ba-a6-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 07月03日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-07-03T00:13:44+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/06/24/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e8-ae-b0-e5-bf-86-e9-85-8d-e5-af-b9-e6-b8-b8-e6-88-8f-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：记忆配对游戏（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：记忆配对游戏（附上周答案）</h1>
+<p>（题目来源：fivethirtyeight.com）</p>
+<p><img class=" size-full wp-image-967 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/06/card_memory_game.jpg" alt="card_memory_game.jpg" width="279" height="180" /></p>
+<p>3岁的小孩在ipad上玩一个记忆配对游戏：一开始有20张（10对）面向下的卡牌，当你点击一张时，这张卡牌会显示。当你点击第二张时，如果卡牌图案与前一张一样，则两张卡牌会闪烁一次，并保持显示状态，否则两张卡牌会翻转盖上。你的目标就是以最短时间点开所有10对20张卡牌（大老李最近一次玩到这种游戏是在“植物大战僵尸里”）。</p>
+<p>已知点击显示一张卡牌需要1秒，卡牌闪烁或盖上需要1秒。而这个小孩点击卡牌是完全<strong>随机</strong>选择一张<strong>盖着</strong>的卡牌，问他平均完成一次游戏需要多少时间？</p>
+<p>提示：从接近游戏结束的情况倒推较为容易。</p>
+<p>附加题：如果玩的人的记忆是完美的，就是能记住每一张已经打开过的牌，平均完成一次游戏需要多少时间？</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>在上图这种24小时制数字时钟里，有时候数字的显示会是“回文”，即为从左到右或从右到左的数字序列完全一样。比如0:34:30，21:33:12，1:20:21等等（忽略“：”符号）。请问，<strong>最小</strong>间隔的两个“回文时间”之间，间隔多久？</p>
+<p>说明：时钟为24小时制，且小时数为1位数时只显示1个数字。</p>
+<p>请直接留言作答。</p></blockquote>
+<p>答案是：9:59:59和10:00:01，间隔是2秒！本题没有特别的解答方法，就是需要好好思考一下。</p>
+<p>恭喜：<strong>Stones</strong>，<strong>Lian，黄亮，来，尹公，笑而不语，香独秀囧囧</strong>答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/06/24/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e8-ae-b0-e5-bf-86-e9-85-8d-e5-af-b9-e6-b8-b8-e6-88-8f-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 06月24日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-06-24T01:04:51+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/06/18/e6-84-bf-e7-a7-af-e8-b7-ac-e6-ad-a5-ef-bc-8c-e5-bf-85-e8-87-b4-e5-8d-83-e9-87-8c-e5-9f-83-e5-b0-94-e5-be-b7-e4-bb-80-e5-81-8f-e5-b7-ae-e9-97-ae-e9-a2-98.html">愿积跬步，必至千里--埃尔德什偏差问题</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。今天节目主题叫“埃尔德什偏差问题”(Erdos Discrenpency Problem)，让我们还是从一个有意思的故事去理解这个命题。</p>
+<p>&nbsp;</p>
+<p>临近毕业季，你的学校有一个奇怪的毕业仪式，你只有完成这个仪式或者说是一个极具挑战性的任务，你才算正式毕业了。这个挑战是这样的：你站在学校操场上的某个位置，你的任务就是绕操场走完一圈。但是有个规则是，你的某个同学会给你准备一大堆排序好的指令卡，每张卡上写着+1和-1这样的数字，意思就是顺时针或者逆时针前进一步。这些指令到底怎么排列完全是这个同学指定的，而你必须按照这个同学给你准备的指令向前或者向后走。但不管是顺时针还是逆时针，只要走完操场一圈就是完成挑战。你可能会说，如果这个同学坑我，他给我的指令就是+1，-1，+1，-1，这样交替进行的指令，我不是永远走不完了吗？</p>
+<p>&nbsp;</p>
+<p>但你有个便利条件是：你可以在开始挑战前，事先看一下同学给你排序好的指令卡，而你可以从中挑选一个等差序列，作为你将要执行的指令。比如，如果你选择公差为1，那就表示你准备按顺序从第1，2，3，4..这样无遗漏的执行指令。你如果选择公差为2，那你就是要执行第2，4，6，8，10号指令等等。如果那个同学给你+1/-1交替序列，那你显然可以选择公差为2，这样你可以飞快的倒走一圈，完成挑战。当然如有必要你也可以选择公差为100，那你就是要执行第100，200，300，400号指令等等。而且只要你需要，你可以要求同学给你任意长度的指令序列。</p>
+<p>&nbsp;</p>
+<p>但是这一次有个不利条件，给你准备指令卡的是你学校里的死对头。也许是因为上次考试时，你没给他某道数学题的答案，他准备好好坑你一下。他准备精心准备一个序列，希望你无论选择怎样的等差序列，你都无法完成走完操场一圈的任务。现在的问题就是，在这样一场对抗中，你还是你的死对头的赢面大？也就是说，你的死对头有没有可能找出这样一个序列，使你从中选择任何一个等差序列，都无法找到一个使你能正走或倒走完操场一圈的序列？</p>
+<p>&nbsp;</p>
+<p>以上这个问题就是所谓“埃尔德什偏差问题”。先剧透一下，问题的答案是你必赢，也就是无论你的死对头怎么选择序列，你总可以从中找到一个等差子序列，使得里面的+1和-1能够累加到足够多，使你能走完操场一圈。理论上就是想走都远就多远，走完地球一圈都行。</p>
+<p>&nbsp;</p>
+<p>这个埃尔德什，其实就是我之前节目里好几次提到过的厄多斯。但是我发现维基百科上现在把他的名字翻译成埃尔德什，那我也只好就叫他埃尔德什了。其实维基百科就在埃尔德什页面之下，还提到过“欧德斯”和“艾狄胥”这两个名字，其实都是埃尔德什，这真的是自己打自己脸。百度上还是翻译成“厄多斯”。但因为他是匈牙利人，他的名字发音确实比较接近埃尔德什，那我现在开始就把他叫做埃尔德什。</p>
+<p>&nbsp;</p>
+<p>另外，这个问题网上都叫它“埃尔德什差异问题”，但我觉得叫“偏差问题“更准确，更方面大家理解。你也看得出，其实这个问题是在问，这种+1/-1互相抵消和积累之后，到底可以与起点偏差有多大，所以我就叫它“埃尔德什偏差问题”。</p>
+<p>&nbsp;</p>
+<p>这个问题看上去有点复杂，我们还是可以先看点简化情况。比如这个序列不是刻意安排，而是完全随机产生的，结果会如何？首先我们知道这个序列必须是+1和-1的数量是差不多的，否则哪怕比如+1比-1多比如0.1%(暂不论这个“多”是啥含义)，那不用选，只要依序执行足够长的序列之后，必然可以走出足够远。那我的死对头肯定会让+1/-1一样多，如果我的挑战改成丢硬币，丢正面向前走一步，丢反面向后走一步，我有可能走完操场一圈吗？</p>
+<p>&nbsp;</p>
+<p>这是可能的，这里要用到所谓“（一维）随机游走”理论，根据这个理论，你丢n次硬币后，你离起点的距离大约是$latex \sqrt{n}$。如果走完操场要400步，你差不多要丢400的平方=160,000次硬币之后才比较有机会走完操场一圈。所以你还是不要真做这个实验了，不过你可以自己玩玩看挑战5步或者10步距离的，这是完全可以的。</p>
+<p>&nbsp;</p>
+<p>以上是纯随机序列的情况，现在我们要考虑的是我的死对头会刻意为之，他如果非常聪明，是不是能控制这个所谓的偏差，使得偏差总小于等于某个值。如前面所说，如果是+1/-1交替出现，那部分和必然小于等于1。但是这样的序列规律太明显了，我一眼就能发现，取奇数或偶数项，这样的子序列部分和必发散。</p>
+<p>&nbsp;</p>
+<p>所以就有人提出来，能不能找出这样一个序列，使得从任何一项开始，取等差序列，比如取第a, a+r, a+2r,a+3r等等，这几项累加呢会如何？能否控制住偏差。</p>
+<p>&nbsp;</p>
+<p>关于这点，在1927年，有一个叫“范.德瓦尔登定理”(van der Waerden’s theorem)，它告诉我们，如果把自然数分成若干有些多的类，或者叫子集，则必可从这些子集中，找到任意长度的等差序列。这个定理提示上述问题的结论，其实是控制不住偏差，也就是偏差是无界的。而到1964年，有人还找到了确切的发散速度，就是$latex \geq cn^{\frac{1}{4}}$，其中C是某个正数。  也就是说任意+1/-1的序列，总可以找到其中一个任意长度的等差子数列，使得这个数列的部分和的绝对值足够大，而且至少是与长度的1/4方成正比。</p>
+<p>&nbsp;</p>
+<p>那经过以上分析，我们知道序列如果纯随机或者可以从任何位置开始选择一个等差序列，积累的偏差都是发散的。1932年（音频内误作1923年，抱歉），埃尔德什就考虑把规则再稍微强化一下，就是必须从序列开始处选择一个等差序列，结果会如何？他的意思是，比如你选了公差2，那你就必须把第2项作为等差数列的第一项，然后选择2，4，6，8等等这些项累加。选了公差100，那你就必须把第100项作为第一项。而之前你是可以选择任何一个位置开始的。这个问题经过这么小小的改动，一下子难了许多。</p>
+<p>&nbsp;</p>
+<p>这个埃尔德什确实是很会提出猜想的人，1932年的时候，他才19岁，就提出了这么一个很天才的猜想，而且他自己非常正确的猜想了这个偏差是可以达到任意大的。埃尔德什一生提出过无数猜想，很多到现在还没有解决。他还喜欢给数学中的难题自己掏钱悬赏解决。他就曾给这个“埃尔德什偏差问题”出过500美元进行悬赏，可惜他生前没有等到这个问题被解决。</p>
+<p>&nbsp;</p>
+<p>后面的讨论为简化起见，我先声明几个术语的使用。首先这种+1/-1构成的序列，我之后就称为“符号序列”(sign sequence)，因为它们就是正号和负号构成的序列。而等差数列，我有时会称为算术序列，这应该是教科书上讲过的，而等比数列相应也被称为几何序列。而那种第一项是公差的算术序列，被称为“齐次算术序列”(homogeneous arithmetic progressions)。所以，埃尔德什偏差问题就是问：一个充分长的符号序列，其中能不能找出一个“齐次算术子序列”，使得这个子序列的部分和的绝对值可以任意大？之后我不可能每次都说这么长的一段话，所以后面如果我说到一个“序列的偏差”或者“埃尔德什偏差”，就是以上条件下最终求得的一个绝对值。</p>
+<p>&nbsp;</p>
+<p>那照旧，我们可以先考察一下偏差值较小的情况。比如，我要求偏差是1，那显然序列只要1个数字就可以，+1或-1，那你的偏差马上就达到1。那我们来看看偏差是2，此时我们考虑的是，如何找到一个最长的序列，使得偏差能控制在1，而不能达到2。这是一道很有意思的智力题，有点像数独，我可以告诉大家答案是11。思路是样，比如序列第一个数字你可以取+1，那么你马上知道第二个数字必须是-1，否则前两个数字都是+1的话，加起来就马上达到2了。所以我们第二个数只能取-1。而第2个数字取-1之后，我知道第4个数字我必须取+1，否则第2和第4项相加变-2，那偏差也到2了。而第四个数字取+1之后，我知道第三个数字必须是-1。第三个数字确定是-1之后，我又可以相应确定第6个数字等等。依此类推，如同玩数独一般，你可以填到第11个数字。但是你在填第12个数字之后，就会发现玩不下去了，你无法继续把偏差控制在1上了。这也可以理解，因为12的因子比较多，所以比较多的算术序列都会用到它的值，产生矛盾再所难免。</p>
+<p>&nbsp;</p>
+<p>看上去找到偏差为1的最长序列并不太难，但是找到偏差为2的最长序列却是出奇的难。从埃尔德什提出这个问题，有80多年时间，人们都不知道偏差为2的最长序列是不是有限长的。直到2014年，才有人用计算机找到了这个偏差值为2的最长符号序列，它的长度是1160。别看这个数字不大，电脑计算产生的中间文件大小达到了13G之多，当时号称数学中“最长”的证明。后面他们把证明“简化”到只需要850M数据，当然这个简化是需要打引号的。</p>
+<p>&nbsp;</p>
+<p>总之，用计算机暴力搜索解决问题的话，到偏差为2已经是结束了。同样之前的研究者也尝试计算了偏差为3的情况。他们搜索到符号序列长度为13，900的时候，偏差还是为3，但是不知道是不是最长的，他们就放弃了。因为后面的计算实在感觉是没有尽头的。</p>
+<p>&nbsp;</p>
+<p>用计算机辅助的方法是走不通了，那就要用一些有技巧的方法了。首先数学家发现要考察这种符号序列的偏差，可以考虑一种叫“完全积性序列“（complete multiplicative）的性质，积是乘积的积。所谓完全积性序列是这样的数列，这种数列的素数项是任何定义，但是合数项的值，是这个合数进行因子分解所得的素数项的乘积。比如12，可以分解为2的平方，再乘以3，那么“完全积性数列的第12项，必须是第2项的值的平方，再乘以第3项的值。也就是这一项的序号怎么因子分解，那么它的值也就是对应那些素数项的乘积。其实自然数序列本身就是一个完全积性序列。</p>
+<p>&nbsp;</p>
+<p>而恰好还有一个很著名的数列，它即是符号序列，又是“完全积性序列”，这就是”刘维尔函数“（Liouville function）。刘维尔函数的定义很简单，它的定义域是自然数，而值域只有+1和-1两种可能，所以它是一个符号序列。它的定义就是，一个自然数的素因子数目如果是n，则对应的函数值就是$latex (-1)^{n}$。比如如果n是素数，那它的素因子数目就是1，那么函数值就是$latex (-1)^{1}=-1$。如果是12，12=2<em>2</em>3，素因子数目是3，那么12对应的函数值，就是$latex (-1)^{3}=-1$。显然，刘维尔函数是一个“完全积性函数”，而且是一个符号序列。可以经过简单的推导，你会发现对一个“完全积性函数”的符号序列，它的前n项和的累加程度是完全与埃尔德什偏差增长程度一样的，大家可以自己思考下为什么。</p>
+<p><img class="alignnone size-full wp-image-953" src="https://dalaoliblog.files.wordpress.com/2018/06/screen-shot-2018-06-17-at-7-20-29-pm.png" alt="Screen Shot 2018-06-17 at 7.20.29 PM.png" width="1662" height="242" /></p>
+<p style="text-align:center;">(上图：刘维尔函数的定义)</p>
+<p>这也就是说，如果可以证明刘维尔函数的部分和是发散的，那就等于证明埃尔德什偏差是任意大的。但是至今也没有人证明能刘维尔函数部分和是发散的，倒是发现这个结论会是黎曼假设的一个推论。也就是从黎曼假设可以推出刘维尔函数部分和是发散的，然后可以继续推出埃尔德什偏差是可以任意大的！</p>
+<p>&nbsp;</p>
+<p><img class="alignnone size-full wp-image-954" src="https://dalaoliblog.files.wordpress.com/2018/06/600px-liouville-svg.png" alt="600px-Liouville.svg.png" width="600" height="480" /></p>
+<p>（上图：刘维尔函数前n项和的图像，直到n=1000。1919年，乔治波利亚猜想刘维尔函数部分和&lt;=0，但1980年，日本的田中实在n=906150257时找到反例）</p>
+<p>但是我们知道黎曼假设这个问题实在是太难了，如果我们单纯等待黎曼假设的证明，那么埃尔德什偏差问题也就像那些成百上千个依赖黎曼假设的命题那样，沉淀在故纸堆中，如同黎曼假设的陪衬或者祭品一般。</p>
+<p>&nbsp;</p>
+<p>但是数学家并没有放弃，他们发现还有另一种完全积性函数，叫“狄利克雷特征”（Dirichlet characters）。狄利克雷特征的定义略复杂，我就不解释了，但是它与刘维尔函数的最大区别是，只要它的序列平均值是0，那么它就是有界的。所以“狄利克雷特征函数”是可能被用来构造埃尔德什偏差问题的反例的。而其中最接近能作为反例的是2010年，三位研究者找到了一个与狄利克雷特征函数有关的符号序列，它的部分和增长速度只有N的自然对数 $latex \ln N$那么快。这要比全随机的符号序列的增长速度，根号N要慢多了。不过还好，他们并没有找到有界的无穷符号序列，所以不是真正的反例。</p>
+<p>&nbsp;</p>
+<p>以上差不多是2010年之前有关埃尔德什偏差问题的研究情况，2010年有个重大转折点是有关Polymath项目的。之前介绍过Polymath是一个开放的数学研究平台，其中一个主要创始人是英国数学家高尔斯(Timothy Gowers)，他也是菲尔兹奖得主。他在2010年，把埃尔德什偏差问题纳入Polymath计划，作为这个计划的第5个课题。而且他发表了一系列文章，介绍了这个问题当前的进展和他个人的一些想法。</p>
+<p>&nbsp;</p>
+<p>而自从这个问题被纳入到Polymath上之后，关注度一下子高起来了，很多人也在这个网站上发表了对这个问题的见解，有些看上去也是很有希望的思路，但还是差一点。到2015年，戏剧性一幕发生。同样是Polymath主要发起人之一的数学家陶哲轩在个人博客上发表了一篇文章（标题为：Sign patterns of the Mobius and Liouville functions），这篇文章是有关他和另外两名研究者一起刚发表的一篇论文的，论文主题是关刘维尔函数和莫比乌斯函数中出现的符号模式。而陶哲轩也在博客中提到了，他们发现这个刘维尔函数中出现的符号模式，跟玩数独有点像。</p>
+<p>&nbsp;</p>
+<p>这篇博客发表不久，就有一位署名Uwe Stroinski的用户留言了，这个用户也是Polymath项目的长期关注者。他留言说，你这个思路可不可以用来解决埃尔德什偏差问题呢？那个问题跟刘维尔函数非常相关，而且也有玩数独的感觉。当时陶哲轩没有想太多，就直接回复：不行。但是不久之后，他发现自己错了，答案应该是行！而且是已经非常接近最终答案了。</p>
+<p>&nbsp;</p>
+<p>据陶本人说，他是在某天下午等他儿子上钢琴课的时候想通证明方法的。这个证明方法他自己解释有点像一个戏法，好比一个魔术师给了观众两个选择，看似观众可以选，但其实魔术师早有安排，一切尽在魔术师掌握中。</p>
+<p>&nbsp;</p>
+<p>稍微具体来说，就是把符号序列分成几个条块，然后对按照条块依次检查这个序列。当你取到其中一个序列时，两种情况必发生其一：一个是这个条块产生的偏差足够大了；另一个情况是你不希望偏差变大，那你就要让序列的所谓”熵“变小。这里的熵是所谓“信息熵”，反映序列的随机程度。随机程度越小，熵值越小。但是熵值再怎么小，也不可能小于0，所以你终于会在某个时刻， 熵值无法再减小，只能让偏差增大到目标程度。</p>
+<p><img class="alignnone size-full wp-image-955" src="https://dalaoliblog.files.wordpress.com/2018/06/entropy_flip_2_coins.jpg" alt="Entropy_flip_2_coins.jpg" width="1312" height="768" /></p>
+<p style="text-align:center;">(上图：2bit的信息熵)</p>
+<p>陶哲轩在想通这个方法后一个月就把证明整个写出来发表了，可谓神速，时间是2015年12月。他也特地回到博客上感谢了当初那个给他留言的人，那个人其实也是一名大学数学讲师。这样，这个埃尔德什偏差问题，经过了83年时间，圆满得到解决。陶哲轩本人其实跟埃尔德什也很有缘分，在陶哲轩还只有10岁的时候，就跟时年72岁的埃尔德什见过面，因为那时候陶哲轩已经是有神童的名声了，所以埃尔德什也闻声与小神童会了一面，留下了一张珍贵的合影，我也把照片放在节目介绍里。虽然2015年埃尔德什早已去世，但是我想埃尔德什应该也很欣慰自己的猜想能被当年自己指点过的这个小神童解决。</p>
+<p><img class="alignnone size-full wp-image-956" src="https://dalaoliblog.files.wordpress.com/2018/06/erdostao_main.jpg" alt="ErdosTao_Main.jpg" width="600" height="400" /></p>
+<p style="text-align:center;">（上图：埃尔德什与陶哲轩的合影，1985年）</p>
+<p>最后，埃尔德什偏差问题解决了，那是不是这个问题就没啥可研究的呢？还远远不是。比如虽然我们知道一个符号序列，必有某个齐次算数子序列，其和的绝对值可以任意大，那我们知道对特定的偏差，一定有一个最长序列。前面我们知道对偏差2，长度11的序列是最长了，再接下去偏差就必定到3了。但是能够保持偏差小于等于3的最长序列到底是多长呢？还不知道，因为陶哲轩的证明用的是所谓“存在性”证明，不是构造性证明（所以就如之前节目说过，他用到了“选择公理“），他的证明并不能告诉我们怎样的序列能把偏差增长控制的最慢。</p>
+<p>&nbsp;</p>
+<p>在之前我提过，目前能控制的最慢的偏差增长速度是$latex \ln N$。也就是说，比如你走完一个操场需要400步，那用这种序列构造方法的话，差不多可以找到一个长达$latex e^{400}$次方的符号序列，使得其偏差小于等于400。但是我即使给你了这个序列，你也没有一个比按公差1，2，3，4这样依次尝试更快的方法去找到一个最大的偏差子序列。所以从一个给定序列里，快速找到有最大偏差的算术子序列，这大概又是一个很难的课题。</p>
+<p>&nbsp;</p>
+<p>这个埃尔德什偏差问题，我觉得它最有意思地方在于它涉及的方面很多，从数论领域里的积性函数到黎曼假设，而最后解决竟然还用到香农(Shannon)的信息论，这实在是太奇妙了。古人告诉我们“不积跬步，无以至千里”，这好像是说“积跬步”是“至千里”的必要条件。但现在数学家证明了只要“积跬步”必能”至千里”，它是一个充分条件，希望你下次读到这篇古文是能有新的理解。好了，今天有关这个问题就聊到这里，下期再见！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png?w=1108" alt="ximalaya_season1.png" /></p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg?w=1108" alt="qrcode_for_gh_130ed4d8263c_344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/06/18/e6-84-bf-e7-a7-af-e8-b7-ac-e6-ad-a5-ef-bc-8c-e5-bf-85-e8-87-b4-e5-8d-83-e9-87-8c-e5-9f-83-e5-b0-94-e5-be-b7-e4-bb-80-e5-81-8f-e5-b7-ae-e9-97-ae-e9-a2-98.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 06月18日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-06-18T09:45:24+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/06/17/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-9b-9e-e6-96-87-e6-97-b6-e9-97-b4-e9-97-ae-e9-a2-98-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：回文时间问题（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：回文时间问题（附上周答案）</h1>
+<p>（题目来源：WSJ Varsity Math）</p>
+<p><img class="alignnone size-full wp-image-947" src="https://dalaoliblog.files.wordpress.com/2018/06/digtial-clock-palindrome.jpg" alt="digtial-clock-palindrome.jpg" width="1200" height="800" /></p>
+<p>在上图这种24小时制数字时钟里，有时候数字的显示会是“回文”，即为从左到右或从右到左的数字序列完全一样。比如0:34:30，21:33:12，1:20:21等等（忽略“：”符号）。请问，<strong>最小</strong>间隔的两个“回文时间”之间，间隔多久？</p>
+<p>说明：时钟为24小时制，且小时数为1位数时只显示1个数字。</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p><b>黄金盘</b>（<span class="LangWithName">英语：<span lang="en">Gold set</span></span>），是一个<a class="mw-redirect" title="网球" href="https://zh.wikipedia.org/wiki/%E7%B6%B2%E7%90%83">网球</a>比赛<a title="术语" href="https://zh.wikipedia.org/wiki/%E6%9C%AF%E8%AF%AD">术语</a>，是指在一盘比赛中不失一分，拿到全部24分以6–0的比分击败对手。这也意味着对手在此盘比赛中没有拿到任何分数，因此也称为“黄金蛋”。</p>
+<p>在法国网球公开赛中，女子比赛是三盘两胜制。如果每一分完全靠掷硬币决定，在一场三盘两胜制比赛中，发生一次“黄金盘”的概率是多少？</p></blockquote>
+<p>答案是：在女子比赛中，发生一次“黄金盘”的概率约$latex 2.980232..\times 10^{-7}$。计算方法如下：</p>
+<p>第一盘任何一个选手赢得首盘24分取得一次黄金盘的概率为$latex (1/2)^{23}=1.192092896...\times 10^{7}$ （注意是23次方，因为第一分谁赢无所谓），把这个值记作p。接下来有一半的可能比赛两盘结束，还有一半可能比赛三盘结束。比赛两盘结束，且两盘都没有黄金盘的概率是$latex (1-p)^{2}$。因此，两盘结束的比赛中，有至少一次黄金盘的概率是$latex p_{2}=1-(1-p)^{2}=2p-p^{2} $。比赛打满三盘，且没有黄金盘的概率是$latex (1-p)^{3}$。因此，打满三盘，且至少有一次黄金盘的概率是$latex p_{3}=1-(1-p)^{3}=3p-3p^{2}+p^{3}$。</p>
+<p>因此，在三盘两胜制比赛中，发生至少一次黄金盘的概率是：</p>
+<p>$latex p_{w}=(p_{2}+ p_{3})/2=5p/2-2p^{2}+p^{3}/2\approx 2.980232..\times 10^{-7}$</p>
+<p>本题需要考虑的分支条件较多，因此选择好的计算方法很重要。另外，网球职业比赛有记录以来，确实已经发生过5次黄金盘！</p>
+<p>恭喜：<strong>来，阿标</strong>，答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/06/17/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-9b-9e-e6-96-87-e6-97-b6-e9-97-b4-e9-97-ae-e9-a2-98-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 06月17日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-06-17T12:58:46+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/06/10/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e7-bd-91-e7-90-83-e9-bb-84-e9-87-91-e7-9b-98-e7-9a-84-e6-a6-82-e7-8e-87-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：网球“黄金盘”的概率（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：网球“黄金盘”的概率（附上周答案）</h1>
+<p>（题目来源：WSJ Varsity Math）</p>
+<p><img class="alignnone size-full wp-image-939" src="https://dalaoliblog.files.wordpress.com/2018/06/b3-aq182_math_j_20180531131751.jpg" alt="B3-AQ182_MATH_J_20180531131751.jpg" width="959" height="639" /></p>
+<p><b>黄金盘</b>（<span class="LangWithName">英语：<span lang="en">Gold set</span></span>），是一个<a class="mw-redirect" title="网球" href="https://zh.wikipedia.org/wiki/%E7%B6%B2%E7%90%83">网球</a>比赛<a title="术语" href="https://zh.wikipedia.org/wiki/%E6%9C%AF%E8%AF%AD">术语</a>，是指在一盘比赛中不失一分，拿到全部24分以6–0的比分击败对手。这也意味着对手在此盘比赛中没有拿到任何分数，因此也称为“黄金蛋”。</p>
+<p>在法国网球公开赛中，女子比赛是三盘两胜制。如果每一分完全靠掷硬币决定，在一场三盘两胜制比赛中，发生一次“黄金盘”的概率是多少？</p>
+<p>请直接留言作答。</p>
+<p>&nbsp;</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>让我们来玩一个类似“二十四点”的游戏，允许使用+, -, ×,÷，小数点，指数和括号运算，每个数字必须也只能使用一次，请思考以下两道题：</p>
+<p>1. 请用4，7，8算出8。</p>
+<p>2. 请用2，4，7算出16。</p>
+<p>注意：如果是0.x之类的小数，可以省略小数点之前的0。比如“.4”就表示0.4。</p></blockquote>
+<p>答案是：</p>
+<p>4^(.7+.8)=$latex 4^{0.7+0.8}+4^{1.5}=8$</p>
+<p>(.7-.2)^(-4)=$latex (0.7-0.2)^{-4}=0.5^{-4}=16$</p>
+<p>也没啥特别技巧，就是观察，然后设法把7“消化”掉。</p>
+<p>恭喜（包括答对一题的）：<strong>韩w，井底蛙，香独秀囧囧，eric，神侃，Stones，阿标，来，Lian</strong>答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/06/10/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e7-bd-91-e7-90-83-e9-bb-84-e9-87-91-e7-9b-98-e7-9a-84-e6-a6-82-e7-8e-87-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 06月10日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-06-10T08:44:47+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/06/06/e6-88-b4-e5-be-b7-e9-87-91-e5-88-87-e5-89-b2-e5-92-8c-e8-bf-9e-e7-bb-ad-e7-9a-84-e5-ae-9e-e6-95-b0.html">戴德金切割和“连续”的实数</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。今天的话题是来自汪诘老师不久前问我的一个问题，叫“为什么实数是与数轴对应的？” 说老实话，一开始我觉得这个问题有点不明所以，因为我可以把数轴就定义为与实数对应的一根直线。不过后来我思考了下，我想他的意思应该是：“为什么说实数是连续的，能够布满一条数轴？” 相对应的，为什么有理数就不行，也就是有理数是不连续的，有很多断点的？</p>
+<p>这个问题就有意思了，今天我们就来聊聊为什么实数是连续的。要回答什么这个问题，我们自然先要搞清楚什么是实数。其次是，当说一个数集是“连续”的，这个“连续”是什么意思？然后我们才能讨论为什么实数是连续的。而前两个问题比最后一个问题要重要也难许多。</p>
+<p>你可能会说，什么是实数这还不简单吗？初中就教过，实数是有理数加无理数。那什么是无理数？教科书上会说，无理数就是无限不循环小数。但是这个描述作为无理数的定义是不恰当的。因为这个定义里有“无限”这个词，这绝对是数学家想尽力避免的一个词。如果我们用这个描述做无理数定义，那你怎么证明一个数是无理数呢？你要把小数一直无止境的展开吗，但你无论怎么展开，你也只能写出有限位，你怎么证明它确实是永远不会循环呢？所以这个定义不太合适。那你说，我可以改成“不能表示成两个整数相除的数是无理数”。这个定义比之前的要好一点，但是也不恰当，因为这句话是一个“否定句式”。我们一般定义一个概念，应该是用肯定句式，而不会说“xxx就是不是xxx的东西”。用否定句式的缺点就是概念界限不清，比如你说不能表示成两个整数相除的数，那我说虚数单位i，也不能表示成两个整数相除，那它是不是无理数？总之，你说不能表示成两个整数相除的数，你只是把有理数排除了，但是你从什么样的范围内将其排除，并没定义，所以这个定义是不恰当的。</p>
+<p>你别说我在无理狡辩，其实以上有关有理数和无理数的思考可以说从古希腊时代一直持续到19世纪没有停止过。大家听过一个故事是毕达哥拉斯的一个学生发现了根号2这个数，并且证明了它不能表示成两个整数之比，结果导致毕达哥拉斯大为惶恐，甚至有说法他下令将这个学生投入海中灭了口。而到19世纪，德国数学家克罗内克仍然不承认无理数存在，他有一句名言叫：“上帝创造了整数，其余都是人的工作”。</p>
+<p>其实我能理解他对无理数的质疑，因为从自然数开始，利用加减乘数四则运算，你很容易就能把数集从自然数扩展到有理数。但是要从有理数扩展到实数就显得太不自然了，也困难很多。数学家当然也认识到了这个问题，所以到19世纪，一些数学家开始认真的考虑如何“从有理数去定义实数”这个问题，也有好几位数学家给出了他们的解答，其中尤以康托和Charles Méray使用的“柯西序列法”和“戴德金切割“方法最为人接受。因为戴德金的切割法很形象，所以今天我们就重点讲讲戴德金切割。</p>
+<p>戴德金是19世纪的德国数学家，高斯的学生。他在1858年左右，27岁左右的时候开始思考这个实数的公理化定义问题。1872年，他发表了一篇长篇论文 ，就叫《数论的论文》（Essays on the Theory of Numbers）。让我们就跟随他在论文里思路来学习一下他是怎么定义实数的。</p>
+<p>首先，戴德金考虑的第一个铺垫性质问题，就是有理数的性质。他列举了三条有理数的基本性质，很简单：第一条，如果有理数a&gt;b，b&gt;c， 则有a&gt;c，这叫所谓有理数的“有序性”；第二条，如果有理数a&lt;b，则存在无穷多个有理数大于a且小于b，也就是任意两个不同的有理数之间有无穷多个有理数，这叫所谓“稠密性”，这也是很直观的；第三条就是，如果给定一个有理数a，我们可以确切的把有理数分为两个集合，就是小于a的有理数和大于a的有理数。这个a本身可以归于第一个或者第二个集合，不影响讨论，本文里我们就默认把a归于第二个集合，也就是第二个集合变为大于等于a的有理数。我们之后也把第一个集合称为“左集”，第二个集合称为“右集“。有的书里称它们为"下集"和"上集"，其实都一样，我就称左和右。我们也可以确定左集里的数都小于右集。而且当a确定时，所有有理数都可以确定的属于左集或右集，没有遗漏也没有重复。</p>
+<p>戴德金铺垫了这三条有理数的性质之后，开始考虑这样么一个问题：就是有理数与直线的点的对比。如果我们有一条直线是从左到右，且把靠右的点称为”大于”靠左的点。那直线上的点也很清楚符合前述的前两条性质，就是有序性和稠密性。对第三条性质，直线上的点也能进行这样的分割，也就是我在直线上找到表示a的那个位置，我一刀切下，那左边就是左集，右边就是右集，这个操作就被称为戴德金分割。直线上的点符合有理数的那三个性质，是否就表示有理数就能代表直线上的点呢？显然不是，那也就是说直线上的点有一些有理数不能满足的性质，但是需要证明。</p>
+<p>接下来戴德金就要证明有理数不满足直线上的点的一个性质，就是所谓的“连续”性。“连续”这个词来了，关键点来了，也就是要证明有理数是不连续的。戴德金用了一个很直观的例子来证明。他还是用前面所述的第三条性质，就是把有理数分为两个集合。他考虑这样一种分割，比如我们取2这个数，我们把有理数分为这两个集合：“平方之后小于2的有理数或者负有理数”，以及“平方之后大于（等于) 2的有理数”。你可能会问，为啥不说“小于$latex \sqrt{2}$的有理数”和“大于$latex \sqrt{2}$的有理数”，这不是一样吗？但是在这里的讨论之时，是还没有无理数的概念的，所以还没有$latex \sqrt{2}$这个数的定义，我们所有的讨论只能是基于有理数来进行，所以我们不能提到$latex \sqrt{2}$。</p>
+<p>然后戴德金就证明了，在以上这种分割情况下，右集里的那个最小元素不可能是有理数，也就是那个切割点不可能是有理数。当然他的证明方法肯定不是证明$latex \sqrt{2}$不能表示成两个整数相除，因为那样对后面的讨论无益。他实际证明的是，如果有一个有理数的平方是2，那么可以找到另一个有理数，它既属于左集也属于右集，这是矛盾的，所以不可能有一个有理数的平方是2，那个分割点不是有理数，也就是说明有理数是不连续的。具体过程念有点冗长，只能请各位自行查阅论文了。</p>
+<p><img class="alignnone size-full wp-image-926" src="https://dalaoliblog.files.wordpress.com/2018/06/dedekind_cut-_square_root_of_two.png" alt="Dedekind_cut-_square_root_of_two.png" width="819" height="410" /></p>
+<p>(戴德金切割的一个图示，红色为“左集”，蓝色为“右集”，两个集合内都是有理数，但此切割定义了无理数$latex \sqrt{2}$)</p>
+<p>前面戴德金拉拉杂杂说了那么多，现在重点来了，他其实就是想说，既然分割点不一定是有理数，那我就定义一种数叫“实数”，每个实数就对应以上的一种对“有理数”的切割，也就是一对左集和右集，唯一对应一个叫实数的数。这个定义重要的一点是，它是根据有理数定义出来的，而没有用到更多前提；第二点，根据切割的定义，我们可以知道切割出来的实数天然具有有序和稠密性，而且它的定义就证明它与直线上的点是对应的，因为实数就是对直线任意位置切割产生的，所以它就是与数轴对应的！而这种“连续”，也被称为“戴德金完备性”，也就是说完整了。</p>
+<p>那现在有新问题了，就是实数是一种“切割”，或者说是一对集合，那你怎么对实数进行加减乘数操作？那我们就要用以上实数的定义来确定实数的加减乘除的定义。但好在有理数的加减乘数我们是已经有定义的，那我们就以有理数的加减乘除为基础，结合以上实数的定义，来定义一下实数的加减乘除。</p>
+<p>前面说了，一对切割出来的集合：左集和右集对应一个实数。因为确定了左集，右集也唯一确定，那我就把左集代表一个实数。请记住，现在开始，一个实数就是一个集合。</p>
+<p>那现在要定义实数A和B的加法，此处A和B是两个集合，对应两个切割左集。那我定义A+B就是这样一个集合：这个集合里的元素是具有x+y的形式，x，y都是有理数，其中x属于A，y属于B。听上去有点累，不过举个具体数字的例子就清楚了。比如我们要定义$latex 1+\sqrt{2}$。这里1是一个集合，就是所有小于1的有理数。$latex \sqrt{2}$是一个集合，就是所有小于根号2的有理数（或者如之前称为”平方小于2或负数的有理数集合”）。那$latex 1+\sqrt{2}$就是这样一个集合：对小于1的有理数集合里取一个数，再对小于根号2的有理数集合里取一个数，相加起来，作为新集合里的元素；并且把所有可能的组合全都考虑一遍，所有的结果构成的集合作为一个切割的左集所对应的实数，就是所谓$latex 1+\sqrt{2}$。你考虑一下，以上定义出来的集合里应该恰好就是对$latex 1+\sqrt{2}$这个实数位置进行切割所得的左集，所以它也就是我们需要的“$latex 1+\sqrt{2}$”这个实数。</p>
+<p>但你也发现一个加法的定义就说的如此之累，所以我就没有办法继续念减法，乘法，除法的定义了，但我觉得它们还真是不错的思考题，你可以自己试试看。请记住，你的定义方式里只能用到有理数的加减乘除，且操作的对象和结果都必须是集合，且符合左集合的性质。其中乘法除法的定义还是有点难度的，但维基百科上也有完整的解答。</p>
+<p>$latex A+B:=\{a+b:a\in A\land b\in B\}$</p>
+<p>（上图："戴德金切割"定义的实数中，加法的定义）</p>
+<p>至此，我们已经完整的用有理数导出了整个实数集合，而且天然的，我们就确保了实数是连续的，因为这是定义实数的目的。也有一些其他的方式可以从有理数去构造实数，比如前面提到过的柯西级数法。各种方法都各有利弊，但本质都是为了给实数一个扎实的公理化的定义。你也看到数学家是先定义了实数，然后发现实数里有很多数不是有理数，我们把实数里不是有理数的数，定义为无理数。所以这跟课本里的定义顺序刚好反过来了。</p>
+<p>在整个准备这期节目的过程中，我的最大感想是：对于数字这个概念，还真不是我们想得那么简单。就像实数，经过2千年，数学家才对实数有了一些精确的定义。2千年过程中，无数人碰到过无理数这种东西，产生过各种困惑和争论，故事是相当丰富的。虽然我们课本中，就把无理数定义成“无限不循环”小数一笔带过，但是背后经过了几千年的修炼，才能使我们无所顾虑的去使用实数，真是前人的心血之成果。</p>
+<p>而今天我只能给大家讲个皮毛，也许以后还有机会继续讲无理数或者实数的一些历史，但希望今天讲完，你应该确信实数是“连续”的，是对应数轴的。好了，下期再见！</p>
+<hr />
+<p>喜讯：iPhone用户现在可直接在iOS“播客”app中，收听“大老李聊数学”。直接打开“播客”app，在其中搜索“大老李聊数学”即可。欢迎收听和评价！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png?w=1108" alt="ximalaya_season1.png" /></p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg?w=1108" alt="qrcode_for_gh_130ed4d8263c_344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/06/06/e6-88-b4-e5-be-b7-e9-87-91-e5-88-87-e5-89-b2-e5-92-8c-e8-bf-9e-e7-bb-ad-e7-9a-84-e5-ae-9e-e6-95-b0.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 06月06日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-06-06T05:04:55+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/06/02/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-87-91-e7-82-b9-e6-95-b0-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：凑点数（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：凑点数（附上周答案）</h1>
+<p>（题目来源：WSJ Varsity Math）</p>
+<p><img class=" size-full wp-image-923 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/06/calc.png" alt="calc.png" width="193" height="261" /></p>
+<p>让我们来玩一个类似“二十四点”的游戏，允许使用+, -, ×,÷，小数点，指数和括号运算，每个数字必须也只能使用一次，请思考以下两道题：</p>
+<ol>
+<li>请用4，7，8算出8。</li>
+<li>
+<p>请用2，4，7算出16。</p>
+</li>
+</ol>
+<p>注意：如果是0.x之类的小数，可以省略小数点之前的0。比如“.4”就表示0.4。</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>如果A, B, C, D, E各表示一个<strong>不同的</strong>数字，而且它们符合如下等式：</p>
+<p>ABCCDE × 4 = EDCCBA</p>
+<p>请问，ABCDE各代表什么数字，等式是什么？</p>
+<p>提示：编程肯定能解决问题，但是希望你用推理的方法</p></blockquote>
+<p>答案是：219978 x 4 = 879912.</p>
+<p>这题比较简单，借用读者沈侃的留言：</p>
+<p>ABCDE分别是2、1、9、7、8。先看A，六位数乘4仍然得到六位数，所以A只能是1或2，而且A必须是偶数，所以A是2，接下来E就只能是8。然后看B，由于个位的进位3（8 * 4），所以B必须是奇数。考虑到最高位没有拿到进位（2 * 4 = 8 ），所以B只能是1，顺着可以确定D是7。同样道理C也得是奇数，稍微试一下，就可以确定C只能是9。</p>
+<p>恭喜（答对朋友较多，如有遗漏请见谅）:  <strong>黄亮，来，Windy，沈侃，鬼佬服装（李超涛），Stones，阿标，Eli Doer，管枫，YN river，高兴就好，韩w，Lian，Eric，K)，名字就要七个字，香独秀囧囧，卞迁，北落师门</strong>答对了！</p>
+<p>答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/06/02/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-87-91-e7-82-b9-e6-95-b0-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 06月02日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-06-02T10:47:19+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/28/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-ad-97-e6-af-8d-e4-bb-a3-e8-a1-a8-e7-9a-84-e6-95-b0-e5-ad-97-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：字母代表的数字（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：字母代表的数字（附上周答案）</h1>
+<p>（题目来源：fivethirtyeight.com）</p>
+<p><img class="alignnone size-full wp-image-920" src="https://dalaoliblog.files.wordpress.com/2018/05/alphabet-letters-clip-art-1364385276fgc.jpg" alt="alphabet-letters-clip-art-1364385276fGC.jpg" width="1920" height="1920" /></p>
+<p>如果A, B, C, D, E各表示一个<strong>不同的</strong>数字，而且它们符合如下等式：</p>
+<p>ABCCDE × 4 = EDCCBA</p>
+<p>请问，ABCDE各代表什么数字，等式是什么？</p>
+<p>提示：编程肯定能解决问题，但是希望你用推理的方法。</p>
+<p>请直接留言作答。</p>
+<p>&nbsp;</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>张三有一块正方形的土地，边长为100米。他想在这片地里修一些篱笆，在篱笆围成的形状里种上玉米。他希望他的篱笆的形状能使得篱笆包围的面积除以篱笆的周长为最大。问，篱笆应该修成什么形状？这个比值最大值是多少？（注：在比值相等的情况下，他希望面积最大）</p>
+<p>提示：张三可以沿正方形四边边长修篱笆，这样得到的比值是（100*100）/ 400 = 25。同样，如果沿正方形内切圆修篱笆，同样可以得到的比值是25。你需要找到一个形状，使比值大于25。</p>
+<p>请直接留言解答，尽量描述下形状和比值近似值。</p></blockquote>
+<p>答案是：如图所示的圆角方形，四条圆弧的半径是$latex 100/(2+\sqrt{\pi})$，比值约为26.5079。</p>
+<p><img class=" size-full wp-image-917 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/05/squircle.png" alt="Squircle.png" width="201" height="201" /></p>
+<p>思考方法如下：首先，我们已知周长相等的情况下，圆围成的面积最大。所以最终图形内如有线段，该线段必为圆弧。</p>
+<p>其次如果该圆弧与正方形边长相交，则两者必为相切。如不相切，则从交点引出同样长度的相切的圆弧，必然可以围得更大面积。或同样面积下，只需要更短的圆弧。</p>
+<p>因此，最终形状必然如上图的圆角方形。可设改圆角的半径为r。则围成的面积是$latex 10000-4r^{2}+\pi r^{2}$，周长是: $latex 400-8r+2\pi r$。两者相除求最大值，可知当$latex r=100/(2+\sqrt{\pi})$，比值有最大值，此时比值恰好也为$latex 100/(2+\sqrt{\pi})$，约等于26.5079...</p>
+<p>恭喜: <strong>来，Stones, Eric, 韩w, k)</strong> 答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/05/28/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-ad-97-e6-af-8d-e4-bb-a3-e8-a1-a8-e7-9a-84-e6-95-b0-e5-ad-97-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月28日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-28T05:01:05+00:00"></div>
+      </article></div><div class="pagination"><p>共计 76 篇文章，10 页。</p>
+    <div class="pagination__menu">
+      <ul class="menu menu--nowrap"><li><a class="button button--secondary button--circle" href="/page2">
+            <i class="fas fa-angle-left"></i>
+          </a></li><li>
+              <a class="button button--secondary button--circle" href="/"><span>1</span></a>
+            </li><li>
+                  <a class="button button--secondary button--circle" href="/page2"><span>2</span></a>
+                </li><li>
+              <div class="button button--primary button--circle focus"><span>3</span></div>
+            </li><li>
+                  <a class="button button--secondary button--circle" href="/page4"><span>4</span></a>
+                </li><li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li><li>
+                  <a class="button button--secondary button--circle" href="/page10"><span>10</span></a>
+                </li><li><a class="button button--secondary button--circle" href="/page4">
+            <i class="fas fa-angle-right"></i>
+          </a></li></ul>
+    </div>
+  </div></div>
+<script>/*(function () {
+
+})();*/</script>
+
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

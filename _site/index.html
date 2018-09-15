@@ -1,0 +1,1372 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>主页 - 大老李聊数学</title>
+
+<meta name="description" content="Your Site Description
+">
+<link rel="canonical" href="http://localhost:4000/"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"></div>
+
+            <div class="col-main cell--auto"><article itemscope itemtype="http://schema.org/WebPage"><div class="article__header"><header style="display:none;"><h1>主页</h1></header></div><meta itemprop="headline" content="主页"><meta itemprop="author" content="大老李"/><div class="js-article-content"><div class="layout--home"><div class="items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2018/09/14/e6-9c-ac-e6-9c-9f-e9-a2-98-e7-9b-ae-ef-bc-9a-e7-9c-8b-e4-bc-bc-e5-85-ac-e5-b9-b3-e7-9a-84-e6-8e-b7-e7-a1-ac-e5-b8-81-e6-b8-b8-e6-88-8f-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8-e7-ad-94-e6-a1-88-ef-bc-89-3.html">本期题目：搜集卡牌的花销（附上周答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1 id="本期题目：搜集卡牌的花销（附上周答案）">本期题目：搜集卡牌的花销（附上周答案）</h1>
+<h3 id="搜集卡牌的花销">搜集卡牌的花销</h3>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/FnRgR8kyuw-mkmNYc9m6o7XU-9Xj" alt="" /></p>
+<p>来源：<a href="http://fivethirtyeight.com">fivethirtyeight.com</a></p>
+<p>市面上有些儿童食品中会放一张或几张卡牌（比如曾经的“小浣熊水浒卡”)，吸引儿童去购买和搜集。你的外甥希望搜集齐某一整套100张卡牌。</p>
+<p>假设这种卡牌每十张为一包，每一包1元钱，每包里的卡是完全均匀随机的。你的外甥每周花10元购买这种卡牌，他平均要花多久能集齐这100张卡牌？</p>
+<p>又比如一整套是300张卡的话，他又要花多久？</p>
+<p>请直接留言作答。</p>
+<h3 id="上周题目">上周题目</h3>
+<p>张三和李四在玩一个掷硬币游戏，他们这样约定比赛规则，连续掷一枚硬币100次，过程中，如果出现连续的“正-反”，张三得1分；连续的“正-正”，李四得1分。最后得分高者获胜。</p>
+<p>问题是：这样的掷硬币游戏公平吗？谁的赢面大？如果不公平，占优势的一方平均可以得几分？</p>
+<p>问题是：在这种游戏中，如果你采取<strong>最佳策略</strong>，游戏获胜的概率是多少？</p>
+<h3 id="答案">答案</h3>
+<p>答案：这样的游戏中，张三优势比较大。</p>
+<p>上周这道题推送出来后，大老李一直捏着一把汗。因为原文的英文比较拗口，第一版题目出来之后，从大家的回复中，我感觉大家都没明白，各种不解。后来我又修改了一下，但发现还是不够准确。其实原文的说法是（用中文尽量还原的版本）：</p>
+<p>两个人按同样的速度格子丢一枚硬币，张三先丢出连续的“正反”为胜，李四先丢出连续的“正正”为胜，如果同时掷出，则重新开始。这里“同样的速度”，可以这样认为是投掷的次数。</p>
+<p>看上去这应该是公平的游戏，但其实是不公平。比如看如下前四次投掷情况的分支图：</p>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/Fvq17GvvPENDuZqPSn5IsfNBBKxc" alt="" /></p>
+<p>(H表示正面，T表示反面)</p>
+<p>红色为张三获胜的位置，蓝色为李四获胜的位置。可以看出张三对李四的获胜次数比为6：4。另一种方法是观察两人投掷的流程图：</p>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/FqEw_Rxf-ullFt83AILWsPRMdMgP" alt="" /></p>
+<p>可以看出，张三如果掷出不需要的结果只需要回溯一步，而李四一旦掷出不需要的结果，则可能要回溯3步，所以李四更吃亏。大老李则写了一个python程序程序验证如下：</p>
+<pre><code>from __future__ import division
+import random
+
+def toss(win_cond):
+    last_toss = random.choice([0,1])
+    count = 1
+    win = False
+    while win == False:
+        current_toss = random.choice([0,1])
+        if (last_toss, current_toss) == win_cond:
+            win = True
+        count = count + 1
+        last_toss = current_toss
+    return count
+
+def game():
+   while True:
+     player1 = toss((1,0))
+     player2 = toss((1,1))
+     if player1 &lt; player2:
+         return 1
+     if player1 &gt; player2:
+         return 2
+
+win1 = 0
+win2 = 0
+game_round = 10000
+for i in range(1, game_round):
+    result = game()
+    if result == 1:
+        win1 = win1 + 1
+    else:
+        win2 = win2 + 1
+
+print "win rate for player1 is %f" % (win1/game_round)
+</code></pre>
+<p>结果提示在10000场游戏时（打平，继续的情况），张三的胜率在60%-62%之间：</p>
+<pre><code>win rate for player1 is 0.624800
+</code></pre>
+<p>如果打平不重试，则张三的胜率约为59%。其实这是一个很著名的赌博陷阱，就是看似的公平的游戏，给出不公平的结果。另一个类似著名的例子是这样的（摘自知乎）：</p>
+<blockquote><p>4张A，两红两黑。</p></blockquote>
+<blockquote><p>玩家从里头抽两张牌，抽中两张红色或两张黑色就算赢，输的话要喝酒。</p></blockquote>
+<blockquote><p>看上去抽两张牌会有4种结果：红红、红黑、黑红、黑黑。</p></blockquote>
+<blockquote><p>颜色相同的情况占1/2，所以不少人觉得这是个公平（获胜概率50%）的游戏。</p></blockquote>
+<blockquote><p>其实不然。</p></blockquote>
+<blockquote><p>试想一下，如果你两张牌是分开地，一张一张抽呢？</p></blockquote>
+<blockquote><p>假若你第一张抽中的是红色（已知条件），那剩下的三张牌是两黑一红——其实你抽中两张同色的概率就只有1/3了。</p>
+<p>所以答应玩这个游戏本身就是个最糟糕的决定——除非你有对方两倍以上的酒量。</p></blockquote>
+<p>因为这次题目题意不清，只有<strong>黄亮，来</strong>给出了正确结果。但也感谢所有留言的读者: <strong>平安，探索真理，yy，赝理查德·费曼, 楓梓, 嘉玮17716989307, imaginary，eric,赵思铭</strong>等。大老李今后出题一定要格外谨慎。</p>
+<p>因上次出题不佳，这次“奖励“各位一道价值1000美金的智力题。出题者是著名的数学家约翰·康威（John Conway）。他曾出过5道题，每题悬赏1000美元。目前仅有一道被解决。特此给出一道还未解决，且比较好理解的：</p>
+<p>两个人轮流说一个正整数，限制是：不能说之前说过的数的和，但允许重复使用。比如：如果说过5和6，则所有形如：<span class="katex--inline"><span class="katex"><span class="katex-mathml">5x+6y5x+6y</span><span class="katex-html"><span class="base"><span class="mord">5</span><span class="mord mathit">x</span><span class="mbin">+</span></span><span class="base"><span class="mord">6</span><span class="mord mathit" style="margin-right:.03588em;">y</span></span></span></span></span>（x，y是0或正整数）的正整数都不能说了。如果谁不得不说1则输掉游戏。已经有证明这种游戏必然能决出胜负。</p>
+<p>问题是：如果第一个人说了16，两个人都采用最佳策略的话，谁会赢？</p>
+<p>如果你有答案，可以直接联系Conway获取1000美元奖金哦。大老李也很乐意帮你转达！</p>
+<hr />
+<p>###"大老李聊数学”第二季已开播，扫码收听！：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/348687-157cd7585d8e4ebc?imageMogr2/auto-orient/strip%7CimageView2/2/w/432" alt="" /></p>
+<p>###关注“大老李聊数学”公众号，微信搜索： dalaoli_shuxue</p>
+</div><p><a href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2018/09/14/e6-9c-ac-e6-9c-9f-e9-a2-98-e7-9b-ae-ef-bc-9a-e7-9c-8b-e4-bc-bc-e5-85-ac-e5-b9-b3-e7-9a-84-e6-8e-b7-e7-a1-ac-e5-b8-81-e6-b8-b8-e6-88-8f-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8-e7-ad-94-e6-a1-88-ef-bc-89-3.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 09月14日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-09-14T03:59:52+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/09/13/e4-b8-80-e4-b8-aa-e5-8d-8a-e4-b8-96-e7-ba-aa-e7-9a-84-e5-be-81-e7-a8-8b-e6-9c-89-e9-99-90-e5-8d-95-e7-be-a4-e5-88-86-e7-b1-bb-e5-ae-9a-e7-90-86-e4-b8-8a.html">一个半世纪的征程--有限单群分类定理(上)</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。在连续两期有关群的话题之后，顺理成章的想跟大家聊聊群论中非常重要和有意思，也是整个数学中最为宏大的一个定理：有限单群分类定理。</p>
+<p>说它宏大，一个是时间上，从问题提出到解决大约经历了一个半多世纪时间，中间曾经在1983年有人宣布它被证明了，但后来发现其中还有些遗漏的地方，全部漏洞被完整填补又花了25年，到2008年左右人们才普遍认为它真的是被证明了。</p>
+<p>另外一方面说它的宏大是提醒在空间上，因为这个定理的证明包含了100多位数学家的500多篇论文，总页数多达15,000页。这个数量已经多到任何一个人穷尽一生都难以阅读完的地步。后来有数学家决定用当今最新数学工具和语言重新写一遍它的证明，但最终产生的证明还是多达5000多页。所以从证明长度来讲，我们排除那些用计算机辅助证明的那些命题，只考虑真正写出来供人阅读的证明，那这个定理的证明总长度绝对是最长的。</p>
+<p>那什么是“有限单群”分类定理？顾名思义，就是对有限的单群进行分类。好吧，这是废话。但是听过最近两期节目的听众应该对有限单群有所了解了，因为我提到过素数阶的循环群都是单群，因为它们再也没有一个子集可以构成群了。</p>
+<hr />
+<p>(有限单群的分类，摘自维基百科)<br />
+若结果是正确的话，分类表示<a href="https://zh.wikipedia.org/w/index.php?title=%E6%9C%89%E9%99%90%E7%B0%A1%E5%96%AE%E7%BE%A4%E5%88%97%E8%A1%A8&amp;action=edit&amp;redlink=1" title="有限简单群列表（页面不存在）">每个有限简单群</a>都会是下列每类型的其中一种：</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%B3%AA%E6%95%B8" title="素数">素数</a><a href="https://zh.wikipedia.org/wiki/%E9%98%B6" title="阶">阶</a><a href="https://zh.wikipedia.org/wiki/%E5%BE%AA%E7%92%B0%E7%BE%A4" title="循环群">循环群</a></li>
+<li>至少5阶的<a href="https://zh.wikipedia.org/wiki/%E4%BA%A4%E6%9B%BF%E7%BE%A4" title="交替群">交替群</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E5%85%B8%E5%9E%8B%E7%BE%A4" title="典型群">典型群</a></li>
+<li>例外或缠绕<a href="https://zh.wikipedia.org/wiki/%E6%9D%8E%E7%BE%A4" title="李群">李群</a></li>
+<li>剩下26种被称为<strong>散在群</strong>的其中之一</li>
+</ul>
+<hr />
+<p>但确切的说，并不是一个群没有子群的群就是单群，而是没有所谓"正规子群"的群才叫单群。正规子群的具体定义我不说了，有点抽象，但我可以说下为什么要有正规子群。因为数学家发现在一个群里找子群很像对一个整数作因子分解，但人们还希望找出来的子群能够像“因子”一样去除原来的群，得到另一个群。而只有正规子群可以让人们很方便的定义一个群与某个子群之间的除法，而这个除出来的群确实被命名成“商群”。但一个群除以非正规的子群是得不到群结构的。总之，你只要了解正规子群很像一个群的因子就可以了。</p>
+<p>为什么数学家要对单群特别关注？你想单群没有正规子群，也就是没有“因子“，那单群是不是就很像素数？而又有几个数学家能抵抗素数的诱惑？所以单群对数学家来说，就好比素数对于整数，也好比基本粒子对于物理学家或者化学元素对于化学家，都是一个基本单位。既然是基本单位，当然想搞查清它的户口，搞清楚它到底有几种。</p>
+<p>但也有人反对把“单群”比作“素数”，他们认为应该比作“对称性”的原子。因为对称性就是自身到自身的一种映射，是一种置换，所以一种对称性就能找到一种有限群的表示。就像上期大老李也是感觉到五行学说中隐含的对称性，所以才设法挖掘出用群来表现五行，总之，任何群都体现了一种对称性。</p>
+<p>你也可以把正规子群想象成一个群的对称轴，就是它可以把群里的元素映射成两份一样的东西。而如果一个群含有正规子群，就表示它的整体对称性中，包含有更小的对称性。如果它没有正规子群了，那就表示了一种最根本的对称。所以有限单群的分类就可以看做对宇宙中有多少种对称性进行分类，所以有人认为“单群”可以被称作“对称性”的原子。</p>
+<hr />
+<p>(正规子群定义，摘自维基百科)<br />
+<a href="https://zh.wikipedia.org/wiki/%E7%BE%A4" title="群">群</a>G的<a href="https://zh.wikipedia.org/wiki/%E5%AD%90%E7%BE%A4" title="子群">子群</a>N是<strong>正规子群</strong>，如果它在<a href="https://zh.wikipedia.org/w/index.php?title=%E5%85%B1%E8%BD%AD%E5%8F%98%E6%8D%A2&amp;action=edit&amp;redlink=1" title="共轭变换（页面不存在）">共轭变换</a>下不变；就是说对于每个N中元素n和每个G中的元素g，元素<span class="katex--inline"><span class="katex"><span class="katex-mathml">gng−1gng^{−1}</span><span class="katex-html"><span class="base"><span class="strut" style="height:1.00855em;vertical-align:-.19444em;"></span><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="mord mathit">n</span><span class="mord"><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.814108em;"><span class="" style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></span>仍在N中。我们写为：</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml">N◃G⇔∀n∈N,∀g∈G&nbsp;,gng−1∈NN \triangleleft G\,\,\Leftrightarrow\,\forall\,n\in{N},\forall\,g\in{G}\ , gng^{-1}\in{N}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.68333em;vertical-align:0;"></span><span style="margin-right:.10903em;" class="mord mathit">N</span><span class="mspace" style="margin-right:.222222em;"></span><span class="mbin">◃</span><span class="mspace" style="margin-right:.222222em;"></span></span><span class="base"><span class="strut" style="height:.68333em;vertical-align:0;"></span><span class="mord mathit">G</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mspace thinspace"></span><span class="mspace thinspace"></span><span class="mrel">⇔</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mspace thinspace"></span></span><span class="base"><span class="strut" style="height:.73354em;vertical-align:-.0391em;"></span><span class="mord">∀</span><span class="mspace thinspace"></span><span class="mord mathit">n</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.88888em;vertical-align:-.19444em;"></span><span class="mord"><span style="margin-right:.10903em;" class="mord mathit">N</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:.166667em;"></span><span class="mord">∀</span><span class="mspace thinspace"></span><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:1.05855em;vertical-align:-.19444em;"></span><span class="mord"><span class="mord mathit">G</span></span><span class="mspace">&nbsp;</span><span class="mpunct">,</span><span class="mspace" style="margin-right:.166667em;"></span><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="mord mathit">n</span><span class="mord"><span style="margin-right:.03588em;" class="mord mathit">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.864108em;"><span class="" style="top:-3.113em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.68333em;vertical-align:0;"></span><span class="mord"><span style="margin-right:.10903em;" class="mord mathit">N</span></span></span></span></span></span></span></p>
+<hr />
+<p>你可能还记得我上期节目说过：”所有素数阶的循环群都是单群”，而“所有有限群都同构与某个置换群”。这两条你结合起来，你可能会想到是否有一个逆命题：所有有限单群都是素数阶的循环群。很可惜不是，虽然素数阶的循环群都是单群，但确实有些单群不是素数阶的循环群，否则这个定理就太简单根本不成定理了嘛。但你也别小看“所有素数阶的循环群都是单群” 这个命题，这个命题是所谓的“拉格朗日定理”的一个推论，用它证明数论中著名的“费马小定理”，你会发现太简单了。当群论经过十分繁复的定义和铺垫之后，对原先比较难的数学命题一下子有了简单的证明，这也是侧面反映群论作为一个新的工具是十分强大的，所以它一开始的繁复是值得的。</p>
+<hr />
+<p>(费马小定理，摘自维基百科)<br />
+费马小定理是数论中的一个定理：假如a是一个整数，p是一个质数，那么<span class="katex--inline"><span class="katex"><span class="katex-mathml">ap−aa^{p}-a</span><span class="katex-html"><span class="base"><span class="strut" style="height:.747722em;vertical-align:-.08333em;"></span><span class="mord"><span class="mord mathit">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.664392em;"><span class="" style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">p</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:.222222em;"></span></span><span class="base"><span class="strut" style="height:.43056em;vertical-align:0;"></span><span class="mord mathit">a</span></span></span></span></span>是p的倍数，可以表示为</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml">ap≡a(modp)a^{p}\equiv a{\pmod {p}}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.714392em;vertical-align:0;"></span><span class="mord"><span class="mord mathit">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.714392em;"><span class="" style="top:-3.113em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">p</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord mathit">a</span><span class="mord"><span class="mspace quad"></span>(mod<span class="mspace sixmuspace"></span><span class="mord mathit">p</span>)</span></span></span></span></span></span></p>
+<p>如果a不是p的倍数，这个定理也可以写成<br />
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml">ap−1≡1(modp)a^\equiv 1{\pmod  {p}}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.864108em;vertical-align:0;"></span><span class="mord"><span class="mord mathit">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.864108em;"><span class="" style="top:-3.113em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight">p</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord">1</span><span class="mord"><span class="mspace quad"></span>(mod<span class="mspace sixmuspace"></span><span class="mord mathit">p</span>)</span></span></span></span></span></span></p>
+<hr />
+<p>那我们继续有限单群的话题，前面虽然我们发现并不是所有单群都是的素数阶的循环群，但这个命题稍微修改下，加上“可交换”三个字，就能成立：所有有限可交换单群都是素数阶循环群。“可交换”就是符合交换律。上几期介绍过的循环群都是可交换的，但确实还有些置换群是不可交换的。其中有一大类是要追溯到伽罗瓦刚发明群概念时发现的一类有限群，叫交错群。</p>
+<p>交换群概念可以先考虑这样一道智力题：比如有三个人排队，先按某种顺序排好了，比如1,2,3,这样的顺序。然后考虑这三个人互相之间任意交换位置，变成另一种排队方式，问一共有几种不同的交换位置的方法？这道题可以这样考虑，虽然问的是不同交换位置的方法，但是交换后，三个人总还是按某种顺序排好队了。而且我们很容一直到，3个人的不同排队方式有<span class="katex--inline"><span class="katex"><span class="katex-mathml">3!=63!=6</span><span class="katex-html"><span class="base"><span class="strut" style="height:.69444em;vertical-align:0;"></span><span class="mord">3</span><span class="mclose">!</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span></span></span></span></span>种。那不管怎么换位，总是从当前位置换到另一种方式，所以很自然就有<span class="katex--inline"><span class="katex"><span class="katex-mathml">3!=63!=6</span><span class="katex-html"><span class="base"><span class="strut" style="height:.69444em;vertical-align:0;"></span><span class="mord">3</span><span class="mclose">!</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span></span></span></span></span>种换位方式，其中包括一种不变换，就是自己跟自己“交换”的方式。</p>
+<p>那好，我们现在就把这<span class="katex--inline"><span class="katex"><span class="katex-mathml">3!=63!=6</span><span class="katex-html"><span class="base"><span class="strut" style="height:.69444em;vertical-align:0;"></span><span class="mord">3</span><span class="mclose">!</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span></span></span></span></span>种变换组成一个集合，然后很显然这些置换能构成一个群，这种群被叫做对称群。因为是三个元素的所有置换构成的群，所以它又被称为3次对称群。现在问题又来了，这种3次对称群里有没有正规子群呢？我可以提示你，把6个置换里去掉一半，留下三种置换，还是能构成一个群，而且确实是正规子群。这个三个置换是：自己跟自己交换的恒等置换肯定要留下；第二种置换是1换到2号位，2换到3号位，3换到1号位；第三种置换是1换到3号位，3换到2号位，2换到1号位。请你自行确认这3种置换无论哪两种连续变换，都可以直接用其中某种置换来表示。好了，你现在发现的这个3个置换构成的群，就被称为3次交错群。每个交错群的元素个数都是同次对称群的一半，就是n次交错群有n!/2个元素。</p>
+<p>–<br />
+(3次交错群（同构于3次循环群）的运算表)</p>
+<table>
+<thead>
+<tr>
+<th>C_3</th>
+<th>1</th>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>B</td>
+<td>1</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+<p>–</p>
+<p>现在问题是，3次交错群是单群吗？是！但是可惜三次交错群其实与3阶循环群是同构的，所以这算不上什么新发现。但是别灰心，我们继续研究4次交错群，就是4个人排队换位。4次交错群有<span class="katex--inline"><span class="katex"><span class="katex-mathml">4!/2=124!/2=12</span><span class="katex-html"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord">4</span><span class="mclose">!</span><span class="mord">/</span><span class="mord">2</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">1</span><span class="mord">2</span></span></span></span></span>个元素，你如果有兴趣可以暂停构造一下这个12各元素的4次交错群。那它是单群吗？很可惜，不是！因为它还有正规子群。但也别灰心，4次交错群已经有点特别的性质，它已经不是可交换的了，就是其中有些置换的交换律不成立了，这已经是很特别的发现了，因为我们之前了解的所有置换群都是有交换律的。其实这个群很重要，它的正规子群叫"克莱因四元群"，是元素最少的非交换群。伽罗瓦也是用了4次交错群有正规子群的性质证明了4次方程有根式解。</p>
+<hr />
+<h2 id="到4次交错群的一种图示法，转自wolfram.com">(2到4次交错群的一种图示法，<a href="http://xn--wolfram-um0t965g.com">转自wolfram.com</a>)<br />
+<img src="http://oy876kcmf.bkt.clouddn.com/FojrEdiA_30hbLB-Rf3Mzq1NiXYF" alt="" /></h2>
+<p>那我们再次不能灰心，开始考查5次交错群，5次交错群有<span class="katex--inline"><span class="katex"><span class="katex-mathml">5!/2=605!/2=60</span><span class="katex-html"><span class="base"><span class="strut" style="height:1em;vertical-align:-.25em;"></span><span class="mord">5</span><span class="mclose">!</span><span class="mord">/</span><span class="mord">2</span><span class="mspace" style="margin-right:.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:.277778em;"></span></span><span class="base"><span class="strut" style="height:.64444em;vertical-align:0;"></span><span class="mord">6</span><span class="mord">0</span></span></span></span></span>个元素了。那它是单群吗？我们会很高兴的发现，它是！它确实没有正规子群了，而且同样它是不可交换群。而且继续上去，人们发现5次及以上的交错群就都是单群了，这个发现正是当年伽罗瓦证明一般的5次及以上次数的方程没有根式解的思路。</p>
+<p>之前人们发现2，3，4次方程的根式解都是将方程化为较低次数的方程，而伽罗瓦发现这一过程可以抽象为给一个群找正规子群的过程。而既然5次及以上交错群没有正规子群了，所以5次及以上方程就没有根式解。而且他的这个思路还可以被用来判定一个方程有没有根式解，因为一般的5次方程无根式解，但某些特别形式的5此方程当然会有根式解。你没有一种感觉解方程时对方程的变换其实就是一种置换操作？而用群论只要考察某种形式的方程所对应的置换群是否属于所谓“可解群”就可以进行判定。</p>
+<p>那好，现在我们已经知道了素数阶置换群和5次及以上交错群都是单群，那事情完了吗？还没，还有一大类群也是单群，这就是“李群”中的“典型群”和“例外李群”。这个李群是用大老李的“本家”，19世纪挪威数学家，索菲斯·李的名字命名的。“李群”的概念实在太难了，远超大老李可以解释的程度。有意思的是“李群”这个名词不是索菲斯李本人创立的，而是他去世多年后，后人继承了他的工作，为了纪念他，而把这一大族群命名为李群。而把李群中的单群分类清楚要等到1950年代才完成，因为李群里面虽然有一大组所谓典型群，但还有些例外，叫“例外李群”，这说明它真的很复杂。</p>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/Fuuocvd0QKUIZbcWCk4b6ABGJDU4" alt="" /><br />
+(上图：挪威数学家, 索菲斯·李（1842-1899）)<br />
+而现在李群在量子物理中作用却十分巨大。物理学目前有一个最重大的问题就是寻找所谓“大统一理论”，就是用一个理论去解释完事万物。但现在物理里面的所谓“标准模型”理论实在是太繁复了，人们当然不喜欢复杂的理论，而认为宇宙的基础运行机制应该是很简单和美观的。那要找到简单和美观，就要找对称。要找对称，就会想到群，而人们发现好几种李群蕴含的对称性是可以用来解释一些基本粒子的性质的，所以你在一些物理书里经常看到的所谓“酉群”，“辛群”都是李群的家族的。所以李群也是非常强大的工具。</p>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/Frh9i-nRNdvfuB-BPbdRtxD4g5iJ" alt="" /><br />
+(上图：李群E8的一个图示)</p>
+<p>好了，我们前面说了四种单群了，素数阶循环群，5次以及上交错群，典型群和一些例外李群。事情玩了吗？还没有！如果说前面这几种单群还是常人所能理解的单群的话，数学家还发现了26个独立于前面这些群的所谓“散在单群”，意思就是“闲在游荡”的群。这26个群是如此神奇也略带神秘，它们的阶数少则几千，多则达到<span class="katex--inline"><span class="katex"><span class="katex-mathml">105310^{53}</span><span class="katex-html"><span class="base"><span class="strut" style="height:.814108em;vertical-align:0;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:.814108em;"><span class="" style="top:-3.063em;margin-right:.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></span>次方，以致于被命名为“怪兽群”。而他们之间有些或多或少的联系，但有几个与其他完全没有关系。这也解释了为什么有限单群分类定理工程为什么如此好大，因为这26个散在单群要一个个对付过来。</p>
+<p>有时我也在想，上帝为什么在宇宙间安排了这个26个散在单群了，为什么是26这个数字？外星人找到这些散在单群了吗？这些群为什么看上去这么特别？我们确定没有更多散在单群了吗？这些问题都是很令人遐想联翩的。因此下一期节目我就来好好说说这个26个散在单群。</p>
+<hr />
+<h3 id="订阅公众号：dalaoli_shuxue">订阅公众号：dalaoli_shuxue</h3>
+<h3 id="收听大老李聊数学：">收听大老李聊数学：</h3>
+<p><img src="http://oy876kcmf.bkt.clouddn.com/FkChojg_hAY_L4mua1t82UhHErDA" alt="" /></p>
+</div><p><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/09/13/e4-b8-80-e4-b8-aa-e5-8d-8a-e4-b8-96-e7-ba-aa-e7-9a-84-e5-be-81-e7-a8-8b-e6-9c-89-e9-99-90-e5-8d-95-e7-be-a4-e5-88-86-e7-b1-bb-e5-ae-9a-e7-90-86-e4-b8-8a.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=%E7%BE%A4%E8%AE%BA">群论</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=%E5%8D%95%E7%BE%A4">单群</a>
+            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 09月13日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-09-13T03:37:12+00:00">
+    <meta itemprop="keywords" content="群论,单群"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/08/29/e5-a4-a9-e5-b9-b2-e3-80-81-e5-9c-b0-e6-94-af-e3-80-81-e4-ba-94-e8-a1-8c-e9-83-bd-e6-98-af-e7-be-a4-ef-bc-9f-e7-be-a4-e6-a6-82-e5-bf-b5-e8-bf-9b-e9-98-b6-e9-9f-b3-e9-a2-91.html">天干、地支、五行都是群？-- “群”概念进阶 (音频讲稿)</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。上期给大家讲了一下“群”的基本定义，但是有听众反馈说，还是对群的具体形象不是很了解。因为我上期举的微信群的例子我承认是有点搞笑，而且最后发现这个微信群还不能构成一个群。所以这期准备讲一些“正经”一点的群的例子。而且恰好大老李发现我们中国人的祖先留给了我们一些群的鲜活例子，这就是天干、地支和五行，容我慢慢道来。</p>
+<p>大家知道，中国古人使用天干地支纪年法，比如今年2018年是戊戌年，去年是丁酉年，而明年是己亥年。推算也很简单，就是十个天干：甲乙丙丁午己庚辛壬癸和十二地支：子丑寅卯，辰巳午未，申酉戌亥，两两组合成一对，就是这一年的年号。又因为10和12的最小公倍数是60，所以每六十年会产生一次循环。天干地支的第一个组合是甲子，每过60年，我们会再遇到一个甲子年，所以我们又称60年为一甲子。好了，干支纪年法先复习到这里，该讲一下天干地支如何构成一个群。<br />
+<img src="http://m1.aboluowang.com/uploadfile/2014/0628/20140628025745832.jpg" alt="“天干地支”的图片搜索结果" /></p>
+<p>上一期讲过，群是一个集合和一个符合一些性质的二元运算。我现在就定义所有60个天干地支组合的纪年称谓构成了一个集合，接下来就要要找一个二元运算。我找的二元运算是这样，就叫“加法”，这个加法运算的操作是，首先给把60个纪年称谓找到历史上某一次该年份对应的公历年，把公历年的年份数字相加，查一下结果的这个年份对应的干支纪年称谓，就是加法的结果。</p>
+<p>比如要计算“甲子”+“戊戌”，我只要找到历史上任何一个甲子年和戊戌年的公历年份相加就可以了。比如我查到公元124年，汉安帝延光三年是一个甲子年，而1058年北宋嘉佑三年是戊戌年，所以我就计算124+1058=1182。我又查了下1182年，是南宋淳熙九年，是壬寅年，所以“甲子“+”戊戌”=“壬寅”。类似，比如还有“甲子”+“乙丑”=“己巳”，“丁丑”+“辛卯”=”戊申”等等。而且你会发现这个运算法则的神奇之处在于它并不依赖具体取哪一个公历年去对应这个干支年，不管你怎么选，计算结果是一样的。我前面特地选数字比较小的，因为比较好算。当然你也可以一次性列出这个60个称谓两两互相相加的3600中组合结果作为这种加法的定义。</p>
+<hr />
+<p>下表：各干支年份在本中文的编码表，因公元60年是庚申年，所以庚申被编码为0：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>甲子  4</td>
+<td>乙丑  5</td>
+<td>丙寅  6</td>
+<td>丁卯  7</td>
+<td>戊辰  8</td>
+<td>己巳  9</td>
+<td>庚午  10</td>
+<td>辛未  11</td>
+<td>壬申  12</td>
+<td>癸酉  13</td>
+</tr>
+<tr>
+<td>甲戌  14</td>
+<td>乙亥  15</td>
+<td>丙子  16</td>
+<td>丁丑  17</td>
+<td>戊寅  18</td>
+<td>己卯  19</td>
+<td>庚辰  20</td>
+<td>辛巳  21</td>
+<td>壬午  22</td>
+<td>癸未  23</td>
+</tr>
+<tr>
+<td>甲申  24</td>
+<td>乙酉  25</td>
+<td>丙戌  26</td>
+<td>丁亥  27</td>
+<td>戊子  28</td>
+<td>己丑  29</td>
+<td>庚寅  30</td>
+<td>辛卯  31</td>
+<td>壬辰  32</td>
+<td>癸巳  33</td>
+</tr>
+<tr>
+<td>甲午  34</td>
+<td>乙未  35</td>
+<td>丙申  36</td>
+<td>丁酉  37</td>
+<td>戊戌  38</td>
+<td>己亥  39</td>
+<td>庚子  40</td>
+<td>辛丑  41</td>
+<td>壬寅  42</td>
+<td>癸卯  43</td>
+</tr>
+<tr>
+<td>甲辰  44</td>
+<td>乙巳  45</td>
+<td>丙午  46</td>
+<td>丁未  47</td>
+<td>戊申  48</td>
+<td>己酉  49</td>
+<td>庚戌  50</td>
+<td>辛亥  51</td>
+<td>壬子  52</td>
+<td>癸丑  53</td>
+</tr>
+<tr>
+<td>甲寅  54</td>
+<td>乙卯  55</td>
+<td>丙辰  56</td>
+<td>丁巳  57</td>
+<td>戊午  58</td>
+<td>己未  59</td>
+<td>庚申  0</td>
+<td>辛酉  1</td>
+<td>壬戌  2</td>
+<td>癸亥  3</td>
+</tr>
+</tbody>
+</table>
+<p>此表也可用来快速推算农历年，方法是用公历年除60取余数即可。例如，2018除以60余38，查表可得2018年是戊戌年。</p>
+<hr />
+<p>那我们来看看以上的二元计算是否符合封闭性。答案是符合，因为无论计算结果是哪一年，它总能被被干支纪年法表示，所以肯定有封闭性。</p>
+<p>再看看是否有结合律，你会发现没有问题，比如“甲子”+“乙丑”+“戊戌”=己巳+戊戌=丁未年。如果先算后半部分：“甲子”+（“乙丑”+“戊戌”）=”甲子”+癸卯=丁未，你可以自行验证更多。所以这个加法也符合结合律。</p>
+<p>接下来就是单位元，这个问题有意思了。你可以暂停一下，思考下我这个加法定义中单位元是谁？想出来了吗，也许你的第一感，单位元应该是“甲子”，但其实单位元是“庚申”！不信你可以验算一下，任何一个年号加“庚申”还是其本身，所以“庚申”是单位元。</p>
+<p>最后看下逆元，就是每一个年号是否能加另一个年号，得到单位元呢？这也是有的，而且是唯一的。比如“甲子“的逆元就是“丙辰”，而今年“戊戌”的逆元是“壬午”。</p>
+<p>怎么样，到此为止，我们发现干支纪年的60个年号配合我以上定义的加法，就完美的呈现了一个群！听到这里，可能有听众会说，你的这个加法其实就是把60个年号按照0-59编号，然后就按正常的加法操作就可以了，只不过加起来之后如果大于等于60，就除以60，取余数作为结果。对了，这个分析就看透本质了，其实这就是最为典型的循环群的特征：即群里的元素从0编号至n-1，然后运算就是加法，但是结果还要除以n求余。</p>
+<p>其实生活里最常见的循环群就是计时法，比如将钟面12个数字当做群元素，12当做0，那么我们两个时间就可以相加。比如1点+2点=3点。但10点+5点=15点，15大于12，此时要除以12求余，那结果就是3点，是不是很符合日常经验？而0点就是单位元。因为这种群里很明显的循环特征，所以叫循环群。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Academ_Cyclic_groups_on_floral_knot.svg/685px-Academ_Cyclic_groups_on_floral_knot.svg.png" alt="File:Academ Cyclic groups on floral knot.svg" /><br />
+（上图：复数Z自身幂次形成的12阶循环群）</p>
+<p>而干支纪年，60年一循环，自然形成一个循环群。那为什么“庚申”年是单位元呢？其实这里面谁当单位元都可以是不是？只要你把这个年号编号为0就可以了。但是因为大老李前面定义的加法是借助了公历年的数字，而公元60年，恰好是庚申年。而60在我这个循环群里，就是相当于0，所以就轮到庚申年为单位元。但一般认为干支纪年是从甲子开始的，所以多数人还是会给甲子编号为0，这样甲子就是单位元，而最后一个年号癸亥就是编号59。</p>
+<p>这里正好说一下群的“同构”概念，就是两个群是一回事，那就是“同构”。比如干支群，与0到59的整数集合配合加法构成的集合就是同构的，因为两个集合我可以对元素进行一一对应，而且计算结果也是对应的。</p>
+<p>还可以解释下“子群”的概念，其实就是子集的概念的延伸。就是考虑一个群的子集，如果这些元素在原来的运算下仍然还是群，那这个小一点的群就是原来的群的子群。 那请思考下干支群里有子群吗? 稍微思考下，你会发现显然会有很多对不对。注意有个特点是不管怎样的子群都会有原来的单位元“庚申”年对不对？而且你会发现找子群的基本思路就是对60进行质因数分解，只要循环群里的元素数量是合数，就肯定还有子群。只有当群里元素只有素数个了，那就不会再有（非平凡）子群了。</p>
+<p>那恭喜你，你又发现了一个定理：循环群的元素为素数时，不会再有子群。我们把群的元素个数称为阶，而把没有（非平凡）子群的群称为单群。所以一个循环群是单群的充要条件就是它的阶是素数。（另外还有一个稍难的命题是素数阶的群都是循环群）</p>
+<p>以上用干支纪年，一下子介绍了那么多群有关概念，但其实循环群这是有限群的一个特殊例子，还有一种更一般化的有限群例子，叫置换群。而且这次我还是借用古代中华文化的中的五行学说来解释置换群。</p>
+<p>先跟大家复习一下五行：金木水火土，这个大家都知道。但古人还赋予了它们一些关系，一种关系叫“相生”：金生水，水生木，木生火，火生土，土生金。相生有点促进生成的意思，粗看上去还真有点道理。有水就有植物，所水生木。有木头就能烧火，所有木生火。火烧完留下灰烬，所以火生土。而土里能挖出金属，所以土生金。但为什么金生水我解释不了，还好今天我们不是研究这个。</p>
+<p>另外，古人还赋予了它们一组相剋的关系：金剋木，木剋土，土剋水，水剋火，火剋金。这个相克就是敌对，克制的意思。听上去也是挺有道理的：金属能切断木头，金克木；木头能从土里长出来，所以木克土；土能挡水或者吸收水，所以土克水；水能灭火，所以水克火；火能融化金属，所以火克金。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Wuxing.svg/420px-Wuxing.svg.png" alt="" /><br />
+(五行相生相克图：如果每个箭头画一个反向箭头，就是“被生”和“被克”)</p>
+<p>我觉得中国古人这套五行系统还是体现出很高水平的智慧，因为这套理论几乎可以似是而非的解释身边80%的自然现象，反正都能往上套。副作用就是中国人的科学就几乎不发展了，因为大家觉得五行学说已经够好了。</p>
+<p>今天不批判五行了，单说五行怎么构成一个群。这一次我们需要关注的是五行之间的关系。前面我们说了有五行之间有相生相克关系，我现在把相生相克关系的方向称为“被生”和“被克”关系。比如水生木，那就有“木被生水”。木克土，则有“土被克木”。虽然中文里应该说“木被水生”，“土被木克”，但为了让“被生”和“被克”两个字连在一起，我只能稍微修改下语序。</p>
+<p>现在有了四种转化关系，我再定义一种“加法”，就是在对这四种关系里进行相加。这种加法的定义很简单，就是按五行里连续按这两种转化关系的结果来定义。</p>
+<p>比如“相生”+“相生”=“相克”。比如金生水，水生木，而考察金和木的关系，正是金克木。如果你换从水元素开会算，则水生木，木生火，水恰好是克火。所以总是相生+相生=相克。同理，你可以验证以下“相生”+“相克”=被克，相生+被克=被生等等。一共4种运算取两种，进行相加，一共有16中组合，你可以一一进行运算，求它们相加的结果。但是你自己在推导过程中，又会发现，如果计算”相生“+”被生“，那结果就是这元素自身，这四种转化都不适用。</p>
+<p>所以很自然，你此时就要引进一种所谓”恒等变换”，所谓恒等变换其实就是没有变换，金恒等于金，水恒等于水等等。</p>
+<p>引入“恒等变换”后，我们一共有了5种变换：相生，被生，相克，被克和恒等。而如果把两种变换的加法定义为两种变换的连续操作的话，马上我们会发现一个群的雏形就有了。顺便说下，我会在我的微信订阅号中完整推送这些组合的计算，欢迎订阅。</p>
+<hr />
+<p>五行运算表</p>
+<table>
+<thead>
+<tr>
+<th>+</th>
+<th>恒等</th>
+<th>相生</th>
+<th>被生</th>
+<th>相克</th>
+<th>被克</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>恒等</td>
+<td>恒等</td>
+<td>相生</td>
+<td>被生</td>
+<td>相克</td>
+<td>被克</td>
+</tr>
+<tr>
+<td>被生</td>
+<td>被生</td>
+<td>恒等</td>
+<td>被克</td>
+<td>相生</td>
+<td>相克</td>
+</tr>
+<tr>
+<td>相生</td>
+<td>相生</td>
+<td>相克</td>
+<td>恒等</td>
+<td>被克</td>
+<td>被生</td>
+</tr>
+<tr>
+<td>被克</td>
+<td>被克</td>
+<td>被生</td>
+<td>相克</td>
+<td>恒等</td>
+<td>相生</td>
+</tr>
+<tr>
+<td>相克</td>
+<td>相克</td>
+<td>被克</td>
+<td>相生</td>
+<td>被生</td>
+<td>恒等</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>首先封闭性，没有问题，无论那两种变换组合在一起，都能找到一个直接的变换来表示。其实关于这一点也可以用一个图示来表示。你把五行画在一个正五边形五个点上，然后把相生相克被生被克的关系用箭头连线，你会发现所有元素与其他元素都能有一进一出两个箭头，这就等价于运算必然是封闭的。</p>
+<p>结合律请自行验证一下，也没有问题。而单位元很自然就是恒等变换。逆元呢，稍微思考下就会发现相生和被生互为逆元，相克和被克互为逆元，而恒等变换就是自己的逆元。</p>
+<p>哇，完美的一个群诞生了！我命名其为五行群。而因为这个群的元素都是某种置换，所以它被称为置换群。前面说过置换群是比循环群更基础和一般化的群，因为有个海莱定理的推论：任一有限群都与其元素的一个置换群同构。这是很强的一个描述，也就是把所有有限元素的群都认定为同构于一种置换群了。也比如前面提到的钟面构成的12个元素的循环群其实是与一个12个元素的置换群同构。而我们的五行群其实也是一个循环群，这一点不太明显，也请给自行确认下。但是一个置换群却不一定同构于循环群。总之置换群是一切有限群的基础结构。</p>
+<p>最后说下要理解置换群要点在于“对称”二字，因为一个对象自身的对称性往往可以转化成一个置换群。比如你纸上画一个正方形，你找出正方形把所有可能的对称性找出来作为一个置换，然后你看看是不是这些置换可以形成一个置换群。我们的五行群也是类似，你隐隐的会感到相生相克关系形成的一些对称的感觉，抽象出来也就是群，甚至于后来人们把集合自身与自身产生的同构关系的也叫做“对称”。</p>
+<p>其实关于我们这个五行群还有性质可以讨论，但是因为群设计的概念很多，我只能留给有兴趣的听众自行研究。不过今天还是可以留下思考题：请你找找身边什么事物中蕴含了有限群的结构？你可以从身边任何具有对称性质的事物去思考，然后想想你定义出来的群是否符合群的要求，有没有单位元和逆元。欢迎你留言告诉我你有意思的发现。让我们下期再见！</p>
+<hr />
+<p>收听音频：<img src="https://upload-images.jianshu.io/upload_images/348687-157cd7585d8e4ebc?imageMogr2/auto-orient/strip%7CimageView2/2/w/432" alt="" /></p>
+<p>微信订阅：dalaoli_shuxue</p>
+</div><p><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/08/29/e5-a4-a9-e5-b9-b2-e3-80-81-e5-9c-b0-e6-94-af-e3-80-81-e4-ba-94-e8-a1-8c-e9-83-bd-e6-98-af-e7-be-a4-ef-bc-9f-e7-be-a4-e6-a6-82-e5-bf-b5-e8-bf-9b-e9-98-b6-e9-9f-b3-e9-a2-91.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 08月29日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-08-29T20:01:22+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/08/21/e5-be-ae-e4-bf-a1-e7-be-a4-e6-98-af-e5-b9-ba-e5-8d-8a-e7-be-a4-ef-bc-9f-e7-be-a4-e6-a6-82-e5-bf-b5-e5-bf-ab-e9-80-9f-e5-85-a5-e9-97-a8.html">微信群是“幺半群”？-“群”概念快速入门</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><div id="js_article" class="rich_media">
+<div class="rich_media_inner">
+<div id="js_article" class="rich_media">
+<div id="js_top_ad_area" class="top_banner">大家好，我是大老李。之前有听众想让我聊聊数学里的“群”概念，讲讲群论。我们平时经常可以看到一些数学文章里会提到各种各样的“群”，比如“李群”，“对称群”，“单群”等等。这些术语听上去是有点高大上，但其实“群”这个概念本身却十分简单。所以本期节目就想帮助不了解“群”概念的听众，快速理解下什么是“群”。</div>
+<div></div>
+<div class="rich_media_inner">
+<div id="page-content" class="rich_media_area_primary">
+<div class="rich_media_area_primary_inner">
+<div id="img-content">
+<div id="js_content" class="rich_media_content ">
+<section class="">而今天我的着眼点就是利用大家平时经常用到的“群”概念--微信聊天群，来解释“群”。微信聊天群听上去离数学里的群相差十万八千里，但让大老李根据群的定义，我们来改造和扩展一下聊天群，看看最后能不能让聊天群成为一个数学里的群。</p>
+<p>数学里的群的定义有很多项。首先第一条，群得是一个集合。这条对聊天群没有问题，我们可以认为聊天群就是一个集合，群的成员就是这个群集合的元素。</p>
+<p>然后，数学里的群还得有四条性质，满足这四条性质的集合就是群。让我们从这四条性质，从最弱的性质开始，一一检查。</p>
+<p>第一条性质，群中需要有一个二元运算，且满足封闭性。 这个二元运算的意思就是取两个元素进行运算。数学中大多数运算都是二元运算，比如加减乘除，但也有一元运算，比如求绝对值，倒数，开平方根等等。那我们就要给我们的聊天群定义一个二元运算，也就是取群里的两个成员进行某种运算，且运算结果仍然是群里的成员。听上去是不是有点异想天开，但大老李真的找到了一个符合这个规定的运算。</p>
+<p>它是这样定义的：现在聊天群的加入一般是依靠已有的成员或是分享群名片或者发二维码邀请加入某个群。你是群主的话，你也能看到群里的每个成员的信息里有：由xxx人邀请加入之类的字样。也就是所有人都有个所谓入群的”上线“或者介绍人，除了第一个成员--群主没有。</p>
+<p>所以，如果把群里的所有人的入群关系按照公司组织架构图那样，我就可以画出一个”树”。最顶部的树根是群主，群主邀请进来的成员就画在群主下面，与群主之间连条线。再邀请进来的成员就继续画在下一层。这个树形图对学过计算机的应该太熟悉，不熟悉也没问题，其实就是把聊天群成员像家谱一样画出来。</p>
+<p>然后我定义的这种运算，我给它起名叫“最近共同祖先”，是这样计算，对任何两个成员，找到他们在群中位置，然后向他们的上线也就是介绍人方向回溯，找到第一个汇合的成员，则计算结果就是这个成员。如果你把聊天群的这种组织架构图想象成一个家谱的话，则这种计算就是找到“最近共同祖先”对不对？</p>
+<p>当然我们还得对几个特殊情况定义一下。一种是，自己跟自己的直接上线也就是你自己的介绍人进行这种结算，结果是啥？我的定义就是你的介绍人。这没有什么特别原因，只是我感觉这样定义简单点。那同理，如果你跟群主进行这种计算，那计算结果就是群主，这比较自然吧，因为群主之上再没有其他人了，所以我定义计算结果就是群主。</p>
+<p>最后，我们再定义一下你自己跟自己计算是啥结果呢？为什么自己跟自己计算也要定义？还是契合了上一期节目的主题：简化。因为我们在群中进行计算时，我们希望对任何两个元素都能进行这种运算，而无需进行任何检查，比如这两个元素是否相等，这样才够简化对不对？在我们的情形中，我就定义了自己与自己进行“最近共同祖先”运算是还是自己。同理，群主跟群主进行这种计算，所得结果还是群主。</p>
+<p>好了，以上我们非常好的定义里一个微信群里的二元运算，叫“最近共同祖先”。还是为简化起见，之后有时我会简称这种计算为“加法”，比如我会说“张三+李四=王五”之类的话。请注意，这里我叫它”加法“没有任何特殊含义，只是为了简便。你可以用任何说法和符号来表示它，但这个运算的含义完全是我之前定义的“最近共同祖先”的运算（但你会发现叫它“加法”还是有一点原因的）。</p>
+<p>好了，以上费了点时间，我们终于定义好了聊天群里的一个二元运算，让我们在看看数学中对群要求的第一个性质“封闭性”，就是运算的结果始终还是在群内，也就是不会通过运算，得到不在群中的元素。那我们检查一下我们定义的这个群中的”最近共同祖先”运算，你会发现它完美符合封闭性的要求，对吧。你再怎么算，都不会得到不在群中的人的结果。所以好了，我们的聊天群就符合封闭性。数学中对一个集合且有一个满足封闭性的二元运算的情况，给了这个集合一个名称叫Magma。直接意思叫岩浆。中文有一个翻译叫“原群”，大概就是很原始的群。</p>
+<p><img class="" title="" src="https://mmbiz.qpic.cn/mmbiz_png/Oz90QROOv4t8qyAdIcMb8mXPxvliaZWUD85gtLKXjGJ0ibkouNrcgKuFBLVPF6bFYXBnreWoJ8FooxfujHbcDPSA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1" /></p>
+<p>（上图：一个假想的群聊组织树。根据我们定义的“加法”，有：李逵+杨志=吴用；林冲+卢俊义=宋江）</p>
+<p>那我们再看群的下一个要求，就是原群中的这个二元运算要符合结合律。结合律我们太熟悉不过了，小学生都知道加法和乘法结合律，比如加法结合率就是:</p>
+<p>那看看我们定义的那个“最近共同祖先运算”的“加法”运算，你会发现它也符合结合律！比如:</p>
+<p>数学中我们给了以上符合结合律的原群一个名称，叫“半群”。一半的半，意思就是我们的群已经接近群的定义大概一半了，我们的聊天群就是一个半群（此处略有玩笑，其实意思就是在没有逆元的情况下，元素缺了自己的“另一半”，所以叫“半群”）。</p>
+<p>那我们再看之后的一个要求，就是半群中要有一个所谓的“单位元”。“单位元”是这样定义的：某个元素与这个单位元进行运算，运算结果还是这元素。如果我们把单位元叫做e，那就是要有：<br />
+<span class=""><img class="" src="https://mmbiz.qpic.cn/mmbiz_png/Oz90QROOv4t8qyAdIcMb8mXPxvliaZWUDh9vNvfsWUCKjNGPM0sGqF0hAvdblHyKfDs8nIgZh9PY2FyribFu1agQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1" /></span></p>
+<p>你看这个单位元是不是就像乘法里“1”的作用，所以我们叫它“单位元”，有时也叫“幺元”，意思就是“1元”。 那我们的聊天群里有单位元吗？也就是我们要找一个群成员，任何人跟他进行最近共同祖先运算，结果还是任何人自身。</p>
+<p>我们会很尴尬的发现，我们群里没有这样一个人。因为我们群里没有谁，使得其他人都是他的上线。但是不要紧，我们可以很简单的稍微改造一下，使得我们的群里有一个单位元。比如某天，群中所有成员同意，让群关联一个小程序，这个小程序是个聊天机器人，叫“小冰”，把它邀请进入群中来了。那我们就把认为小冰是所有人邀请进来的，所有人都是它的上线。所以“小冰”就是群里的“单位元”是不是？就是:<br />
+<span class=""><img class="" src="https://mmbiz.qpic.cn/mmbiz_png/Oz90QROOv4t8qyAdIcMb8mXPxvliaZWUDXEVsDSsJCDFKugUjmuTK5TqK4DibcO8fcPm87hAHhXJ3eF4nYWUzxTQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1" /></span></p>
+<p>好了，那我们的群就成功的满足了这第三个条件。数学家把有“单位元”的半群，叫“幺半群“，就是比半群多了个”幺元“。</p>
+<p>但还没有完，要达到“群”的定义，我们还差最后一个条件：叫每个元素都有一个逆元。它的意思也很简单，就是前面我们刚定义了一个单位元--小冰，现在我们要使的群中的每个成员，都能找到另一个成员，使得两者相加，结果是小冰。你现在是不是体会到它为什么叫“逆元”，因为它有点求自己“相反”元素的意味。</p>
+<p>但是尴尬的是，我们的群里除了小冰，其他任何成员，找不出逆元。任何一个人加其他人，不会得到小冰，因为小冰不会是任何人的上线。这里大老李考虑过两种可能，比如规定每个人自己加自己是小冰，这样每个元素都是自身的逆元；另一种可能就是每个人加群主是小冰，这样群主就是每个人的逆元。但是这两种想法都被大老李自己否决的，行不通。你觉得为什么呢？你可以暂停15秒，考虑一下为啥？</p>
+<p>好了，我来说答案吧，答案就是以上这两种规定都会破坏之前已经满足的一个条件，结合律。比如，如果规定群主是每个人的逆元的话，那我们来算下：</p>
+<p>.</p>
+<p>如果我们用结合律，计算<br />
+.<br />
+两者不等了！所以不能这样规定。同理，你也可以验证下，如果规定每个人是自身的逆元的话，同样会违反结合律。</p>
+<p>所以，我们改造微信群为数学中的群最终失败了，只差一个每个元素有逆元这条件，但我们成功达到了“幺半群”。所以，你以后可以很自信的说，每个微信群都是幺半群！</p>
+<p>相信讲到这里，你对什么是群应该了解了。你如果需要一个真正的群，那最简单的一个例子就是整数集合和加法运算就是一个群，对不对？它里面的单位元就是0，而每个整数的逆元就是它的相反数。但是整数和乘法就不能构成一个群，你可以想想为什么？</p>
+<p>但我们的微信群还有一个一般群不一定要有的性质，就是交换律。比如我们群里<span class=""><img class="" src="https://mmbiz.qpic.cn/mmbiz_png/Oz90QROOv4t8qyAdIcMb8mXPxvliaZWUD36oypIaVibT2Myx2bZRDOIUuV2USIwspRfs64spLpzu1v7kWibKv8nnA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1" /></span>。数学里，把有交换律的群，称为可交换群或者阿贝尔群。而我们的微信群只能叫“可交换幺半群”。</p>
+<p>但你可能有个问题，为什么要有群？它能干什么？这其实是更重要的问题，理解一个数学概念最重要就是理解它是干什么用的。答案其实还是上一期的主题，“简化”。</p>
+<p>我们可以同样回顾一下“群”的历史，你会发现它跟虚数一样，一开始只是解决一个单一问题的，就是伽罗瓦在证明一元五次及以上次数方程没有根式解的时候提出的一个概念。但后来人们发现它作用太大，所以群的理论也越来越丰富，成就了一门叫“抽象代数”的学科。它的作用之所以大，就在于高度抽象。数学里的很多数学对象，都存在某种计算，比如矩阵，向量也可以做加法和乘法，几何图形可以做各种变化。数学家发现，如果我们把很多集合中的计算做足够抽象话之后，它们就是一回事！所以我们研究群的性质，就等于把所有等价于群的数学对象和其中的计算研究好了，你说这是不是简化？</p>
+<figure><img class="" title="" src="https://mmbiz.qpic.cn/mmbiz_png/Oz90QROOv4t8qyAdIcMb8mXPxvliaZWUDSguY09NffRiaRRvlkTEmEt3whC4ZaSN3rmo6IVsOa30s4FwBc89C7mw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1" /><br />
+<figcaption></figcaption>
+</figure>
+<p>（上图：英年早逝的天才少年伽罗瓦）<br />
+举个例子，数学家已经证明了幺半群里的单位元是唯一的，不可能有第二个。所以我们就知道，我们的微信聊天群里只可能有一个单位元，就是小冰，无论你如何改造你的群，都不可能再有第二个元素成为单位元，你想想对不对？总之，群论的强大，已经跨越到了几乎所有数学分支里，甚至于物理、化学、计算机里也有很多群的使用。群的作用之大怎么说都不过份。今天关于群的概念就聊到这里，为了帮你消化群的概念，我再出两道思考题：</p>
+<p>第一个是，请你构造一个有“乘法”的群，想一个集合与一般意义上的“乘法”可以构成一个群。请你确认下，这个群符合结合律，有单位元，且每个元素有逆元。</p>
+<p>第二个，请你想一个群，其中只有有限多个元素。前面我举的例子好像都是有无限多个元素，但群当然也可以只有有限多个元素。就请你找一个有点多个元素的群，人称有限群。当然，里面得至少有2个元素才行，只有一个元素的平凡群我们就不考虑了。</p>
+<p>好了，下期再见！</p>
+</section>
+</div>
+</div>
+<div id="js_toobar3" class="rich_media_tool"></div>
+</div>
+</div>
+<div class="rich_media_area_extra">
+<div class="rich_media_area_extra_inner">
+<div id="js_share_appmsg"></div>
+</div>
+</div>
+<div id="js_pc_qr_code" class="qr_code_pc_outer">
+<div class="qr_code_pc_inner">
+<div class="qr_code_pc"><img id="js_pc_qr_code_img" class="qr_code_pc_img" src="https://mp.weixin.qq.com/mp/qrcode?scene=10000004&amp;size=102&amp;__biz=MzU3NzIzMTY1Ng==&amp;mid=2247484082&amp;idx=1&amp;sn=7b9b65ce0ac73761c41037b215a0ea49&amp;send_time=" />微信扫一扫<br />
+关注该公众号</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><p><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/08/21/e5-be-ae-e4-bf-a1-e7-be-a4-e6-98-af-e5-b9-ba-e5-8d-8a-e7-be-a4-ef-bc-9f-e7-be-a4-e6-a6-82-e5-bf-b5-e5-bf-ab-e9-80-9f-e5-85-a5-e9-97-a8.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 08月21日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-08-21T03:58:14+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2018/08/18/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e8-bf-87-e6-a1-a5-e9-97-ae-e9-a2-98-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：过桥问题（附上周答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><div class="show-content">
+<div class="show-content-free">
+<h1>本期题目：过桥问题（附上周答案）</h1>
+<h3>过桥问题</h3>
+<div class="image-package">
+<div class="image-container">
+<div class="image-container-fill"></div>
+<div class="image-view"><img class="" src="https://upload-images.jianshu.io/upload_images/348687-8f78a8744bedede0?imageMogr2/auto-orient/strip%7CimageView2/2/w/275" /></div>
+</div>
+<div class="image-caption"></div>
+</div>
+<p>六名驴友夜间在森林中迷路了，他们需要过一座桥。这座桥只能承受两个人同时过桥。六人的步速不同，每个人过桥所需时间分别是：1分钟，3分钟，4分钟，6分钟，8分钟和9分钟。</p>
+<p>他们只带了一个手电筒，过桥时必须携带手电筒前行。两人一起走时，只能按较慢的人速度走。</p>
+<p>现在他们都在桥的一边。问他们6人要全部过桥，最短需要几分钟？</p>
+<p>请直接留言作答（直接回复分钟数即可）。</p>
+<h3>上周题目</h3>
+<p>我们来玩这么一个掷硬币游戏：如果你第一次掷，就是正面向上，则你马上赢；如果你一次丢出一个背面，则游戏重新开始，且你需要连续掷出两次正面向上。如果你在掷出两次正面向上之前丢出了一个背面，则再一次重新开始，且你需要掷出三次正面向上。</p>
+<p>总之：在第N次游戏时，如果你没有连续掷出N次正面，则游戏重新开始，且你需要连续掷出N+1次正面才能获胜。</p>
+<p>问题是：这样的游戏中，你能最终获胜的概率是多少？</p>
+<h3>答案</h3>
+<p>本题中我们先考虑每次失败的概率会比较容易。记<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7Bi%7D" alt="P_{i}" />为第i次游戏时失败的概率。则：<br />
+第一次游戏失败的概率是<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7B1%7D%3D1%2F2" alt="P_{1}=1/2" />；第二次游戏中失败的概率是是<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7B2%7D%3D1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7B2%7D" alt="P_{2}=1-(\frac{1}{2})^{2}" />；第n次中失败的概率是<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7Bn%7D%3D1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D" alt="P_{n}=1-(\frac{1}{2})^{n}" />。<br />
+用条件概率原理，n次游戏全部失败的概率即为以上概率相乘：<br />
+<img class="math-block" src="https://math.jianshu.com/math?formula=%5Cprod_%7B1%7D%5E%7Bn%7D(1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D)" alt="\prod_{1}^{n}(1-(\frac{1}{2})^{n})" /><br />
+则整体游戏最终成功的概率是：<br />
+<img class="math-block" src="https://math.jianshu.com/math?formula=%5Clim_%7Bn%5Cto%5Cinfty%7D1-%5Cprod_%7B1%7D%5E%7Bn%7D(1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D)" alt="\lim_{n\to\infty}1-\prod_{1}^{n}(1-(\frac{1}{2})^{n})" /></p>
+<p>意外的是，此表达式并无直接计算方法。用数值计算方法可近似求得值约为0.711，即游戏获胜的概率约为71.1%。</p>
+<p>而级数<img class="math-inline" src="https://math.jianshu.com/math?formula=1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D" alt="1-(\frac{1}{2})^{n}" />被称为“欧拉函数（Euler (non-totient) function)，此处勿与另一个著名的“欧拉函数“（Euler totient function），即小于或等于n的正整数中与n互质的数的数目，混淆。）<br />
+欧拉函数的定义为：<br />
+<img class="math-block" src="https://math.jianshu.com/math?formula=%5Cphi%20(q)%3D%5Cprod%20_%7B%7Bk%3D1%7D%7D%5E%7B%5Cinfty%20%7D(1-q%5E%7Bk%7D)" alt="\phi (q)=\prod _^{\infty }(1-q^{k})" /><br />
+此函数是典型的q函数和模型式函数，也是联系组合数学和复分析的经典例子。<br />
+下图是欧拉函数在复平面上的绝对值的着色图像：</p>
+<div class="image-package">
+<div class="image-container">
+<div class="image-container-fill"></div>
+<div class="image-view"><img class="" src="https://upload-images.jianshu.io/upload_images/348687-208b2430951a06f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/440" /></div>
+</div>
+<div class="image-caption">image</div>
+</div>
+<p>黑色部分是最小值0，红色是最大值4.本期只要表达式列出就算正确，有几位的公式我看不懂就抱歉了。</p>
+<p>恭喜：<strong>Magician，Lian，唐，韩w，来，.，黄亮，rjs</strong>答对了！</p>
+<p>大老李聊数学”第二季已开播，扫码收听！：</p>
+<div class="image-package">
+<div class="image-container">
+<div class="image-container-fill"></div>
+<div class="image-view"><img class="" src="https://upload-images.jianshu.io/upload_images/348687-157cd7585d8e4ebc?imageMogr2/auto-orient/strip%7CimageView2/2/w/432" /></div>
+</div>
+<div class="image-caption">image</div>
+</div>
+<p>下周再见！</p>
+<p>关注“大老李聊数学”公众号，微信搜索： dalaoli_shuxue</p>
+</div>
+</div>
+</div><p><a href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2018/08/18/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e8-bf-87-e6-a1-a5-e9-97-ae-e9-a2-98-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 08月18日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-08-18T16:30:59+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2018/08/12/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e8-b6-8a-e6-9d-a5-e8-b6-8a-e9-9a-be-e7-9a-84-e6-8e-b7-e7-a1-ac-e5-b8-81-e6-b8-b8-e6-88-8f-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：越来越难的掷硬币游戏（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：越来越难的掷硬币游戏（附上周答案）</h1>
+<p>（题目来源：fivethirtyeight.com）</p>
+<p><img class=" size-full wp-image-1072 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/08/coolclips_vc092415.png" alt="CoolClips_vc092415.png" width="480" height="348" /></p>
+<p>我们来玩这么一个掷硬币游戏：如果你第一次掷，就是正面向上，则你马上赢；如果你一次丢出一个背面，则游戏重新开始，且你需要连续掷出<strong>两次</strong>正面向上。如果你在掷出两次正面向上之前丢出了一个背面，则再一次重新开始，且你需要掷出三次正面向上。</p>
+<p>总之：在第N次游戏时，如果你没有连续掷出N次正面，则游戏重新开始，且你需要连续掷出N+1次正面才能获胜。</p>
+<p>问题是：这样的游戏中，你能最终获胜的概率是多少？</p>
+<p>提示：此题答案不是100%，略有难度，但其中蕴含了有意思的数学原理。</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>你有若干火柴和3条<strong>不均匀</strong>的可燃烧的绳子。已知三条绳子从一头点燃到烧完的时间分别是48、72和128分钟。</p>
+<p>请你用这些绳子精确计量出61分钟。</p></blockquote>
+<p>答案：</p>
+<p>我们先考虑下用烧绳方法可以完成的“运算”。两条绳子依次燃烧，可以完成“加法”。两条绳子同时燃烧，则可以完成“减法”。另外，如果两条绳子两头同时燃烧，则可以完成“除以2”的运算。但是连续除以2是做不到的。比如用两头同时燃烧48分钟的绳子，可以计量24分钟，但无法计量12分钟。</p>
+<p>通过以上考虑，我们就是需要用48，72和128，使用以上运算算出61。我们可以发现如下算式：</p>
+<p>$latex (128-(48-72/2)/2)\div 2=61$。</p>
+<p>借用读者Lian的解释：</p>
+<p>先将72分绳两端和48分绳一端点燃。72分绳燃尽时，即36分钟后，48分绳余下12分钟。<br />
+再将48分绳另外一端点燃，并将128分绳一端点燃。<br />
+原48分绳所剩12分钟时长燃尽时，即6分钟后，128分绳剩余122分可燃时间。<br />
+将128分绳另一端点燃并开始计时，61分钟后全部燃尽。</p>
+<p>恭喜（如有遗漏请见谅）：<strong><span class="buddy-card_name">Magician</span>，姜文平，黄亮，Lian，Heavy Sun，吴文振，Maque, 谢，One Dolphin，来，侯方东，香独秀囧囧，唐</strong>。答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号，微信搜索： dalaoli_shuxue</p>
+<p>&nbsp;</p>
+</div><p><a href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2018/08/12/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e8-b6-8a-e6-9d-a5-e8-b6-8a-e9-9a-be-e7-9a-84-e6-8e-b7-e7-a1-ac-e5-b8-81-e6-b8-b8-e6-88-8f-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 08月12日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-08-12T02:15:57+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/08/08/e5-a4-96-e6-98-9f-e4-ba-ba-e6-9c-89-e8-99-9a-e6-95-b0-e5-90-97-ef-bc-9f-e5-85-bc-e8-b0-88-e6-95-b0-e5-ad-a6-e4-b8-ad-e7-9a-84-e7-ae-80-e5-8c-96-e9-9f-b3-e9-a2-91-e8-ae-b2.html">外星人有虚数吗？-兼谈数学中的“简化” (音频讲稿)</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。不久前有位听众给我留言，问我“外星人会有欧拉公式吗？那个公式是不是有太多人为规定的成分”？我觉得这个问题很有意思，就想跟大家聊聊。这个听众说的那个欧拉公式，那就是那个著名的$latex e^{i {\pi}}+1=0$，经常有人说这是最美公式。这个听众就问：外星人会不会发现这个最美公式？</p>
+<p>我们看下这个公式，里面1和0外星人肯定有，外星人也必定有$latex \pi$和$latex e$这两个常数，这是无疑的。对于这个i，问题就是：外星人会发现或者发明虚数吗？我的答案是：外星人肯定有“虚数”。而且正好我借这期节目跟大家聊聊我学数学感受到数学的一个最主要目的或宗旨，就是“简化”二字。</p>
+<p>你是不是马上会反驳我：数学还简化啊？数学这么烦，那么多符号、公式，那么多定理，简直烦得要命。但是你错了，数学的宗旨就是“简化”，数学有么多符号公式定理，都是为了简化，具体来说就是用最简单的方法去处理更复杂的问题。数学每一次引进新的概念、方法、工具，都是为了简化的目的，而虚数的引入是这方面的一个很好的例子。</p>
+<p>很多人都知道虚数的引入是在解一元三次方程的时候。人们发现一元三次方程是有根式解的。但是你使用这个根式表达式过程中，会遇到根号里有负数的情况。而如果你像一元二次方程那样，丢掉这些根号里有负数的情况的话，最后你会发现你会丢掉了方程的实数解！</p>
+<p>$latex \Delta =18abcd-4b^{3}d+b^{2}c^{2}-4ac^{3}-27a^{2}d^{2}$</p>
+<p>(上图：一元三次方程判别式，仅当其为负数时，方程有三个实数解。)</p>
+<p>所以人们只能硬着头皮接受计算过程中根号里的负数情况。此时，如果我们如果不引入虚数概念，那老师讲解一元三次方程的时候，就特别麻烦：请大家注意，大家在解一元三次方程的时候，你要接受负数开平方根的情况；而其他场合下负数是不能开平方根的。这句话是不是既不自然，也很啰嗦？引进虚数就一点没问题了，该怎么算就怎么算。而且还可引出一条从名称上看就很重要的定理 --代数基本定理：一元n次方程，在复数范围内，必有n个解。如果没有虚数的话，你只能说一元n次方程最多有n个实数解，无论如何是引入虚数后表述简单多了。</p>
+<p><img class=" size-full wp-image-1045 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/08/466px-carl_friedrich_gauss.jpg" alt="466px-Carl_Friedrich_Gauss.jpg" width="466" height="600" /></p>
+<p style="text-align:center;">（上图：1799年22岁的高斯在其博士论文中，证明了“代数基本定理”）</p>
+<p>仅凭以上解方程这件事，我就可以非常肯定的说，外星人在解方程过程中，必然会发现虚数。但我还有更强有力的证据，就是虚数在量子物理中的应用。要了解虚数在量子物理中的应用，我们要看看虚数在幂次运算中的含义。就像欧拉公式中$latex e^{i\pi}$次方，此处，这个i在指数上究竟是啥含义？从回顾人们对幂次运算的扩展过程，也能看出数学中的“简化”宗旨。</p>
+<p>我们最早引入幂次运算，是为了简化乘法的书写。我们经常发现某些问题中，要处理很多数自乘多次的情况，比如$latex 2\times 2\times 2$，简化成$latex 2^{3}$这种写法就更简单，此时我们只是对指数是自然数有定义。指数是0或者负整数是什么含义呢？此时还没有。</p>
+<p>但不多久，人们就发现幂指数的除法运算规则，比如$latex \frac{x^{3}}{x^{2}}=x^{3-2}=x$，所谓“同底数幂相除，指数相减”。这样马上就能想到，$latex \frac{x^{3}}{x^{3}}$似乎就应该等于$latex x^{3-3}=x^{0}=1$。$latex \frac{x^{3}}{x^4}$就应该等于$latex x^{-1}=\frac{1}{x}$。而且通过此种方法定义指数是0或负整数的情况，人们发现能保持之前幂次运算的所有性质。</p>
+<p>同样，人们还发现一种幂次运算规则，就是$latex (x^{2})^{3}=x^{2\cdot3}=x^6$，所谓“幂次的幂次，指数相乘”。这样人们就考虑$latex x^{\frac{1}{2}}$是什么东西呢？之前我们还没有对指数出现分数的情况有定义。但是如果我们要保持以上幂次叠加运算规则，我们就会想，如果计算$latex (x^{\frac{1}{2}})^{2}$，根据运算规则，就应该等于$latex (x^{\frac{1}{2}})^{2}=x^{\frac{1}{2}\cdot 2}=x$。那这样反过来，因为我们已经知道$latex (\sqrt{x})^{2}=x$，所以如果我们要保持现有运算规则，那只有规定$latex x^{\frac{1}{2}}=x$。同理也可推出：凡是分数指数，就是把分母放在根号上就可以了。你有没有发现，这是一种大大的简化！我们已经把指数扩展到了有理数范围，而且保持了一开始仅当指数是自然数是的所有幂次运算性质。而根号这个运算符号等于是被取消了，因为根号只是指数是分数情况的另一种写法。</p>
+<p>但到这里还没有完，我们知道有理数再下一级就是实数，那指数能扩大到实数吗？比如的$latex 2^{\pi}$次方是啥含义？此时再按之前用运算规则扩展已经不行了，但是我们可以借助函数图像来看问题，比如画一下函数$latex y=2^{x}$的函数图像，此时虽然x只能取有理数的值，但我们也可以画它的图像。画出来一看，太棒了，是一条“连续”而且光滑的曲线！这里“连续”是要打引号的，因为我们x的取值还只是限制在有理数范围内，但是看上去已经是很连续了。很自然我们对x取无理数的定义马上就出来了，就是要使这条曲线继续连续！</p>
+<p><img class=" size-full wp-image-1049 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/08/2x.gif" alt="2x.gif" width="218" height="277" /></p>
+<p>所以我们就定义无理数的指数情况的取值，就是当指数取有理数逼近这个无理数的极限。而且我们发现这样的话，幂次运算规则还是能在实数范围内保持，这就太棒了，相当于间接证实了，我们关于指数是无理数的推广定义是正确的，因为我们得到了一条简洁的连续光滑函数图像，而且使之前的运算规则保持。我们达到了“简化”的目的。</p>
+<p>但还没有完，要知道欧拉公式里，把虚数都放到了指数上，这个太天才了！此时之前的扩展方法都是失效了。欧拉用的方法是一种看上去是在“玩”数学，但结果玩出一个十分精彩的结果。首先我们知道$latex e^{x}$这个函数有个级数展开形式，就是</p>
+<p>$latex e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$</p>
+<p>再有$latex \sin{x}$和$latex \cos{x}$也有级数展开：</p>
+<p>$latex \cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots$</p>
+<p>$latex \sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots$</p>
+<p>这两个函数的级数展开的话，跟$latex e^{x}$非常像，好像$latex \sin{x}$是取了$latex e^x$展开的奇数项，$latex \cos{x}$取了偶数项。但是$latex \sin{x}$和$latex \cos{x}$的展开式又是符号是交错的，一项加一项减，而不是像$latex e^x$那样全部是相加。</p>
+<p>所以欧拉想到，如果取x等于虚数单位i呢？因为i的整数幂次结果不就是能取i, -1, -i和+1交替吗？所以欧拉把i代入$latex e^{x}$方，稍微一化简就发现$latex e^{i}= \cos{1}+i\sin{1}$，$latex e^{ix}=\cos{x}+i\sin{x}$！这之后，发现欧拉公式就是咫尺之遥了！</p>
+<p>是不是听上去很简单，但我要说，这太天才了。整个过程就像在搭乐高，要找到合适的乐高零件组合在一起，完成一个之前从没有搭出来的东西，就像在玩一样。但是牛顿、莱布尼茨、伯努利家族没有人玩出来，搞出这个级数展开的布鲁克·泰勒也没有玩出来，直到欧拉，所以不得不佩服欧拉。</p>
+<p>欧拉这样一扩展，就把指数完全扩展到复数范围内，如同之前一样保持幂次运算规则。如果你要考虑画函数图像的话，稍微有点复杂，因为指数取值是复数范围的话，那么等于自变量是$latex x+yi$的形式，有x, y两个变量；而得到的值域也是复数范围，是一个平面。但我们可以分别考虑值域的实部和虚部，画出$latex e^x$的两个三维图像。我们会发现得到的图像同样是连续光滑的曲面，这也侧面验证了欧拉对指数是虚数情况的定义是的对的。</p>
+<p>[gallery ids="1056,1055" type="rectangular"]</p>
+<p>（上图左：$latex z=e^{x+iy}$图像主分支的实部；图右：$latex z=e^{x+iy}$图像主分支的虚部）</p>
+<p>好了，现在虚数是可以作为指数了，那它跟量子物理有什么关系呢，还是“简化”二字。前面说了一个公式$latex e^{ix}=\cos{x}+i\sin{x}$。而$latex \cos{x}+i\sin{x}$这个形式的表达式，物理学家发现它是描述“波”这种对象的最基本形式，我们高中物理学过的所谓“一维简谐振动”的波的振动方程就包含一个$latex e^{i}$的形式：</p>
+<p>$latex f=Ae^{i(kx-\omega t)}$</p>
+<p>当然，你也可以把它展开成$latex \cos{x}+isin{x}$的形式，但写成$latex e^{ix}$从字母数量上就减少太多了，对不对？所以物理学家当然喜欢用指数上有i的那种形式。量子物理里，波是最常见的研究对象了，所以量子物理里出现很多含有$latex e^i$的这种公式就一点不奇怪了。</p>
+<p>通过以上过程，你可以发现其实虚数一点也不虚，从虚数的引入，到虚数作为指数的运算意义，整个过程是用可用“水到渠成”和“无缝衔接”来形容。所以，只要外星人能3次以上方程，就应该知道虚数，如果他们知道级数展开和研究波，那他们就应该发现了欧拉公式。</p>
+<p>虽然我们目前没有遇到过外星人，但是人类历史上的一些情况也可以作为参考。比如中国古代数学虽然和西方没有交流，但是中国古人也知道$latex \pi$的近似值，也发现过杨辉三角，中国剩余定理，祖暅原理这些，都与西方的发现不约而同。所以，这也是侧面验证了，数学的原理是蕴含在宇宙中的一种普遍真理，完全不依赖时间地点而局限于地球之上。所以，将来碰到外星人与他们交流一下数学是很有意思的一件事。</p>
+<p><img class=" size-full wp-image-1053 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/08/zugengyuanli.jpg" alt="zugengyuanli.jpg" width="305" height="165" /></p>
+<p>（上图：祖暅原理--两个形状任意截面积都相等，则它们体积相等。此原理蕴含了一定的微积分思想）</p>
+<p>最后，我希望你听了本期节目，也能领会一些数学中的“简化”思想。正好我出两道思考题帮你思考：</p>
+<p>一个问题是：为什么$latex 0!=1$？如果你理解本期简化思想就容易解释为什么$latex 0!=1$了。你可以顺带考虑一下怎么把阶乘函数扩展到分数，负数，甚至虚数上？其实阶乘函数确实有这么一个扩展，但那个是比较困难的话题了。</p>
+<p>第二个问题是：我们既然把指数扩展到虚数了，如果底数是虚数又如何？比如$latex i^{i}=?$请你还是用“简化”思想去纸上算算看。如果你算得对的话，你会发现$latex i^{i}$是一个（准确讲是多个）实数！是不是有“虚虚得实”的感觉？</p>
+<p>下期再见！</p>
+<hr />
+<p>收听大老李聊数学：<img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1" width="426" height="418" /></p>
+</div><p><a href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2018/08/08/e5-a4-96-e6-98-9f-e4-ba-ba-e6-9c-89-e8-99-9a-e6-95-b0-e5-90-97-ef-bc-9f-e5-85-bc-e8-b0-88-e6-95-b0-e5-ad-a6-e4-b8-ad-e7-9a-84-e7-ae-80-e5-8c-96-e9-9f-b3-e9-a2-91-e8-ae-b2.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 08月08日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-08-08T11:36:19+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/08/07/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：烧绳计时（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：烧绳计时（附上周答案）</h1>
+<p>（题目来源：Varsity Math）</p>
+<p><img class="alignnone size-full wp-image-1041 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/08/burning-rope-sketch.png" alt="burning rope sketch.png" width="487" height="78" /></p>
+<p>你有若干火柴和3条<strong>不均匀</strong>的可燃烧的绳子。已知三条绳子从一头点燃到烧完的时间分别是48、72和128分钟。</p>
+<p>请你用这些绳子精确计量出61分钟。</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>请你将一个正方形分割成4个<strong>不同大小</strong>的部分，且每个部分都是等腰三角形。请问如何分割？</p>
+<p>请直接留言，留下其中最小的一个等腰三角形的顶角度数即可。</p></blockquote>
+<p>答案如下图：</p>
+<p><img class="alignnone size-full wp-image-1040" src="https://dalaoliblog.files.wordpress.com/2018/08/tile-the-square.png" alt="Tile-the-Square" width="391" height="393" /></p>
+<p>因此，最小的等腰三角形顶角是135°。有两位读者留言150°，但我尝试了一下，没有找到其他的解。如果有，请两位读者拍个照发给我。</p>
+<p>恭喜（如有遗漏请见谅）：<strong>唐，天天快乐，韩w，eric，Stones，heavy sun，黄亮</strong>答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号，微信搜索： dalaoli_shuxue</p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/08/07/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 08月07日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-08-07T10:00:48+00:00"></div>
+      </article></div><div class="pagination"><p>共计 76 篇文章，10 页。</p>
+    <div class="pagination__menu">
+      <ul class="menu menu--nowrap"><li><div class="button button--secondary button--circle disabled">
+            <i class="fas fa-angle-left"></i>
+          </div></li><li>
+              <div class="button button--primary button--circle focus"><span>1</span></div>
+            </li><li>
+                  <a class="button button--secondary button--circle" href="/page2"><span>2</span></a>
+                </li><li>
+                  <a class="button button--secondary button--circle" href="/page3"><span>3</span></a>
+                </li><li>
+                  <a class="button button--secondary button--circle" href="/page4"><span>4</span></a>
+                </li><li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li><li>
+                  <a class="button button--secondary button--circle" href="/page10"><span>10</span></a>
+                </li><li><a class="button button--secondary button--circle" href="/page2">
+            <i class="fas fa-angle-right"></i>
+          </a></li></ul>
+    </div>
+  </div></div>
+<script>/*(function () {
+
+})();*/</script>
+
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

@@ -1,0 +1,1010 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>主页 - 大老李聊数学</title>
+
+<meta name="description" content="Your Site Description
+">
+<link rel="canonical" href="http://localhost:4000/page4/"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"></div>
+
+            <div class="col-main cell--auto"><article itemscope itemtype="http://schema.org/WebPage"><div class="article__header"><header style="display:none;"><h1>主页</h1></header></div><meta itemprop="headline" content="主页"><meta itemprop="author" content="大老李"/><div class="js-article-content"><div class="layout--home"><div class="items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/23/e4-b8-9a-e4-bd-99-e7-88-b1-e5-a5-bd-e8-80-85-e7-9a-84-e4-b8-80-e4-b8-aa-e6-96-b0-e5-8f-91-e7-8e-b0-e5-93-88-e5-be-b7-e7-bb-b4-e6-a0-bc-e7-ba-b3-e5-b0-94-e9-80-8a-e9-97-ae-e9-a2-98-ef-bc-88.html">业余爱好者的一个新发现 哈德维格-纳尔逊问题  （音频讲稿）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。今天聊个最近的一条数学新闻，是关于一个业余数学爱好者的一个新的数学发现，这个发现是关于一个叫“哈德维格-纳尔逊问题”的。这个问题1945年先由瑞士数学家哈德维格发表，1950年普林斯顿大学数学系教授纳尔逊将其正规化，因此后来将此问题命名为：哈德维格-纳尔逊问题。这个名字有点长，所以之后节目里我就把它简称为“哈纳问题”。这个哈纳问题被马丁加德纳于1960年在《科学美国人》杂志上发表，名声一时大噪。</p>
+<p>它到底是怎样的呢? 它又是一个着色问题：请你给一个平面上所有点着色，着色目标是是使得所有距离为1的两个点能着上不同的颜色，问最少需要几中颜色？这个问题是不是粗听有点像四色定理，但是一个重要的不同是，它涉及到距离为1，这个确切的长度要求，这也意味着它不是像四色定理那样可以对形状任意扭曲变形的拓扑问题。</p>
+<p>那我们来做做看这道题，你可能感觉有点无从着手，因为要考虑平面上所有点，而距离为1的点对又数不胜数。但是我们还是可以发挥通常的数学思维方法，先把问题简化，考虑几个极端情况。比如我先考虑一个半径为1的圆，根据题意，我知道圆心到圆周上的点距离都是1，所以圆心与圆周的颜色必须不同。但圆周上肯定也有距离为1的点。所以我们马上可以考虑一下园内接6边型这个形状，我马上知道这六边形的六个点至少需要2种颜色着色。这样，这个圆加圆心就需要至少3种颜色，我们就得到了“哈纳”问题的一个下限。其实根据这条思路略微发展，你可以很快把下限提高1，变成4。这个就留给 听众思考了。</p>
+<p>然后我们再考虑一下上限，就是最多需要多少种颜色，我肯定能够对平面着色。这个也不难，我们可以设法把平面分成很多等分，使得两个距离为1的点被分割在不同的部分上。所以能想到最简单的思路就是用正六边形去平铺整个平面，就像蜂窝一样，如果我使得六边形最长对角线距离略微小于1，那么整个平面上所有距离为1的点就能落在两个不同的正六边形内。然后你会发现只要用7种颜色就可以将所有六边形着色，而且使得任何距离为1的两个点落在不同颜色的正六边形内。我在节目介绍里放了这样一个六边形密铺图，你也可以考虑下为什么至少是7种颜色，而不是像“四色定理”说的四种颜色，虽然用4种颜色我们可以确保相邻的六边形是不同颜色。</p>
+<p><img class=" size-full wp-image-911 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/05/hadwiger-nelson_problem.png" alt="Hadwiger-Nelson_problem.png" width="328" height="269" /></p>
+<p>(上图：将平面用外接圆直径略小于1的正六边形密铺，且用7中颜色着色，可证明哈德维格-纳尔逊问题的上限是7)</p>
+<p>以上，这样我们就得到了一个上限7。你看，我们有了下限4和上限7，也就是这个“哈纳问题”的答案就是4，5，6，7中的一个，是不是一下子感觉简单好多？而且根据以上思路，其实我们并不需要考虑平面上所有得到点，只要我们能找到有限多个点构成的图，如果我们能证明这有点多个点构成的图，其中距离为1的点对，至少需要若干种颜色，则这个数字就是“哈纳问题”的下限。后来数学家还把这种所有单位距离的点对有连线，而其他距离的点对都不连线的图称为“单位距离图” （unit-distance graphs)</p>
+<p>虽然这个问题感觉被一下子简化了许多，但是从1960年代之后，它却几乎停滞了50多年，直到上个月，终于有了突破，它的下限被提高到了5，而且令人惊奇的是，这次的发现不是来自职业数学研究者，而是一位英国的生物学家，今年55岁的奥布里.得. 格雷(Aubrey de Grey)。他在生物学领域发表过一些“惊世骇俗”的言论，比如生物技术可以使人活1000年之类的。但不管他在生物学领域成就如何，这次他在数学领域的发现确实是实打实的。</p>
+<p>这位格雷医生自小喜欢数学，他喜欢在休息的时候研究些数学问题。他从去年圣诞节开始，对这个“哈纳问题”产生了兴趣，并且他小时候很喜欢玩“奥赛罗棋”（Othello），据说是“奥赛罗棋”给了他一些灵感。这里大老李说明下，奥赛罗棋也叫黑白棋，反棋。大老李小时候喜欢玩各种棋，这个黑白棋肯定是玩过的，实体版电脑版都玩过。这个棋现在玩的人应该很少了，我估计听众里00后很少见过这种棋。至于这棋与“哈纳问题“的联系，根据我看的格雷医生的论文，我知道有一种黑白棋的棋盘形状全是正三角形密铺的，这种棋盘应该给了他启发。</p>
+<p><img class="alignnone size-full wp-image-912" src="https://dalaoliblog.files.wordpress.com/2018/05/othello_game.jpg" alt="othello_game.jpg" width="1024" height="768" /></p>
+<p style="text-align:center;">(上图：黑白棋，又名奥赛罗棋，反棋)</p>
+<p>这位格雷医生，从去年圣诞节开始研究，到今年4月，短短几个月时间，就有了突破新成果。这个成果就是，他发现了一个由1581个点构成的图，而且这个图根据“哈纳问题”的着色规则，是无法用4种颜色着色的，而是需要至少5种颜色，也就是他把这个问题的下限提高了1。这个图有1581个点，所以你也能猜到他是用电脑程序去发现这个图的，但即使使用电脑，也是需要技巧的，我把这个图样子放在了节目介绍里。</p>
+<p><img class="alignnone size-full wp-image-913" src="https://dalaoliblog.files.wordpress.com/2018/05/screen-shot-2018-05-22-at-8-39-20-pm.png" alt="Screen Shot 2018-05-22 at 8.39.20 PM.png" width="1396" height="1060" /></p>
+<p style="text-align:center;">(上图：格雷医生发现的1581个点构成的，无法用四种颜色着色的单位距离图)</p>
+<p>他的基本思路就是从一个名为“莫泽纺锤”（Moser spindle）的形状开始去构图。这个“莫泽纺锤”是以一对兄弟威廉莫泽（William Moser）和里奥莫泽(Leo Moser)的名字命名的。他们在1960年代发现了一个7个点11条边的图，这个图是至少需要4种颜色着色的，而且现已证明这是点数最少的需要4色着色的单位距离图。因为它形似纺锤，所以人称”莫泽纺锤“，我也把这个莫泽纺锤的样子放在了节目介绍里。</p>
+<p><img class=" size-full wp-image-914 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/05/moserspindle_700.gif" alt="MoserSpindle_700.gif" width="178" height="201" /></p>
+<p style="text-align:center;">（上图：莫泽纺锤，它至少需要四种颜色着色）</p>
+<p>有“莫泽纺锤”的好处就是，如果你的图里至少包含一个这种纺锤，那我知道我的图至少需要4种颜色。然后我就考虑如何在图中不断添加新的纺锤，然后使得尽可能多的点的距离是1，直到我发现4中颜色不够用了。果然格雷医生一开始用电脑发现了一个2万多个点的图，4色不够用，后来压缩到1581个点。</p>
+<p>之所以把这个问题介绍给大家，一个是因为这是不可多的业余数学爱好者做出的数学发现，所以我觉得给位听众大可以一试。另外一个原因是这个“哈纳问题”现在已经正式被Polymath项目所接待，成为第16个正式课题。这个Polymath项目，简单来说就是数学界的github，也就是群体协作项目。这个项目是由包括陶哲轩在内的一些全球顶尖数学家发起的，他们有感于之前数学家单打独斗解决问题带来的种种弊端，而同时网络潜在力量对于数学问题的证明似乎没有发挥出来，因此他们于2009年发起了这个名为Polymath的网络数学群体合作项目。但是与github不同的是，不是每个人都能发起发起具体的课题，而是必须由陶哲轩这样的数学家检查通过才行。这样做的好处是，数学家能够检验某个具体问题是否有可能被解决，是否适合网络协作等等。否则我估计网站上都会是诸如考拉兹猜想，哥德巴赫猜想的讨论，但那显然是跑偏了。</p>
+<p>这个“哈纳问题”在格雷医生的发现后，很快被Polymath接纳了，然后数学家提出了目前可以考虑进一步研究的三个方向：</p>
+<p>第一：找到更小的，也就是点数更少的，至少需要五种颜色着色的单位距离图。这个意图很明显，因为现在格雷医生找到的图多达1500多个点，人眼既不能判断，也基本无法以这个图继续发展，尝试寻找需要六种颜色着色的图，所以我们希望找到更小的图。这个目标已经有所进展，就在这个项目发布到ploymath上没几天，就有不少人人找到了更小的五色着色图，目前最新记录是633个点。</p>
+<p>第二，尝试减少计算机的辅助。格雷医生的证明里有一个397个点的子图是用电脑暴力检索验证的。这个目标的意图就是说我们希望证明当中有更多的逻辑推理成分，因为只有更多的推理成分，我们才能把这个方法去处理6种颜色，7种颜色的情况。单靠电脑的话，因为计算量增加的指数效应，是很难取得进展的。</p>
+<p>第三，就是尝试将现有方法永远到寻找一个至少用6种颜色才能着色的单位距离图，也就是继续提高下限，而前面两个目标其实是为这个目标来服务的。目前，其实我们已经把问题答案缩小到5，6，7三种情况，看上去提高下限又是比较容易的，我们如果能排除5和6两种情况，也就是找到5种颜色和6种颜色无法着色的单位距离图，那我们就等于得到了哈德维格-纳尔逊问题的答案，就是7。看上去只是两步之遥，但谁也说不准这两步的难度到底多大。</p>
+<p>好了，以上就是关于哈德维格-纳尔逊问题的一介绍。这个问题我觉得有意思的点在于我觉得广大业余 数学爱好者尤其是编程爱好者完全可以参与进来，而且在Polymath项目的页面上有非常详尽的关于这个问题的已知结论和入门材料以及众多爱好者的讨论。我在节目的介绍里放了这个项目的链接地址：<a href="http://t.cn/R3803sw">http://t.cn/R3803sw</a> (注意：有一种数字货币也叫Polymath，不要混淆)。我看了下“四色定理”从提出到解决用了120多年，而哈德维格-纳尔逊问题提出到现在也就80年左右，我很好奇这个问题能否在120年内解决。好了，这次节目到这里，下期再见！</p>
+<hr />
+<p>收听“大老李聊数学”</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1" width="426" height="418" /></p>
+</div><p><a href="/2018/05/23/e4-b8-9a-e4-bd-99-e7-88-b1-e5-a5-bd-e8-80-85-e7-9a-84-e4-b8-80-e4-b8-aa-e6-96-b0-e5-8f-91-e7-8e-b0-e5-93-88-e5-be-b7-e7-bb-b4-e6-a0-bc-e7-ba-b3-e5-b0-94-e9-80-8a-e9-97-ae-e9-a2-98-ef-bc-88.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月23日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-23T10:42:17+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/19/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-9c-80-e6-9c-89-e6-95-88-e7-8e-87-e7-9a-84-e7-af-b1-e7-ac-86-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：最有效率的篱笆（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：最有效率的篱笆（附上周答案）</h1>
+<p>（题目来源：WSJ Varsity Math）</p>
+<p><img class="alignnone size-full wp-image-908" src="https://dalaoliblog.files.wordpress.com/2018/05/corn_field.jpg" alt="corn_field.jpg" width="4288" height="2848" /></p>
+<p>张三有一块正方形的土地，边长为100米。他想在这片地里修一些篱笆，在篱笆围成的形状里种上玉米。他希望他的篱笆的形状能使得篱笆包围的面积除以篱笆的周长为最大。问，篱笆应该修成什么形状？这个比值最大值是多少？（注：在比值相等的情况下，他希望面积最大）</p>
+<p>提示：张三可以沿正方形四边边长修篱笆，这样得到的比值是（100*100）/ 400 = 25。同样，如果沿正方形内切圆修篱笆，同样可以得到的比值是25。你需要找到一个形状，使比值大于25。</p>
+<p>请直接留言解答，尽量描述下形状和比值近似值。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>7个海盗在一个海岛上采集了一大堆椰子，堆在一起后，约定第二天再分。但是7个海盗在晚上依次醒来，每个海盗在扔了一个椰子给猴子后，把剩下的椰子的1/7藏了起来，而且他们每一个都发现自己拿的时候，剩下的椰子数量恰好可以被7整除。（比如，如果有8个椰子，则这个海盗会送一个给猴子，再拿走1/7，也就是1个。）</p>
+<p>如果一开始的椰子数量是N，请问可能的N最小值是多少？早上剩下的椰子是多少？</p></blockquote>
+<p>答案是：一开始椰子数量最少是823,537个，早上剩下了279, 930个椰子。</p>
+<p>借用一位网友“<strong>来”</strong>的分析：</p>
+<p>假设海盗们不用送椰子给猴子，则一开始的椰子数量最小值显然是$latex 7^{7}$。所以如果一开始海盗就借来6个椰子放在一边，用于送给猴子，则他们必能如题目所说完成操作。但最后他们需要从剩下的椰子里归还6个椰子，所以x最小是$latex 7^{7}-6=823537$。相应可以算出早上剩下了279,930个椰子。所有椰子约12顿重，海盗椰子大丰收！</p>
+<p>答对的朋友有（因答对人数较多，如有遗漏请见谅）：Lian, 井底蛙，高兴就好，ALESSANDRO，强，名字就要七个字，沈侃，黄亮，来。</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/05/19/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-9c-80-e6-9c-89-e6-95-88-e7-8e-87-e7-9a-84-e7-af-b1-e7-ac-86-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月19日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-19T06:36:08+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/14/e4-b8-a4-e9-81-93-e7-ae-80-e5-8d-95-e6-a6-82-e7-8e-87-e9-a2-98-e5-bc-95-e5-8f-91-e7-9a-84-e6-80-9d-e8-80-83.html">两道“简单”概率题引发的思考 （音频讲稿）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>两道“简单”概率题引发的思考</p>
+<p>大家好，我是大老李。今天聊个简单的话题，就是有关我不久前在节目里出过的两道概率题。你还没听过的话可以暂停先翻过去两集，听一下原题思考一下。这期节目我就跟大家聊聊这两道题，不是单纯说个答案，而是讲讲这两道题的有意思的地方和我的一些感想。</p>
+<p>&nbsp;</p>
+<p>第一道题是这样的：你有一个邻居，他有两个小孩。至少有一个是男孩，问两个都是男孩的概率？你的第一个感觉是1/2对不对？但正确答案是⅓。 理由是两个小孩的组合有四种：男男，男女，女男，女女。现在知道至少一个男孩，那可以排除”女女”。剩下三种情况中只有一种是”男男”。所以概率是⅓。具体分析我们稍后再说，直接看第二题，第二题更诡异。</p>
+<p>&nbsp;</p>
+<p>第二题几乎与第一题一样： 你有一个邻居，他有两个小孩。至少有一个是男孩，且出生在星期二，问两个都是男孩的概率？你第一感觉肯定是，这“出生在星期二”关小孩性别啥事？这肯定是混淆条件，这题就应该跟前一题一样，答案是⅓，但”正确”答案是13/27，也就是比1/2略小一点，但这个答案是个什么鬼？</p>
+<p>&nbsp;</p>
+<p>这个问题最有说服力的一种解法就是把两个小孩性别和出生在周几的组合全部列一遍，比如一个小孩可能是男或女，可能出生在周一到周日，一种有14种可能。两个小孩有14*14=196种可能。然后把196种可能中，选出至少一个男孩出生在周二的情况，一共27种，然后里面两个都是男孩的情况确实是13种，所以答案是13/27。这种方法虽然笨，但无疑是最清晰明了，无可辩驳的。</p>
+<p>&nbsp;</p>
+<p>说老实话，我大老李看到第二题的答案也是大吃一惊，怎么也不相信。你如果去网上搜着这两道题的话，你可以搜索“星期二男孩”这几个关键字，会发现网上各种网站都有关于这两个问题的讨论，从2005年到现在都还在讨论，搞笑的是每一次讨论都十分热烈到接近吵架地步，最后总有无法被说服的人，有的人就是坚持两道题的答案是½。</p>
+<p>&nbsp;</p>
+<p>我自己在聊天群里跟出题的那位朋友讨论了老半天，当天晚上脑子里也在想。其实第一道概率题我当初是“做对的”，让我想不通的就是第二道题。怎么加了个“星期二”条件，概率会从1/3一下子变化到很接近½。我在群里提出了这样的反驳：如果我跟我的邻居在聊天，邻居告诉我他有两个孩子，至少一个是男孩，然后他让我猜他两个孩子都是男孩的概率？我心里已经知道答案是⅓。但我回答之前“随便”问了句：”你那个男孩是周几出生的“？邻居回答是周二。然后我发现我这么一问，我的答案怎么就变13/27了？如果我再继续追问你的孩子结婚了没有，上大学了没有，爱吃辣的菜吗，难道我问了这些问题，我的答案都要改变？</p>
+<p>&nbsp;</p>
+<p>当我最终想通这个问题的时候，我明白，当我问了那些问题后，我的答案确实是要改变的！我先告诉你问题的关键就在于：邻居或出题者在出这个问题的时候，他想表明的是他已经知道了两个孩子的性别和出生在周几，而不是仅知道一个，或者知道两个但假装只知道一个。让我想通这一点的方法是我站到了邻居的角度思考问题。</p>
+<p>&nbsp;</p>
+<p>现在让我们都站到邻居的角度来思考这个问题。假设你是那个邻居，你跟我说你有两个孩子，其中至少一个是男孩。然后我问你那个男孩是周几出生的？你当然知道你两个孩子的性别和周几出生的。如果你的两个孩子是一男一女，那你当然只能挑那个男孩，出生在周几回答我。但是你两个孩子都是男孩，情况有点微妙了。你此时必须作出一个抉择，“选择”其中一个男孩，告诉我“他”出生在周几。如果两个男孩都出生在“周二”，就更有意思了，你不用抉择，你可以很直接回答我，而不用做抉择。</p>
+<p>&nbsp;</p>
+<p>此时不知你体会出来这三种情况的区别来没有。前两种情况等于是你把问题中“其中一个是男孩”的这个孩子直接明确的指定出来了，也就是把这个孩子是排除了，你变成猜另外一个孩子的性别。而第三种，则没有把具体某个男孩区分出来。但是无论哪种情况，这个问题变成更为接近于猜单个孩子的性别，所以它的答案很接近½，但有个例外是当你两个孩子都是男孩且都出生在周二的时候。也就是你能回答“至少一个男孩，且出生在周二”的概率要比我的直觉反应稍微大一点，你能如此回答的机会要比我直觉中的1/2要多一点，所以两个男孩都是男孩的概率也就要比我直觉的½要小一点。类似的，当我在追问小孩结婚没有，上大学没有，爱吃辣没有，这些问题都在迫使你作出抉择，使得你给我的信息快速指向一个特定的孩子， 也使得答案迅速接近½。</p>
+<p>&nbsp;</p>
+<p>搞清楚以上解释，第一道题是⅓，道理也很清楚了。也就是出题者如果是知道两个孩子的性别，那这个问题答案当然是⅓。如果出题者只知道一个小孩性别，那他在说“两个小孩其中一个是男孩，问两个都是男孩”的概率”，那答案必须是½。如果你还是不明白，你可以拿两枚硬币出来，第一次，你丢两个硬币，然后看了其中一个硬币正反面，你去猜另一面。第二次，你两个都看了，然后你说其中一枚正面，问两个都是正面概率。相信你只要在脑子做这个实验就明白结果的不同了。</p>
+<p>&nbsp;</p>
+<p>说到这里，我觉得这两道概率题出题时是有点小的语文问题，因为就这两道题，如果我理解成出题者只知道一个小孩的情况，然后出题者说：“至少一个小孩如何如何...”，这也不算审题错误。所以我觉得应该在题目里说明，出题者已经知道了两个小孩的所有情况。相信指明之后，多数人不会再轻易做错。</p>
+<p>&nbsp;</p>
+<p>有人说“知道一个小孩情况”和“知道两个小孩情况”会产生结果的差别，这很像量子物理里的“观察者效应”啊。“观察者效应”是说当你不观察某个光子的路径时，光子表现的是波动性，甚至自己还可以与自己发生干涉效应。但当你开始观察这个光子的运动路径时，这个光子就表现为粒子性，完全没有波动效应了。我觉得还真有点像，所以这个问题我还可以解释成，当你不观察一个小孩时，他/她的性别，出生在周几，这些信息都是纠缠在一起的波函数。当你具体观察时，波函数坍塌了，他的性别和出生在周几都不纠缠了。但是当你两个小孩都是男孩还是周二出生时，两个孩子的信息还是纠缠在一起，导致最终结果与1/2略有区别。</p>
+<p>&nbsp;</p>
+<p>我还看到有一位叫Gyfoscope的听友给我留了一段很专业的评论，也是从量子物理角度理解这问题，我是完全不懂，所以我只能全文念一下供大家后续研究。他是这样说的：“这个问题看似简单但其实还挺深刻的。是否能够有信息区分两个孩子竟引起答案如此大不同，这很像物理中的玻尔兹曼统计和玻色爱因斯坦统计之间的区别。在后者中，全同粒子之间完全不可分辨而又不遵守泡利不相容原理。这个“不可分辨”会引起粒子系统热学性质出现用经典物理无法解释的奇怪现象。比如大名鼎鼎的普朗克定律就是玻色爱因斯坦统计用于光子的一个特例。” 以上就是这位听友的精彩评论！</p>
+<p>&nbsp;</p>
+<p>我的另一个体会就是这题与另一道著名的反直觉概率题：“蒙提霍尔三门问题”是类似的，你有兴趣可以去搜索下。本质上，当一个人知道一个确切的信息且与某个概率变量关联时，当这个信息透露出来时，这个概率变量的概率就会发生改变了，尽管这个信息的透露是很隐蔽的，而且表面上可能与你的概率变量无关。比如第一题出题者知道一些信息，但是你不知道他知道。第二题你知道出题者知道一些信息，但是你认为这些信息与问题无关。</p>
+<p>&nbsp;</p>
+<p>这两道题还促使我注意的一个问题是，当我们在做一道概率题的时候，要经常想一想这个概率到底是什么？比如我们在猜一个小孩的性别的后，我说他是男孩的可能是½，这个1/2到底是啥含义？这个小孩如果最后是男孩或女孩，又怎么证明我的1/2这个答案是对或错？一般来说，我们谈概率，这个答案总是x/y这种形式。如果我们能思考一下答案中的x和y到底是啥就能避免一些错误。比如原先这题如果不是说“某个邻居”如何如何，而是改成“从数据库中抽取所有两个孩子的家庭信息，然后取其中男孩数量至少为1个的组合，问其中两个男孩的家庭比例多少？”。相信这道题大家都能做对了。</p>
+<p>&nbsp;</p>
+<p>最后我还是在留个思考题，是供大家反驳的。如果我已经知道第二个问题的答案是13/27，然后有人问我第一个问题：我有两个小孩，其中一个男孩，问两个孩子都是男孩的概率”。我这样推理，你这个男孩总是出生在周一到周日中的某一天，无论哪一天，我的答案都是13/27，所以我的答案就应该是13/27。请问这个推理错在哪里？这个问题就留作大家思考题了。</p>
+<p>&nbsp;</p>
+<p>这集节目就这么简单，我们下期再见！</p>
+</div><p><a href="/2018/05/14/e4-b8-a4-e9-81-93-e7-ae-80-e5-8d-95-e6-a6-82-e7-8e-87-e9-a2-98-e5-bc-95-e5-8f-91-e7-9a-84-e6-80-9d-e8-80-83.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月14日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-14T08:09:46+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/13/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-b5-b7-e7-9b-97-e5-88-86-e6-a4-b0-e5-ad-90-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：海盗分椰子（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：海盗分椰子（附上周答案）</h1>
+<p><img class=" size-full wp-image-899 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/05/coconuts.jpg" alt="coconuts.jpg" width="259" height="194" /></p>
+<p>7个海盗在一个海岛上采集了一大堆椰子，堆在一起后，约定第二天再分。但是7个海盗在晚上依次醒来，每个海盗在扔了一个椰子给猴子后，把剩下的椰子的1/7藏了起来，而且他们每一个都发现自己拿的时候，剩下的椰子数量恰好可以被7整除。（比如，如果有8个椰子，则这个海盗会送一个给猴子，再拿走1/7，也就是1个。）</p>
+<p>如果一开始的椰子数量是N，请问可能的N最小值是多少？早上剩下的椰子是多少？</p>
+<p>请直接留言作答。</p>
+<p>&nbsp;</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p><img class="alignnone size-full wp-image-890" src="https://dalaoliblog.files.wordpress.com/2018/05/room-for-one-more.png" alt="Room-for-one-more.png" width="627" height="326" /></p></blockquote>
+<blockquote><p>上图中，将2n个直径为1的圆放进2n大小的矩形内是很容易的。问题是：n至少多大后，可以将2n+1个圆放进这样一个2n大小的矩形？</p>
+<p>提示：最后的填充形状并不太好看，空间是挤出来的。</p>
+<p>请直接留言作答。</p></blockquote>
+<p>答案是：当n=164时，可以放进329个圆。这道题有点难，你需要拿些硬币摆摆看，你会发现如下图方式，可以一点点“挤出”空间来：</p>
+<p><img class="alignnone size-full wp-image-897" src="https://dalaoliblog.files.wordpress.com/2018/05/room-for-one-more-solution.png" alt="Room-for-one-more-solution" width="1573" height="371" /></p>
+<p>其规律是，左边七个有点向下错落，然后就是三个一组，圆形为正三角形，连续填充105遍，然后右边重复对称的7个，总共是329个圆。具体几个关键数字在图中标识出来了。</p>
+<p>本题很难，没有人能准确答对。<strong>Stones</strong>答了n=166，<strong>韩w</strong>也回答了很接近的答案，都很厉害了。</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/05/13/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-b5-b7-e7-9b-97-e5-88-86-e6-a4-b0-e5-ad-90-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月13日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-13T01:13:18+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/05/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-9c-86-e7-9a-84-e5-a1-ab-e5-85-85-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：圆的填充（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：圆的填充（附上周答案）</h1>
+<p><img class="alignnone size-full wp-image-890" src="https://dalaoliblog.files.wordpress.com/2018/05/room-for-one-more.png" alt="Room-for-one-more.png" width="627" height="326" /></p>
+<p>&nbsp;</p>
+<p>上图中，将2n个直径为1的圆放进2n大小的矩形内是很容易的。问题是：n至少多大后，可以将2n+1个圆放进这样一个2n大小的矩形？</p>
+<p>提示：最后的填充形状并不太好看，空间是挤出来的。</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>一个三位的完全平方数(某个自然数的平方)的三个数字被分别写在一张纸片上，并分别粘到三顶帽子上。甲、乙、丙三人分别戴上了一顶帽子。甲和丙能看到其他两顶帽子上的数字，但是看不到自己帽子上的数字。乙的眼睛则被蒙住了，完全看不见。然后三人开始尝试猜测自己帽子上的数字。</p>
+<p>经过长时间沉默后，乙宣布：我猜出来了。</p>
+<p>请问：乙猜测的数字是哪个？甲、丙二人的数字可能组合是哪些？（假设甲乙丙三人足够聪明，且推理速度类似）</p></blockquote>
+<p>答案是：乙头上的数字是4。甲和丙头上的数字是(1, 4), (1, 8)或(4, 8)组合中的一种。思考方法如下：</p>
+<p>先将三位数的完全平方数全部找出，然后将所有可能数字的全排列列出如下：</p>
+<p>001, 010, 100, 112, 121, 211, 144, 414, 441, 169, 196, 619, 691, 916, 961, 225, 252, 522, 256, 265, 526, 562, 625, 652, 289, 298, 829, 892, 928, 982, 234, 243, 324, 342, 423, 432, 136, 163, 316, 361, 613, 631, 004, 040, 400, 448, 484, 844, 259, 295, 529, 592, 925, 952, 567, 576, 657, 675, 756, 765, 667, 676, 766, 279, 297, 729, 792, 927, 972, 478, 487, 748, 784, 847, 874, 148, 184, 418, 481, 814, 841, 009, 090 和 900。</p>
+<p>有些组合中的两个数码是独一无二的，则甲和丙会立即猜出自己头上的数字。比如，看到0和9，必然马上能猜出自己头上是0。排除此类情况后，还有如下可能：</p>
+<p>414, 144, 441, 252, 256, 652, 448, 844, 484, 529, 852, 567, 765, 676, 148 和 841</p>
+<p>知道只有以上这几种可能后，甲和丙用类似的方法可以排除掉比如256这种组合。比如，如果甲看到乙是2，丙是5，丙能看到是2和2或者2和6，丙此时应该能猜出来。剩下的可能性还有：</p>
+<p>144, 441, 252, 448, 844, 148 和 841</p>
+<p>再经过沉默后，252这种组合也可以排除。最后剩下:</p>
+<p>144, 441, 448, 844, 148 和 841</p>
+<p>以上这几种组合中，仅当乙头上是4时，甲和丙无法确定自己头上的数字。所以乙能猜出是4！</p>
+<p>恭喜<strong>Stones和韩w</strong>答对了，厉害！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-857" src="https://dalaoliblog.files.wordpress.com/2018/04/screen-shot-2018-04-08-at-4-36-33-pm.png" alt="Screen Shot 2018-04-08 at 4.36.33 PM.png" width="432" height="400" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/05/05/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e5-9c-86-e7-9a-84-e5-a1-ab-e5-85-85-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月05日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-05T05:27:50+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/05/02/e4-bb-8e-e5-b8-95-e9-87-8c-e6-96-af-e5-93-88-e6-9e-97-e9-a1-bf-e5-ae-9a-e7-90-86-e5-88-b0-e4-b8-8d-e5-8f-af-e8-af-81-e6-98-8e-e6-80-a7-e7-9a-84-e8-af-81-e6-98-8e.html">从“帕里斯-哈林顿定理”到“不可证明性”的证明</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李。今天节目主题是“帕里斯-哈林顿”定理(Paris-Harrington)，这个定理是有关不可证明的命题的。说到不可证明的命题，大家第一感觉一定是连续统假设。那这个“帕里斯-哈林顿定理”为啥也重要呢？我们先要搞清楚什么是不可证明性。</p>
+<p>第一季节目里我有一期节目是关于哥德尔不完备性原理，我们简单复习一下。哥德尔的第一不完备原理是说对任何包含皮亚诺算术且可以公理化的理论，这个理论是“不完全”的。“不完全”的意思就是这个系统内存在既不能证明也不能证伪的命题。连续统假设就是这样一个命题。</p>
+<p>但这里面提到皮亚诺算术，这是什么东西呢？不久前的一期节目我们聊到过策梅洛-弗兰克尔的公理化集合论，简称ZFC系统。那套集合论其实是定义了一套有关集合的公理，使用这套公理，你可以知道哪些逻辑推理方法是可以用的。但是只有逻辑推理，没有推理的源头，还是推不出数学命题。</p>
+<p>你可以对比一下欧几里得几何的5大公设。欧几里得的几何就是先提出来5大公设，然后推导出一整套理论，而推导的逻辑依据现在来看就是ZFC系统。代数领域一样需要一套推理的开端，所以意大利数学家皮亚诺在1889年提出了关于自然数的五条公理，这五条公理简单来说就是定义了什么是0、1、加法和数学归纳法。根据这套公理可以建立所谓一阶算数体系也叫皮亚诺算术，所以它相当于代数领域里的欧几里得公设。</p>
+<p>而某种意义上说，代数是比几何更为基础的，比如集合里的点，线，面这些概念都可以简单的用代数形式来表达，中学里的解析几何就是干这事的。所以从这个角度讲，皮亚诺算术也可以表达所有几何命题。可以说人类历史至今所有的数学知识，99.99%都是可以用皮亚诺算术及其衍生出来的定义和命题来表述的 ，所以你也可以把皮亚诺算术公理看作整个数学的推理开端。</p>
+<p>而哥德尔第一不完备原理就是说，在皮亚诺算术体系（准确来说是比皮亚诺算术更弱的“罗伯逊算术”）中，肯定有不可证明的命题。但有意思的是一开始哥德尔找到的符合第一不完备性的命题，就是连续统假设和选择公理，并不依赖皮亚诺算术，而是集合论里的命题，因为它们根本用不到自然数概念，完全用ZFC集合公理就可以表述了。之后也找到过其他一些类似命题，但它们或多或少都像哥德尔证明它的不完备定理时用的方法一样，这种命题都像在说“本命题不可证明”。</p>
+<p>如果我们把ZFC比喻成烧菜的炊具，而皮亚诺算术比作食材的话。那些命题就好像在说“请你用这套炊具炒一个用这套炊具炒不出来的菜”，那结果当然是炒不出来啊。所以数学家在想，能不能找一个“正经一点”的，真正像一个可以研究的，是用到皮亚诺算术公理的数学命题，而且是不可证明的。也就是说，要找一道菜，菜的成分是完全食材里能提供的，但是用ZFC这套炊具是炒不出来的。这道菜到1977年还真找出来了，但它不是“帕里斯-哈林顿定理”，而是“帕里斯-哈林顿定理”证明了另一个命题是不可证明的。</p>
+<p>要解释“帕里斯-哈林顿”定理，就要再一次提到我们节目里已经多次提到过的拉姆齐理论，那我们再次开始复习，而且今天要稍微深入一点理解拉姆齐理论。有一个经典的拉姆齐理论的应用题，就是问：至少多少人，才能使得里面有三个人是互相认识或不认识。你听过我之前第一季相关节目应该知道这个人数是6，这个数字数学家记作R(3,3)。R就是拉姆齐名字的首字母，括号里两个参数，就是说三个人互相认识和三个人互相不认识。同理，你可以考虑R(4,4)这个数，也就是至少多少人可以有4个人互相认识或者4个人互相不认识，这个数字我们已经知道是18。</p>
+<p><img class="alignnone size-full wp-image-881 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/05/r_3_3_5.png" alt="r_3_3_5.png" width="283" height="236" /></p>
+<p style="text-align:center;">（上图：证明R(3,3)不等于5的一个例子）</p>
+<p>而拉姆齐证明过，对R(x,y)，不论x, y是多少，拉姆齐数总是存在的，这被称为拉姆齐定理，也被称为有穷拉姆齐定理，因为考虑的总是有穷多个人。你可能认为找拉姆齐数很简单，大不了用电脑枚举一下吧，但这是完全错误的想法。比如之前我说过R(4,4)是18，那也就是说如果是17个人，必然存在某种情况下，没有4个人互相认识或不认识。那你现在编个程序开始枚举所有17个人的情况的话，你会发现你的程序根本跑不完。因为17个人，他们互相之间的认识关系，需要有17<em>16/2=136种。但是这136种关系，可以是“认识”或“不认识”两种情况，所以需要枚举的情况是2的136次方，约等于2.46</em>10的26次方种情况。而在这2.46*10的26次方种情况中，只有一种(合并等价的情况)，的的确确是绝无仅有的一种情况才会导致没有四个人互相认识或不认识，可想而知暴力破解是完全无用功。所以，我们目前有关拉姆齐数确切知道的还很少，比如我们还不知道R(5,5)是多少。</p>
+<p>有关有穷拉姆齐数就先说到这里，现在我们把这个问题扩展下，但我们并不是扩展成“无穷拉姆齐定理”（确实有此定理），而是考虑一个叫”加强的有穷拉姆齐定理“。这个定理的内容我借用一个假想的足球运动员转会故事来解释一下。</p>
+<p>假设你是一个球探，一个足球队老板让你帮他物色一批球员。你帮他找了20个有转会意向的备选球员，把他们编号为1到20号。球队老板看了之后提了这么一个的问题：“你能不能从这20个球员里找至少5个球员，使得5个球员里的所有任选三个球员的组合，他们都曾经在一家俱乐部里效力过或者都不在曾在一家俱乐部效力过？因为我希望买至少5个球员，我希望他们中的任何三人组合要么是曾经配合过，这样他们配合会比较默契；要么是从没有在一起踢过，这样他们就不会拉帮结派，方便我组成新的团队。”</p>
+<p>你思索了一下，追问了一个问题：“老板，5个人里取3个人的组合有10种方式，这10种组合方式能不能一部分在一起踢过，部分不在一起踢过呢？”老板笑答道：“当然不能，否则随便选5个，不都是能符合要求吗。” 你尴尬了一下，回答道：“确实，那如果我能挑出多过5个球员，而且符合这个条件，可以吗？” 老板答道：“当然可以！而且我想起来我还有个附加条件，你不是把球员都编号了吗，我希望你找出的球员组合时，球员人数要大于等于里面球员编号的最小值。比如，如果你选出了10到14号球员，他们中任意三个都在一个俱乐部踢过。但是里面球员编号最小值是10，所以不符合我的条件，除非你能把6号之前的球员加进去，这样6个球员符合条件而且大于等于最小球员编号。或者10到19号球员一起，一共10个球员都符合条件也行。我知道我的要求很古怪，但是你就当这是我的一个癖好。”</p>
+<p>好了，不管你信不信，以上就是“加强的有限拉姆齐定理”要处理的问题。稍微整理一下，就是从N个编号为1到N的球员里，你要找出至少k个球员，故事中k=5，使得其中任意i个球员的组合，故事中这个i=3，使得这i个球员的组合，要么都曾经在一个球队效力过，或者不曾一起踢过球。另外，你找出的球员数量要大于等于最小球员编号，这就是故事里老板最后提出的古怪要求。</p>
+<p>还有，我们故事里只考虑了球员在一起效力或不在一起效力两种情况，实际我们还可以考虑这些球员曾经在一起效力过几支球队，比如0只球队，1只球队，2只球队，2只以上球队等等，这样有4种取值情况，我们可以把取值情况的数量作为变量j。</p>
+<p>因此，加强的有限拉姆齐定理，就有三个参数，i, j,k 。最后我们用更接近数学的语言来说，就是从1到N，N个自然数构成的集合中，每i个元素的组合用j种颜色着色。然后从中挑出至少k个元素的子集，使得其中任意i个元素的颜色都是一样的。并且你挑出的元素数量除了至少是k以外，还要大于等于你这个子集中最小的自然数。</p>
+<p><img class="alignnone size-full wp-image-882" src="https://dalaoliblog.files.wordpress.com/2018/05/screen-shot-2018-04-29-at-5-08-51-pm.png" alt="Screen Shot 2018-04-29 at 5.08.51 PM.png" width="1282" height="562" /></p>
+<p style="text-align:center;">(上图：加强的有限拉姆齐定理的一个文字定义)</p>
+<p>不知到说到这里，你有没有一种直觉，就是球员的数量足够大，是不是总能找到符合老板要求的组合。因为球员数量足够多以后，你挑选的余地也越大，虽然老板后面那个附加要求是个障碍，但是球员多了以后，你毕竟跟较小编号球员的组合可能也增加很多，所以总体上挑选余地还是会变大的，所以你感觉只要球员总数够多，总能找到符合要求的球员。</p>
+<p>好，以上扯了这么多，那其实你的这个直觉，就是所谓”加强的有限拉姆齐定理”，意思就是对任意的i, j, k组合，总存在一个最小的整数R，使得这里面R个整数内部无论如何着色，总能挑出前述符合规定的一个子集。恭喜你，听到这里你已经搞懂了很少有人懂的“加强的有限拉姆齐定理”。</p>
+<p>“加强的有限拉姆齐定理”讲完了，”帕里斯-哈林顿定理”就简单多了，就一句话：用皮亚诺算术公理无法证明“加强的有限拉姆齐定理”！啊，怎么可能？你是不是有这个反应？因为以上这个定理整个就是一个排列组合问题，没有任何神秘之处，为何证明不了？</p>
+<p>这个“不能证明”的思路其实是这样：首先我们知道哥德尔还有一个第二不完备定理，就是如果“皮亚诺算术”是一致的，则它不能证明自己是一致的。这里”一致的”意思就是它不会推导出矛盾的结论。如果一个公理体系能证明某个命题既是真，又是假，那这个公理体系就是不一致的。我们当然不喜欢不一致的体系。而哥德尔第二不完备定理就是说，皮亚诺算术如果是一致的，那它不能证明自己是一致的。</p>
+<p><img class="alignnone size-full wp-image-883" src="https://dalaoliblog.files.wordpress.com/2018/05/46d900043317403a28ae.jpg" alt="46d900043317403a28ae" width="640" height="330" /></p>
+<p style="text-align:center;">(上图：哥德尔的两个不完备定理)</p>
+<p>而帕里斯和哈林顿两位数学家在1977年证明的是，如果我们能用皮亚诺算术公理证明“加强的有限拉姆齐定理”，那么我们也就能证明皮亚诺算术是一致的。而我们已知皮亚诺算术是一致的，所以皮亚诺算术不能证明自己是一致的。所以产生矛盾，所以只可能“加强的有限拉姆齐定理”在皮亚诺算术中没有证明！你看是不是很奇妙，就是“帕里斯-哈林顿定理”是用了歌德尔第二不完备定理，找到了一个符合哥德尔第一不完备定理所预言的“不能证明”的命题，而这个命题是第一个用到皮亚诺算术公理定义的命题，所以它很重要。它告诉我们不能证明的命题不局限于“连续统假设”这种纯集合论范畴内的命题。</p>
+<p>听到这里，你可能有个问题，就是既然皮亚诺算术不能证明自己的一致性，那我前面凭什么说我们“已知皮亚诺算术是一致的”？那显然这个证明就是要用到比皮亚诺算术更强的公理系统来证明皮亚诺算术的一致性。在1936年，德国数学家古滕森(Gentzen)，用所谓“超限归纳法”（Transfinite induction）证明了皮亚诺算术是一致的。当然，在超限归纳法下，肯定也有新的不能证明的命题。</p>
+<p>你可能还会问，既然“加强的有限拉姆齐定理”是不能证明的，那为啥要叫它“定理”，而不是像“连续统假设”一样，叫它“假设”？跟前面的问题有点像，它还是被证明了，只是用的比皮亚诺算术更强的所谓“二阶逻辑”体系，而皮亚诺算术是所谓一阶逻辑。类似还有三阶，四阶逻辑等等。遗憾的无论哪一阶逻辑，都存在没有证明的命题。</p>
+<p>最后，你还是会有个问题，为什么连续统假设不能用更高阶的逻辑证明呢？前面也说过，连续统假设是集合论范畴内的命题，就是说是一个“炒菜工具”的问题。而前面说的一阶，二阶逻辑等等是“食材“的问题。“炒菜工具”的问题是没法通过增加“食材”来解决的。</p>
+<p>今天结尾我想说的是，在“帕里斯-哈林顿”定理之后，人们又陆续发现了很多其他没有证明的命题，而且范围涵盖了数论，拓扑学，泛函分析，测度理论等等。所以说不可证明的命题在数学中是一个普遍现象，绝不是孤立的特例。而且多数证明过程也是很像”帕里斯-哈林顿定理”，也就是这个命题已经强到足以证明皮亚诺算术的一致性，所以这个命题是不可被皮亚诺算术公理证明的。这足够影响很多人对数学本质的理解。</p>
+<p>我是觉得逻辑学真的是环环相扣，而哥德尔的两个不完备定理则像是上帝给人类开的一个玩笑，使得人类不得不在考虑一个问题真或假之外，再考虑“不可证明”这第三种可能。</p>
+<p>好，今天节目到此，希望你能对不能证明的命题有更深的理解，再见！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-857" src="https://dalaoliblog.files.wordpress.com/2018/04/screen-shot-2018-04-08-at-4-36-33-pm.png?w=1108" alt="Screen Shot 2018-04-08 at 4.36.33 PM.png" /></p>
+</div><p><a href="/2018/05/02/e4-bb-8e-e5-b8-95-e9-87-8c-e6-96-af-e5-93-88-e6-9e-97-e9-a1-bf-e5-ae-9a-e7-90-86-e5-88-b0-e4-b8-8d-e5-8f-af-e8-af-81-e6-98-8e-e6-80-a7-e7-9a-84-e8-af-81-e6-98-8e.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月02日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-02T01:57:53+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/04/30/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e4-b8-89-e4-bd-8d-e7-9a-84-e5-ae-8c-e5-85-a8-e5-b9-b3-e6-96-b9-e6-95-b0-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：三位的完全平方数（附上期答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本期题目：三位的完全平方数（附上周答案）</h1>
+<p><img class=" size-full wp-image-878 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/04/numbers.png" alt="numbers.png" width="275" height="183" /></p>
+<p>一个三位的完全平方数(某个自然数的平方)的三个数字被分别写在一张纸片上，并分别粘到三顶帽子上。甲、乙、丙三人分别戴上了一顶帽子。甲和丙能看到其他两顶帽子上的数字，但是看不到自己帽子上的数字。乙的眼睛则被蒙住了，完全看不见。然后三人开始尝试猜测自己帽子上的数字。</p>
+<p>经过长时间沉默后，乙宣布：我猜出来了。</p>
+<p>请问：乙猜测的数字是哪个？甲、丙二人的数字可能组合是哪些？（假设甲乙丙三人足够聪明，且推理速度类似）</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>某个白天你漫步在一个公园。你看了下手表，发现时针和分针准确的位于某一个分钟刻度上，且时针的分钟刻度恰好比分针多18格(即时针刻度读数较大)。问现在是几点？</p></blockquote>
+<p>答案是：上午8:24。借用Magician的解释：</p>
+<ul>
+<li>时针转一圈，分针转12圈。时针转一格，分针转12格，分针要快11格/时针格。</li>
+<li>时针比分针少了18格，等同于分针比时针提前了60-18=42格。</li>
+<li>11与42互质，所以时针至少要走42格，才能被超42格=8*5+2，对应8:24分。</li>
+</ul>
+<p>恭喜<strong>高兴就好，ned，Magician，Lay Zhao，韩w， Sophia， Lian，半缘君，笑而不语，Stones, 光</strong>答对了！</p>
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-857" src="https://dalaoliblog.files.wordpress.com/2018/04/screen-shot-2018-04-08-at-4-36-33-pm.png" alt="Screen Shot 2018-04-08 at 4.36.33 PM.png" width="432" height="400" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+<p>&nbsp;</p>
+</div><p><a href="/2018/04/30/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e4-b8-89-e4-bd-8d-e7-9a-84-e5-ae-8c-e5-85-a8-e5-b9-b3-e6-96-b9-e6-95-b0-ef-bc-88-e9-99-84-e4-b8-8a-e6-9c-9f-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 04月30日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-04-30T06:06:38+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2018/04/17/e8-b7-b3-e4-b8-8d-e5-87-ba-e8-8d-89-e5-9d-aa-e7-9a-84-e8-9a-b1-e8-9c-a2-e7-94-b1-e8-b4-9d-e5-b0-94-e4-b8-8d-e7-ad-89-e5-bc-8f-e5-bc-95-e5-87-ba-e7-9a-84-e8-b6-a3-e9-a2-98.html">跳不出草坪的蚱蜢--由贝尔不等式引出的趣题</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>大家好，我是大老李，今天的话题来自去年年底有人的发表一篇论文，论文的标题就叫“蚱蜢问题”，The Grasshopper Problem. 这个论文提出了一个有趣的问题，说假设让你设计一个草坪的形状，草坪的总面积规定好了，比如是s，你有一个设计目标，就是假设有一个蚱蜢停留在你的草坪上一个随机位置，然后蚱蜢开始起跳，蚱蜢跳跃方向是随机的，但跳跃的距离是一个固定值，比如说d。然后你要设计你的草坪形状，使蚱蜢跳跃后停留在你的草坪上的概率最大。也就是你可以想象拿一只蚱蜢反复地随机放在你的草坪上某个位置，然后让它随便跳一次，距离是固定的。然后统计蚱蜢跳跃后仍然停留在你的草坪上的概率。你的目标就是在草坪总面积固定的情况下，让这个蚱蜢停留在你的草坪上的概率最大。另外要说明的是，你的草坪的形状并不需要是连续的，可以是分成几块的。</p>
+<p>这个问题听上去的描述并不难，但是解决起来出乎意料的难。首先你的第一感会想，草坪搞成圆形会不会是最好吗？只要稍微思考一下，你就会发现圆形在很多情况不是最佳。比如假设你的草坪是一个直径为1的圆形，那我就假设蚱蜢跳的相当远，比如是0.9，那你会发现，只有当蚱蜢起始位置在你的草坪边缘一个环形地带中，然后跳的方向又是基本指向圆心的情况下，蚱蜢才可能继续停留在你的草坪上。也就是你的草坪中，以草坪中央为圆心，半径0.4的一个圆形面积，这块面积是完全浪费的。如果蚱蜢停留在上面，就肯定会跳出你的草坪，也没有蚱蜢会在一次跳跃后，停留到这块面积上。所以这块面积一点作用也没有，你完全可以把这块面积放到其他任何蚱蜢跳跃可能停留的位置，这样算得的概率肯定要比圆形高，所以圆形在这种情况下肯定不是最佳方案。那你可能认为是不是因为蚱蜢跳的比较远，达到了圆形直径的90%，所以才导致圆形不是最佳方案。如果蚱蜢跳的距离很近，是不是圆形就会是最佳呢？</p>
+<p>其实在论文中，作者也有一个简单的证明，指出其实任何情况下圆形都不会是最佳方案，有兴趣的可以自行查看论文。而一旦确定圆形不是最佳方案，这个问题就一下有意思起来。因为我们知道一定会有一个或几个最佳形状，一样东西在那里，但是很难找，这就有意思了。论文作者并没有直接推导出最佳形状，而是先给出了几个结论。</p>
+<p>第一个是，如果让蚱蜢在单位圆上随机跳，也就是半径为1的圆上，蚱蜢跳跃距离为d时，可以停留在这个圆上的概率上限。第二个就是在任何情况下圆都不是最佳方案。</p>
+<p>但作者并没有找到直接推算最佳方案的方法，所以作者实际是尝试用电脑来模拟来求解。这个问题用电脑来解决是有一些难度的。因为按通常想法，你可能想到的算法是，比如先搞一个圆，然后模拟许多蚱蜢在上面跳，跳完之后，看蚱蜢的在这个圆上哪些位置的落点最少，然后把落点最少的位置抠出来，移动到蚱蜢落在圆外面经常落地的地方。然后开始新一轮的模拟。经过足够多轮次的迭代后，你希望最后得到的形状就是最优解。但是这个方案首先一个问题就是当你改变形状后，新的形状也意味着蚱蜢有新的起跳点，然后新的起跳点可能导致你原先拿掉的位置变成新的热点。有可能迭代多次之后，你的形状只是来回变化，找不到一个稳定的解。另一个问题就是这种算法只是随意找了一个起始形状，改变形状又总是采取所谓“贪心算法”，这样最终结算结果可能陷入局部最优，而不是全局最优。比如你换一个起始形状，可能得到另一个结果。遇到这种情况资深的程序员肯定想到一个解决方法就是所谓“退火算法”，论文作者也确实用了退火算法。 因为我不是给大家上算法课，就不讲啥是退火算法了，但是最终用电脑程序找出的草坪图案是非常有意思的。我会在节目介绍里会放上一张作者用电脑模拟寻找最佳草坪图案的过程图片，我希望喜马拉雅的节目介绍里能显示GIF动图，如果不能显示，那只能请大家订阅我的订阅号来看完整讲稿了。</p>
+<p>作者发现根据蚱蜢跳跃的距离，草坪的图案分为四种类型。作者把蚱蜢的跳跃距离记为d，而草坪的总面积总是1。那第一种草坪的形状就发生在蚱蜢跳跃的距离为0到1/，也就是约0.56左右的区间，这时草坪的形状像一个齿轮，但也不是标准的齿轮，其实是个分形，因为边缘发生了无数次曲折。而这个距离上限1/，其实就是单位圆的半径长度。也就是蚱蜢的跳跃距离在0到单位圆半径以内时，这个草坪的形状接近一个圆，但是边缘有像齿轮一样的结构。你可以在本次节目的介绍里看到这种齿轮的样子，以及后面将提到其他三种类型的。有意思的是齿轮的齿数并不是固定的，而是从多到少，当d比较小时，齿数大约从17齿开始，到d接近0.56时，只有6齿。作者也给出了一个齿数的计算公式。</p>
+<p><img class="alignnone size-full wp-image-873" src="https://dalaoliblog.files.wordpress.com/2018/04/grassphases.jpg" alt="grassphases.jpg" width="1452" height="492" /></p>
+<p style="text-align:center;">(计算机模拟找出的四种草坪模式)</p>
+<p>       但是在蚱蜢的跳跃距离超过单位圆的半径后，草坪最佳形状并不是继续像一个齿轮，而是进入一个所谓临界区。也即是此时的模式有点说不清楚，是前后两种模式的过度。到了蚱蜢跳跃距离达到0.65到0.87的时候，草坪的形状进入一种新的模式，作者称其为“三页扇”模式，也就是像一个电扇的三片扇叶，也有点像船只的螺旋桨的形状。</p>
+<p>当蚱蜢的跳跃距离达到0.88一直到1时，草坪的模式进入一种“条带状”模式，也有点像水的波纹一样的条带状。作者在这篇论文中只考察了蚱蜢跳跃距离1以内的情况，其实理论上还可以考虑蚱蜢跳跃距离更大的情况，这个问题还是可以继续讨论的，蚱蜢跳跃距离可以是没有上限的。</p>
+<p>但仅就蚱蜢跳跃距离从0到1这个区间来说，草坪形状就出现四种模式，这是令人惊奇而且也暗示这个问题的含义是深刻的。论文作者在文章开头解释了这个蚱蜢跳跃问题提出灵感的实际上是来自贝尔不等式。那我简单说一下这个问题为什么跟贝尔不等式相关。</p>
+<p>如果你不知道什么是贝尔不等式，我建议你搜索我的第一季里的两期节目，标题叫“两个天才捣蛋学生”，你可以上搜搜看。其实贝尔不等式本质上是关于两个随机变量的关联度的，或者用术语来说叫相关系数。相关系数如果是0，那就是两个随机变量完全不相干，而如果是1或-1，那就是最大的相关，也就是确定一个变量值，你就完全确定另一个变量值。比如我在两个房间里掷硬币，我让你在一个房间里看一下掷硬币的结果，再让你猜另一个房间里的硬币正反面。如果重复很多次后，你猜对的概率接近50%，那你可以相信这两个房间里的掷硬币事件是互相独立，也就是相关系数是0。但是对纠缠粒子来说，如果两个房间放了测量方向一样的测试仪，那你看到一个例子的自旋方向后，你可以100%确定另一个例子的自选方向。这种情况下表现出的相关度就是1或-1。对此有两种解释，爱因斯坦认为纠缠粒子在分开的刹那，交换了一些信息，叫隐变量，这个信息决定了它们今后自旋方向相关性。爱因斯坦这样解释的原因是因为这样才能确保所谓经典世界物理观里的所谓定域性或者因果律。也就是两个物质之间信息交换的边界是有限的，而信息交换后，也必产生相应的结果。而玻尔认为，没有这样的信息或隐变量，量子世界的这种行为没有定域性或因果律的作用。一开始大家没法区分这两种情况，但是后来一个叫贝尔的物理学家发现纠缠粒子有没有信息交换或者所谓隐变量，它们的自旋方向的相关系数是有可测量的区别的，是可以区分出两种情况的。这个发现太重要了，而后来的实验结果也支持玻尔的推测，从而推翻了隐变量的存在，当然就更增加了量子世界的神秘性。</p>
+<p>但是关于贝尔不等式的研究并没有结束，因为贝尔不等式给了很多人们在考察两个随机变量相关性的时候更多的思考角度，就是它们的相关性是不是受到隐变量的作用。有人就发现如果考察一个球面上的蚱蜢随机跳跃一个球心角，它仍然留在自己的半球面的概率是与贝尔不等式和隐变量问题有关联的。而本文作者则把问题更简化了一点，就是直接考虑平面，然后考虑一个固定的蚱蜢跳跃距离。以上就是论文作者考察了这个蚱蜢跳跃问题的动机，其实作者本人就是是物理系而不是数学系的。</p>
+<p>今天节目讲的差不多了。值得一提的是，在我春节期间，在“大老李聊数学”微信群里提到了这个问题。然后有位牛人听友，用Excel软件编程，重现了这篇论文得到的部分图形，实在是太牛人。如果你也想加入这个微信群，请你首先关注我的公众号，就叫“大老李聊数学”，然后输入“我要入群”四个字，然后经过一些闯关挑战，就可以加入这个聊天群，静待你的到来！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-857" src="https://dalaoliblog.files.wordpress.com/2018/04/screen-shot-2018-04-08-at-4-36-33-pm.png?w=1108" alt="Screen Shot 2018-04-08 at 4.36.33 PM.png" /></p>
+</div><p><a href="/2018/04/17/e8-b7-b3-e4-b8-8d-e5-87-ba-e8-8d-89-e5-9d-aa-e7-9a-84-e8-9a-b1-e8-9c-a2-e7-94-b1-e8-b4-9d-e5-b0-94-e4-b8-8d-e7-ad-89-e5-bc-8f-e5-bc-95-e5-87-ba-e7-9a-84-e8-b6-a3-e9-a2-98.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 04月17日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-04-17T12:17:47+00:00"></div>
+      </article></div><div class="pagination"><p>共计 76 篇文章，10 页。</p>
+    <div class="pagination__menu">
+      <ul class="menu menu--nowrap"><li><a class="button button--secondary button--circle" href="/page3">
+            <i class="fas fa-angle-left"></i>
+          </a></li><li>
+              <a class="button button--secondary button--circle" href="/"><span>1</span></a>
+            </li><li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li><li>
+                  <a class="button button--secondary button--circle" href="/page3"><span>3</span></a>
+                </li><li>
+              <div class="button button--primary button--circle focus"><span>4</span></div>
+            </li><li>
+                  <a class="button button--secondary button--circle" href="/page5"><span>5</span></a>
+                </li><li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li><li>
+                  <a class="button button--secondary button--circle" href="/page10"><span>10</span></a>
+                </li><li><a class="button button--secondary button--circle" href="/page5">
+            <i class="fas fa-angle-right"></i>
+          </a></li></ul>
+    </div>
+  </div></div>
+<script>/*(function () {
+
+})();*/</script>
+
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

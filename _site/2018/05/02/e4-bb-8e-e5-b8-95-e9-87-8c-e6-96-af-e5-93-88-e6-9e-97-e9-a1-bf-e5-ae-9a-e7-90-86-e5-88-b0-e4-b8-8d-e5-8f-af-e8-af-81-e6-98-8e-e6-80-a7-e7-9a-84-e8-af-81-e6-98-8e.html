@@ -1,0 +1,838 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>从“帕里斯-哈林顿定理”到“不可证明性”的证明 - 大老李聊数学</title>
+
+<meta name="description" content="大家好，我是大老李。今天节目主题是“帕里斯-哈林顿”定理(Paris-Harrington)，这个定理是有关不可证明的命题的。说到不可证明的命题，大家第一感觉一定是连续统假设。那这个“帕里斯-哈林顿定理”为啥也重要呢？我们先要搞清楚什么是不可证明性。第一季节目里我有一期节目是关于哥德尔不完备性原理，我们简单复习一...">
+<link rel="canonical" href="http://localhost:4000/2018/05/02/e4-bb-8e-e5-b8-95-e9-87-8c-e6-96-af-e5-93-88-e6-9e-97-e9-a1-bf-e5-ae-9a-e7-90-86-e5-88-b0-e4-b8-8d-e5-8f-af-e8-af-81-e6-98-8e-e6-80-a7-e7-9a-84-e8-af-81-e6-98-8e.html"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main has-aside">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div></aside></div>
+
+            <div class="col-main cell--auto"><article><div class="article__header"><header><h1>从“帕里斯-哈林顿定理”到“不可证明性”的证明</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="在 Github 上修改"
+            href="https://github.com/dalaoli-shuxue/dalaoli-shuxue/tree/master/_posts/2018-05-01-%e4%bb%8e%e5%b8%95%e9%87%8c%e6%96%af-%e5%93%88%e6%9e%97%e9%a1%bf%e5%ae%9a%e7%90%86%e5%88%b0%e4%b8%8d%e5%8f%af%e8%af%81%e6%98%8e%e6%80%a7%e7%9a%84%e8%af%81%e6%98%8e.html">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="从“帕里斯-哈林顿定理”到“不可证明性”的证明"><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 05月02日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-05-02T01:57:53+00:00"><div class="js-article-content"><p>大家好，我是大老李。今天节目主题是“帕里斯-哈林顿”定理(Paris-Harrington)，这个定理是有关不可证明的命题的。说到不可证明的命题，大家第一感觉一定是连续统假设。那这个“帕里斯-哈林顿定理”为啥也重要呢？我们先要搞清楚什么是不可证明性。</p>
+<p>第一季节目里我有一期节目是关于哥德尔不完备性原理，我们简单复习一下。哥德尔的第一不完备原理是说对任何包含皮亚诺算术且可以公理化的理论，这个理论是“不完全”的。“不完全”的意思就是这个系统内存在既不能证明也不能证伪的命题。连续统假设就是这样一个命题。</p>
+<p>但这里面提到皮亚诺算术，这是什么东西呢？不久前的一期节目我们聊到过策梅洛-弗兰克尔的公理化集合论，简称ZFC系统。那套集合论其实是定义了一套有关集合的公理，使用这套公理，你可以知道哪些逻辑推理方法是可以用的。但是只有逻辑推理，没有推理的源头，还是推不出数学命题。</p>
+<p>你可以对比一下欧几里得几何的5大公设。欧几里得的几何就是先提出来5大公设，然后推导出一整套理论，而推导的逻辑依据现在来看就是ZFC系统。代数领域一样需要一套推理的开端，所以意大利数学家皮亚诺在1889年提出了关于自然数的五条公理，这五条公理简单来说就是定义了什么是0、1、加法和数学归纳法。根据这套公理可以建立所谓一阶算数体系也叫皮亚诺算术，所以它相当于代数领域里的欧几里得公设。</p>
+<p>而某种意义上说，代数是比几何更为基础的，比如集合里的点，线，面这些概念都可以简单的用代数形式来表达，中学里的解析几何就是干这事的。所以从这个角度讲，皮亚诺算术也可以表达所有几何命题。可以说人类历史至今所有的数学知识，99.99%都是可以用皮亚诺算术及其衍生出来的定义和命题来表述的 ，所以你也可以把皮亚诺算术公理看作整个数学的推理开端。</p>
+<p>而哥德尔第一不完备原理就是说，在皮亚诺算术体系（准确来说是比皮亚诺算术更弱的“罗伯逊算术”）中，肯定有不可证明的命题。但有意思的是一开始哥德尔找到的符合第一不完备性的命题，就是连续统假设和选择公理，并不依赖皮亚诺算术，而是集合论里的命题，因为它们根本用不到自然数概念，完全用ZFC集合公理就可以表述了。之后也找到过其他一些类似命题，但它们或多或少都像哥德尔证明它的不完备定理时用的方法一样，这种命题都像在说“本命题不可证明”。</p>
+<p>如果我们把ZFC比喻成烧菜的炊具，而皮亚诺算术比作食材的话。那些命题就好像在说“请你用这套炊具炒一个用这套炊具炒不出来的菜”，那结果当然是炒不出来啊。所以数学家在想，能不能找一个“正经一点”的，真正像一个可以研究的，是用到皮亚诺算术公理的数学命题，而且是不可证明的。也就是说，要找一道菜，菜的成分是完全食材里能提供的，但是用ZFC这套炊具是炒不出来的。这道菜到1977年还真找出来了，但它不是“帕里斯-哈林顿定理”，而是“帕里斯-哈林顿定理”证明了另一个命题是不可证明的。</p>
+<p>要解释“帕里斯-哈林顿”定理，就要再一次提到我们节目里已经多次提到过的拉姆齐理论，那我们再次开始复习，而且今天要稍微深入一点理解拉姆齐理论。有一个经典的拉姆齐理论的应用题，就是问：至少多少人，才能使得里面有三个人是互相认识或不认识。你听过我之前第一季相关节目应该知道这个人数是6，这个数字数学家记作R(3,3)。R就是拉姆齐名字的首字母，括号里两个参数，就是说三个人互相认识和三个人互相不认识。同理，你可以考虑R(4,4)这个数，也就是至少多少人可以有4个人互相认识或者4个人互相不认识，这个数字我们已经知道是18。</p>
+<p><img class="alignnone size-full wp-image-881 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/05/r_3_3_5.png" alt="r_3_3_5.png" width="283" height="236" /></p>
+<p style="text-align:center;">（上图：证明R(3,3)不等于5的一个例子）</p>
+<p>而拉姆齐证明过，对R(x,y)，不论x, y是多少，拉姆齐数总是存在的，这被称为拉姆齐定理，也被称为有穷拉姆齐定理，因为考虑的总是有穷多个人。你可能认为找拉姆齐数很简单，大不了用电脑枚举一下吧，但这是完全错误的想法。比如之前我说过R(4,4)是18，那也就是说如果是17个人，必然存在某种情况下，没有4个人互相认识或不认识。那你现在编个程序开始枚举所有17个人的情况的话，你会发现你的程序根本跑不完。因为17个人，他们互相之间的认识关系，需要有17<em>16/2=136种。但是这136种关系，可以是“认识”或“不认识”两种情况，所以需要枚举的情况是2的136次方，约等于2.46</em>10的26次方种情况。而在这2.46*10的26次方种情况中，只有一种(合并等价的情况)，的的确确是绝无仅有的一种情况才会导致没有四个人互相认识或不认识，可想而知暴力破解是完全无用功。所以，我们目前有关拉姆齐数确切知道的还很少，比如我们还不知道R(5,5)是多少。</p>
+<p>有关有穷拉姆齐数就先说到这里，现在我们把这个问题扩展下，但我们并不是扩展成“无穷拉姆齐定理”（确实有此定理），而是考虑一个叫”加强的有穷拉姆齐定理“。这个定理的内容我借用一个假想的足球运动员转会故事来解释一下。</p>
+<p>假设你是一个球探，一个足球队老板让你帮他物色一批球员。你帮他找了20个有转会意向的备选球员，把他们编号为1到20号。球队老板看了之后提了这么一个的问题：“你能不能从这20个球员里找至少5个球员，使得5个球员里的所有任选三个球员的组合，他们都曾经在一家俱乐部里效力过或者都不在曾在一家俱乐部效力过？因为我希望买至少5个球员，我希望他们中的任何三人组合要么是曾经配合过，这样他们配合会比较默契；要么是从没有在一起踢过，这样他们就不会拉帮结派，方便我组成新的团队。”</p>
+<p>你思索了一下，追问了一个问题：“老板，5个人里取3个人的组合有10种方式，这10种组合方式能不能一部分在一起踢过，部分不在一起踢过呢？”老板笑答道：“当然不能，否则随便选5个，不都是能符合要求吗。” 你尴尬了一下，回答道：“确实，那如果我能挑出多过5个球员，而且符合这个条件，可以吗？” 老板答道：“当然可以！而且我想起来我还有个附加条件，你不是把球员都编号了吗，我希望你找出的球员组合时，球员人数要大于等于里面球员编号的最小值。比如，如果你选出了10到14号球员，他们中任意三个都在一个俱乐部踢过。但是里面球员编号最小值是10，所以不符合我的条件，除非你能把6号之前的球员加进去，这样6个球员符合条件而且大于等于最小球员编号。或者10到19号球员一起，一共10个球员都符合条件也行。我知道我的要求很古怪，但是你就当这是我的一个癖好。”</p>
+<p>好了，不管你信不信，以上就是“加强的有限拉姆齐定理”要处理的问题。稍微整理一下，就是从N个编号为1到N的球员里，你要找出至少k个球员，故事中k=5，使得其中任意i个球员的组合，故事中这个i=3，使得这i个球员的组合，要么都曾经在一个球队效力过，或者不曾一起踢过球。另外，你找出的球员数量要大于等于最小球员编号，这就是故事里老板最后提出的古怪要求。</p>
+<p>还有，我们故事里只考虑了球员在一起效力或不在一起效力两种情况，实际我们还可以考虑这些球员曾经在一起效力过几支球队，比如0只球队，1只球队，2只球队，2只以上球队等等，这样有4种取值情况，我们可以把取值情况的数量作为变量j。</p>
+<p>因此，加强的有限拉姆齐定理，就有三个参数，i, j,k 。最后我们用更接近数学的语言来说，就是从1到N，N个自然数构成的集合中，每i个元素的组合用j种颜色着色。然后从中挑出至少k个元素的子集，使得其中任意i个元素的颜色都是一样的。并且你挑出的元素数量除了至少是k以外，还要大于等于你这个子集中最小的自然数。</p>
+<p><img class="alignnone size-full wp-image-882" src="https://dalaoliblog.files.wordpress.com/2018/05/screen-shot-2018-04-29-at-5-08-51-pm.png" alt="Screen Shot 2018-04-29 at 5.08.51 PM.png" width="1282" height="562" /></p>
+<p style="text-align:center;">(上图：加强的有限拉姆齐定理的一个文字定义)</p>
+<p>不知到说到这里，你有没有一种直觉，就是球员的数量足够大，是不是总能找到符合老板要求的组合。因为球员数量足够多以后，你挑选的余地也越大，虽然老板后面那个附加要求是个障碍，但是球员多了以后，你毕竟跟较小编号球员的组合可能也增加很多，所以总体上挑选余地还是会变大的，所以你感觉只要球员总数够多，总能找到符合要求的球员。</p>
+<p>好，以上扯了这么多，那其实你的这个直觉，就是所谓”加强的有限拉姆齐定理”，意思就是对任意的i, j, k组合，总存在一个最小的整数R，使得这里面R个整数内部无论如何着色，总能挑出前述符合规定的一个子集。恭喜你，听到这里你已经搞懂了很少有人懂的“加强的有限拉姆齐定理”。</p>
+<p>“加强的有限拉姆齐定理”讲完了，”帕里斯-哈林顿定理”就简单多了，就一句话：用皮亚诺算术公理无法证明“加强的有限拉姆齐定理”！啊，怎么可能？你是不是有这个反应？因为以上这个定理整个就是一个排列组合问题，没有任何神秘之处，为何证明不了？</p>
+<p>这个“不能证明”的思路其实是这样：首先我们知道哥德尔还有一个第二不完备定理，就是如果“皮亚诺算术”是一致的，则它不能证明自己是一致的。这里”一致的”意思就是它不会推导出矛盾的结论。如果一个公理体系能证明某个命题既是真，又是假，那这个公理体系就是不一致的。我们当然不喜欢不一致的体系。而哥德尔第二不完备定理就是说，皮亚诺算术如果是一致的，那它不能证明自己是一致的。</p>
+<p><img class="alignnone size-full wp-image-883" src="https://dalaoliblog.files.wordpress.com/2018/05/46d900043317403a28ae.jpg" alt="46d900043317403a28ae" width="640" height="330" /></p>
+<p style="text-align:center;">(上图：哥德尔的两个不完备定理)</p>
+<p>而帕里斯和哈林顿两位数学家在1977年证明的是，如果我们能用皮亚诺算术公理证明“加强的有限拉姆齐定理”，那么我们也就能证明皮亚诺算术是一致的。而我们已知皮亚诺算术是一致的，所以皮亚诺算术不能证明自己是一致的。所以产生矛盾，所以只可能“加强的有限拉姆齐定理”在皮亚诺算术中没有证明！你看是不是很奇妙，就是“帕里斯-哈林顿定理”是用了歌德尔第二不完备定理，找到了一个符合哥德尔第一不完备定理所预言的“不能证明”的命题，而这个命题是第一个用到皮亚诺算术公理定义的命题，所以它很重要。它告诉我们不能证明的命题不局限于“连续统假设”这种纯集合论范畴内的命题。</p>
+<p>听到这里，你可能有个问题，就是既然皮亚诺算术不能证明自己的一致性，那我前面凭什么说我们“已知皮亚诺算术是一致的”？那显然这个证明就是要用到比皮亚诺算术更强的公理系统来证明皮亚诺算术的一致性。在1936年，德国数学家古滕森(Gentzen)，用所谓“超限归纳法”（Transfinite induction）证明了皮亚诺算术是一致的。当然，在超限归纳法下，肯定也有新的不能证明的命题。</p>
+<p>你可能还会问，既然“加强的有限拉姆齐定理”是不能证明的，那为啥要叫它“定理”，而不是像“连续统假设”一样，叫它“假设”？跟前面的问题有点像，它还是被证明了，只是用的比皮亚诺算术更强的所谓“二阶逻辑”体系，而皮亚诺算术是所谓一阶逻辑。类似还有三阶，四阶逻辑等等。遗憾的无论哪一阶逻辑，都存在没有证明的命题。</p>
+<p>最后，你还是会有个问题，为什么连续统假设不能用更高阶的逻辑证明呢？前面也说过，连续统假设是集合论范畴内的命题，就是说是一个“炒菜工具”的问题。而前面说的一阶，二阶逻辑等等是“食材“的问题。“炒菜工具”的问题是没法通过增加“食材”来解决的。</p>
+<p>今天结尾我想说的是，在“帕里斯-哈林顿”定理之后，人们又陆续发现了很多其他没有证明的命题，而且范围涵盖了数论，拓扑学，泛函分析，测度理论等等。所以说不可证明的命题在数学中是一个普遍现象，绝不是孤立的特例。而且多数证明过程也是很像”帕里斯-哈林顿定理”，也就是这个命题已经强到足以证明皮亚诺算术的一致性，所以这个命题是不可被皮亚诺算术公理证明的。这足够影响很多人对数学本质的理解。</p>
+<p>我是觉得逻辑学真的是环环相扣，而哥德尔的两个不完备定理则像是上帝给人类开的一个玩笑，使得人类不得不在考虑一个问题真或假之外，再考虑“不可证明”这第三种可能。</p>
+<p>好，今天节目到此，希望你能对不能证明的命题有更深的理解，再见！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-857" src="https://dalaoliblog.files.wordpress.com/2018/04/screen-shot-2018-04-08-at-4-36-33-pm.png?w=1108" alt="Screen Shot 2018-04-08 at 4.36.33 PM.png" /></p>
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

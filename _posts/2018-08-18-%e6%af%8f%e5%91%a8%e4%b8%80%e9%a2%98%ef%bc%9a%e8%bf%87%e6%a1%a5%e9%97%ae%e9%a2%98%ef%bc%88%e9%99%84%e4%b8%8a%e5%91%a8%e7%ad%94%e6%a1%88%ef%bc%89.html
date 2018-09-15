@@ -1,0 +1,78 @@
+---
+layout: post
+title: 每周一题：过桥问题（附上周答案）
+date: 2018-08-18 09:30:59.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 每周一题
+tags: []
+meta:
+  _wpcom_is_markdown: '1'
+  timeline_notification: '1534609863'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '21217103259'
+author:
+  login: webcraft2013
+  email: webcraft@gmail.com
+  display_name: webcraft2013
+  first_name: ''
+  last_name: ''
+---
+<div class="show-content">
+<div class="show-content-free">
+<h1>本期题目：过桥问题（附上周答案）</h1>
+<h3>过桥问题</h3>
+<div class="image-package">
+<div class="image-container">
+<div class="image-container-fill"></div>
+<div class="image-view"><img class="" src="https://upload-images.jianshu.io/upload_images/348687-8f78a8744bedede0?imageMogr2/auto-orient/strip%7CimageView2/2/w/275" /></div>
+</div>
+<div class="image-caption"></div>
+</div>
+<p>六名驴友夜间在森林中迷路了，他们需要过一座桥。这座桥只能承受两个人同时过桥。六人的步速不同，每个人过桥所需时间分别是：1分钟，3分钟，4分钟，6分钟，8分钟和9分钟。</p>
+<p>他们只带了一个手电筒，过桥时必须携带手电筒前行。两人一起走时，只能按较慢的人速度走。</p>
+<p>现在他们都在桥的一边。问他们6人要全部过桥，最短需要几分钟？</p>
+<p>请直接留言作答（直接回复分钟数即可）。</p>
+<h3>上周题目</h3>
+<p>我们来玩这么一个掷硬币游戏：如果你第一次掷，就是正面向上，则你马上赢；如果你一次丢出一个背面，则游戏重新开始，且你需要连续掷出两次正面向上。如果你在掷出两次正面向上之前丢出了一个背面，则再一次重新开始，且你需要掷出三次正面向上。</p>
+<p>总之：在第N次游戏时，如果你没有连续掷出N次正面，则游戏重新开始，且你需要连续掷出N+1次正面才能获胜。</p>
+<p>问题是：这样的游戏中，你能最终获胜的概率是多少？</p>
+<h3>答案</h3>
+<p>本题中我们先考虑每次失败的概率会比较容易。记<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7Bi%7D" alt="P_{i}" />为第i次游戏时失败的概率。则：<br />
+第一次游戏失败的概率是<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7B1%7D%3D1%2F2" alt="P_{1}=1/2" />；第二次游戏中失败的概率是是<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7B2%7D%3D1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7B2%7D" alt="P_{2}=1-(\frac{1}{2})^{2}" />；第n次中失败的概率是<img class="math-inline" src="https://math.jianshu.com/math?formula=P_%7Bn%7D%3D1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D" alt="P_{n}=1-(\frac{1}{2})^{n}" />。<br />
+用条件概率原理，n次游戏全部失败的概率即为以上概率相乘：<br />
+<img class="math-block" src="https://math.jianshu.com/math?formula=%5Cprod_%7B1%7D%5E%7Bn%7D(1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D)" alt="\prod_{1}^{n}(1-(\frac{1}{2})^{n})" /><br />
+则整体游戏最终成功的概率是：<br />
+<img class="math-block" src="https://math.jianshu.com/math?formula=%5Clim_%7Bn%5Cto%5Cinfty%7D1-%5Cprod_%7B1%7D%5E%7Bn%7D(1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D)" alt="\lim_{n\to\infty}1-\prod_{1}^{n}(1-(\frac{1}{2})^{n})" /></p>
+<p>意外的是，此表达式并无直接计算方法。用数值计算方法可近似求得值约为0.711，即游戏获胜的概率约为71.1%。</p>
+<p>而级数<img class="math-inline" src="https://math.jianshu.com/math?formula=1-(%5Cfrac%7B1%7D%7B2%7D)%5E%7Bn%7D" alt="1-(\frac{1}{2})^{n}" />被称为“欧拉函数（Euler (non-totient) function)，此处勿与另一个著名的“欧拉函数“（Euler totient function），即小于或等于n的正整数中与n互质的数的数目，混淆。）<br />
+欧拉函数的定义为：<br />
+<img class="math-block" src="https://math.jianshu.com/math?formula=%5Cphi%20(q)%3D%5Cprod%20_%7B%7Bk%3D1%7D%7D%5E%7B%5Cinfty%20%7D(1-q%5E%7Bk%7D)" alt="\phi (q)=\prod _{{k=1}}^{\infty }(1-q^{k})" /><br />
+此函数是典型的q函数和模型式函数，也是联系组合数学和复分析的经典例子。<br />
+下图是欧拉函数在复平面上的绝对值的着色图像：</p>
+<div class="image-package">
+<div class="image-container">
+<div class="image-container-fill"></div>
+<div class="image-view"><img class="" src="https://upload-images.jianshu.io/upload_images/348687-208b2430951a06f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/440" /></div>
+</div>
+<div class="image-caption">image</div>
+</div>
+<p>黑色部分是最小值0，红色是最大值4.本期只要表达式列出就算正确，有几位的公式我看不懂就抱歉了。</p>
+<p>恭喜：<strong>Magician，Lian，唐，韩w，来，.，黄亮，rjs</strong>答对了！</p>
+<p>大老李聊数学”第二季已开播，扫码收听！：</p>
+<div class="image-package">
+<div class="image-container">
+<div class="image-container-fill"></div>
+<div class="image-view"><img class="" src="https://upload-images.jianshu.io/upload_images/348687-157cd7585d8e4ebc?imageMogr2/auto-orient/strip%7CimageView2/2/w/432" /></div>
+</div>
+<div class="image-caption">image</div>
+</div>
+<p>下周再见！</p>
+<p>关注“大老李聊数学”公众号，微信搜索： dalaoli_shuxue</p>
+</div>
+</div>

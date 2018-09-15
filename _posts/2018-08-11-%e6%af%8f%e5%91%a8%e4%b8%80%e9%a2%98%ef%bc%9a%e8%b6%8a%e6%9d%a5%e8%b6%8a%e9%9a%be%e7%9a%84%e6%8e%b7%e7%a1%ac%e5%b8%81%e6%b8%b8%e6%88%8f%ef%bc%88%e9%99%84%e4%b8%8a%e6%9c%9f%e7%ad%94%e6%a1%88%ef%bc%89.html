@@ -1,0 +1,55 @@
+---
+layout: post
+title: 每周一题：越来越难的掷硬币游戏（附上期答案）
+date: 2018-08-11 19:15:57.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- 每周一题
+tags: []
+meta:
+  _wpcom_is_markdown: '1'
+  timeline_notification: '1534014960'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20980296618'
+author:
+  login: webcraft2013
+  email: webcraft@gmail.com
+  display_name: webcraft2013
+  first_name: ''
+  last_name: ''
+---
+<h1>本期题目：越来越难的掷硬币游戏（附上周答案）</h1>
+<p>（题目来源：fivethirtyeight.com）</p>
+<p><img class=" size-full wp-image-1072 aligncenter" src="https://dalaoliblog.files.wordpress.com/2018/08/coolclips_vc092415.png" alt="CoolClips_vc092415.png" width="480" height="348" /></p>
+<p>我们来玩这么一个掷硬币游戏：如果你第一次掷，就是正面向上，则你马上赢；如果你一次丢出一个背面，则游戏重新开始，且你需要连续掷出<strong>两次</strong>正面向上。如果你在掷出两次正面向上之前丢出了一个背面，则再一次重新开始，且你需要掷出三次正面向上。</p>
+<p>总之：在第N次游戏时，如果你没有连续掷出N次正面，则游戏重新开始，且你需要连续掷出N+1次正面才能获胜。</p>
+<p>问题是：这样的游戏中，你能最终获胜的概率是多少？</p>
+<p>提示：此题答案不是100%，略有难度，但其中蕴含了有意思的数学原理。</p>
+<p>请直接留言作答。</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>你有若干火柴和3条<strong>不均匀</strong>的可燃烧的绳子。已知三条绳子从一头点燃到烧完的时间分别是48、72和128分钟。</p>
+<p>请你用这些绳子精确计量出61分钟。</p></blockquote>
+<p>答案：</p>
+<p>我们先考虑下用烧绳方法可以完成的“运算”。两条绳子依次燃烧，可以完成“加法”。两条绳子同时燃烧，则可以完成“减法”。另外，如果两条绳子两头同时燃烧，则可以完成“除以2”的运算。但是连续除以2是做不到的。比如用两头同时燃烧48分钟的绳子，可以计量24分钟，但无法计量12分钟。</p>
+<p>通过以上考虑，我们就是需要用48，72和128，使用以上运算算出61。我们可以发现如下算式：</p>
+<p>$latex (128-(48-72/2)/2)\div 2=61$。</p>
+<p>借用读者Lian的解释：</p>
+<p>先将72分绳两端和48分绳一端点燃。72分绳燃尽时，即36分钟后，48分绳余下12分钟。<br />
+再将48分绳另外一端点燃，并将128分绳一端点燃。<br />
+原48分绳所剩12分钟时长燃尽时，即6分钟后，128分绳剩余122分可燃时间。<br />
+将128分绳另一端点燃并开始计时，61分钟后全部燃尽。</p>
+<p>恭喜（如有遗漏请见谅）：<strong><span class="buddy-card_name">Magician</span>，姜文平，黄亮，Lian，Heavy Sun，吴文振，Maque, 谢，One Dolphin，来，侯方东，香独秀囧囧，唐</strong>。答对了！</p>
+<hr />
+<p><strong>大老李聊数学”第二季已开播！</strong>识别如下二维码即可：</p>
+<p><img class="alignnone size-full wp-image-898" src="https://dalaoliblog.files.wordpress.com/2018/05/ximalaya_season1.png" alt="ximalaya_season1.png" width="426" height="418" /></p>
+<p>下周再见！</p>
+<hr />
+<p>关注“大老李聊数学”公众号，微信搜索： dalaoli_shuxue</p>
+<p>&nbsp;</p>

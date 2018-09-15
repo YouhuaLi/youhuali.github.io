@@ -1,0 +1,24 @@
+<h1>本期题目：开始就是2比1的比赛</h1>
+<p><img class="alignnone size-full wp-image-843" src="https://dalaoliblog.files.wordpress.com/2018/03/dice.jpg" alt="dice.jpg" width="275" height="183" /></p>
+<p>你跟我正在进行一场打赌，赌法是这样：你有1枚标记物，我有2枚标记物。我们同时开始一项其他可以进行多轮的比赛（比如掰手腕），我们规定在某轮中，赢的人可以拿走输的人一个标记物。如果某轮后，某人没有任何标记物了，则输掉整场打赌。而你在这项比赛中有优势，每轮中，你有2/3的机会可以赢我。请问你赢得整场打赌的概率期望值是多少？</p>
+<hr />
+<h1>上期答案：</h1>
+<p>上周题目是：</p>
+<blockquote><p>一般来说，如果你在墙上钉两个钉子，绕上一个绳子挂起一幅画后，任意去掉一个钉子，画总是还能挂住，虽然会歪掉，比如下面这种绳子绕法：<img class="alignnone size-full wp-image-836" src="https://dalaoliblog.files.wordpress.com/2018/02/wechatimg370.jpeg" alt="WechatIMG370.jpeg" width="2025" height="1080" />现在请你找一种绳子的绕法，使得去掉任何一个钉子后，绳子就散开了，挂不住任何东西了。你可以把你的绕法画图形拍照回复在公众号内，或者把图片发邮件至liyouhua@gmail.com。</p>
+<p>扩展：这个问题其实是一些数学家和计算机专家在2012年的一次名为“Fun With Algorithms” 的大会上提出来的。理论上任何数量的钉子，都可以找出这种解法。你有兴趣的话，可以挑战下3颗或者4颗钉子的情况。</p></blockquote>
+<p>&nbsp;</p>
+<p>对两个钉子的情况，并没有太直接的推理方法好处解，最好的方法就是在纸上涂画，然后再找根绳子和两个图钉做实验。一种可能的方法如下图：</p>
+<p><img class="alignnone size-full wp-image-839" src="https://dalaoliblog.files.wordpress.com/2018/03/epp.png" alt="epp" width="299" height="189" /></p>
+<p>韩w给出了这个更“好看”的图：</p>
+<p><img class="alignnone size-full wp-image-840" src="https://dalaoliblog.files.wordpress.com/2018/03/e5a4a7e88081e69d8ee8818ae695b0e5ada6_20180219_205706.jpg" alt="大老李聊数学_20180219_205706.jpg" width="1551" height="1080" /></p>
+<p>一看是我没看明白，仔细脑补了一下，也是对的！<strong>韩w</strong>答对了！</p>
+<p>对三颗或四颗钉子的情形，我们就要借助数学工具了，有兴趣的可以直接阅读这篇论文：https://arxiv.org/pdf/1203.3602.pdf，它会涉及到群论和代数拓扑。简单而言，我们可以用多项式表达最终的绕圈状态。比如对第i颗钉子，记作$latex x_{i}$：如果是顺时针绕它，我们记作$latex x_{i}$；如果逆时针绕它，记作$latex x_{i}^{-1}$。则：</p>
+<p>对三颗钉子，其解为: $latex x_1 x_2 x_3 x_2^{-1} x_3^{-1} x_1^{-1} x_3 x_2 x_3^{-1} x_2^{-1}$</p>
+<p>对四颗钉子，其解为: $latex x_1 x_2 x_1^{-1} x_2^{-1} x_3 x_4 x_3^{-1} x_4^{-1} x_2 x_1 x_2^{-1} x_1^{-1} x_4 x_3 x_4^{-1} x_3^{-1}$</p>
+<p>当然，也可以直接看图：</p>
+<p><img class="alignnone size-full wp-image-841" src="https://dalaoliblog.files.wordpress.com/2018/03/screen-shot-2018-03-03-at-11-20-47-pm.png" alt="Screen Shot 2018-03-03 at 11.20.47 PM" width="1166" height="356" /></p>
+<p><img class="alignnone size-full wp-image-842" src="https://dalaoliblog.files.wordpress.com/2018/03/screen-shot-2018-03-03-at-11-20-53-pm.png" alt="Screen Shot 2018-03-03 at 11.20.53 PM.png" width="1220" height="356" /></p>
+<p>下周再见！</p>
+<p>收听“大老李聊数学”音频                                        关注“大老李聊数学”</p>
+<p>&nbsp;</p>
+<p>[gallery ids="380,151" columns="2"]</p>

@@ -1,0 +1,835 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>三维世界中的“和谐”比例--塑料常数 - 大老李聊数学</title>
+
+<meta name="description" content="大家好，我是大老李。今天聊一个可能对多数人还很陌生的常数，叫“塑料常数”，英文就叫Plastic Constant。这个数字的定义很简单，它就是方程$latex x^{3}=x+1$的唯一实数根，约等于1.3247或4/3。我们知道三次方程是有根式解的，所以这个塑胶常数有一个根式表达形式:$latex { {\s...">
+<link rel="canonical" href="http://localhost:4000/2018/07/19/e4-b8-89-e7-bb-b4-e4-b8-96-e7-95-8c-e4-b8-ad-e7-9a-84-e5-92-8c-e8-b0-90-e6-af-94-e4-be-8b-e5-a1-91-e6-96-99-e5-b8-b8-e6-95-b0.html"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main has-aside">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div></aside></div>
+
+            <div class="col-main cell--auto"><article><div class="article__header"><header><h1>三维世界中的“和谐”比例--塑料常数</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="在 Github 上修改"
+            href="https://github.com/dalaoli-shuxue/dalaoli-shuxue/tree/master/_posts/2018-07-19-%e4%b8%89%e7%bb%b4%e4%b8%96%e7%95%8c%e4%b8%ad%e7%9a%84%e5%92%8c%e8%b0%90%e6%af%94%e4%be%8b-%e5%a1%91%e6%96%99%e5%b8%b8%e6%95%b0.html">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="三维世界中的“和谐”比例--塑料常数"><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2018年 07月19日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2018-07-19T11:36:44+00:00"><div class="js-article-content"><p>大家好，我是大老李。今天聊一个可能对多数人还很陌生的常数，叫“塑料常数”，英文就叫Plastic Constant。</p>
+<p>这个数字的定义很简单，它就是方程$latex x^{3}=x+1$的唯一实数根，约等于1.3247或4/3。我们知道三次方程是有根式解的，所以这个塑胶常数有一个根式表达形式:</p>
+<p>$latex { {\sqrt[{3}]{ {\frac {1}{2}}+{\frac {1}{6}}{\sqrt {\frac {23}{3}}}}}+{\sqrt[{3}]{ {\frac {1}{2}}-{\frac {1}{6}}{\sqrt {\frac {23}{3}}}}}}$</p>
+<p>$latex { {\sqrt[{3}]{ {\frac {1}{2}}+{\frac {1}{6}}{\sqrt {\frac {23}{3}}}}}+{\sqrt[{3}]{ {\frac {1}{2}}-{\frac {1}{6}}{\sqrt {\frac {23}{3}}}}}}$</p>
+<p>它既然代数方程的根，那它就是一个代数数，而不是超越数。我们知道很多常数比如$latex \pi$，$latex e$都是超越数。超越数给我们的感觉是充满神秘感的，而代数数的神秘感就差很多。那为什么我们还要赋予这个数一个特殊的名字呢？</p>
+<p>你可能也注意到，这个数字的定义与黄金分割比例有点像。黄金分割比就是方程$latex x^{2}=x+1$的解。现在这个塑料常数就是把方程左边的平方，改成了立方。那么它们之间有联系吗？被你猜对了，确实有联系，让我们还是从这个常数的来历说起。</p>
+<p>话说在1924年，法国工程师Gérard Cordonnier就专门研究过这个数，他当时只有17岁，他把这个数命名为“辐射数”。但四年之后，荷兰建筑师van den Laan发表了有关这个数在自然界中的属性和在建筑美学上应用，并且他把这个数字命名为“塑料常数”，当年他也才24岁。这也是挺有意思的一件事，像$latex x^{3}=x+1$这样的方程，过去对数学家来说，已经研究了很多了，人们也知道这个方程的那个实数解的一些特别性质。但经过这个建筑师研究后，发现了不同的意义，人们才发现原来这个数字是在自然界中是有一些美学含义的，所以人们接受了Laan命名的“塑料常数”这个名字。Laan的结论是塑胶常数不但是“美”，更重要的是所谓“清晰”(Clarity)的。</p>
+<p>Laan的发现是从思考两个问题开始，这两个问题都是关于我们如何感受现实中物体的长度，大小，以及如何把他们归类的。</p>
+<p>第一个问题是这样：比如我给你看一系列大小不同的正方形，有20个。两面最小的边长是5，最大的是25，是最小的5倍，我在节目介绍里就放了这样一张图，请你看了一下，是不是你第一感会自动的把这些正方形分类，一些是属于“偏小”的，一些是“大”的，尽管这些正方形大小都是渐变的，所以不能严格的归为大或小两类，但是你的大脑还是会这样去做。Laan问的第一个问题就是：当两个物体长度是a和b，且a&gt;b，当a:b的比值大于多少之后，你的大脑会把它们归为两类呢？也就是a比b要长到多少比例，你的大脑会认为区别足够大了，应该分为2类了。这是第一个问题。</p>
+<p><img class="alignnone size-full wp-image-995" src="https://dalaoliblog.files.wordpress.com/2018/07/screen-shot-2018-07-18-at-8-52-53-pm.png" alt="Screen Shot 2018-07-18 at 8.52.53 PM.png" width="860" height="816" /></p>
+<p style="text-align:center;">（上图：你看到上图，第一感会把上图如何“分类”）</p>
+<p>第二个问题是这样，比如卖西瓜。如果西瓜不是按重量卖，而是按数量卖，那么显然老板必须把差不多一样大小的西瓜放在一起标一个价，你不能差太多，否则顾客都会挑大的。现在问题就是，两个西瓜大小之间的差距在什么样的范围内，人们才会认为它们的大小差不多呢？也就是你是瓜店老板的话，你会把差距在这个范围内的瓜放在一起，而你作为顾客的挑选话，你选瓜时也不太会在意它们的大小区别。</p>
+<p>这两个问题看上去都很不“科学”，不像数学问题，更像心理学的问题。但这不妨碍去做这个实验。建筑师Laan真请人做了些实验，最后统计结果出来了：对第一个问题，答案约等4/3。第二个问题，约1/7。也即是当两个物体之间的长度比值达到4/3以上了，你的大脑会把它们划分为两类。而两个东西的大小差距在1/7以内，你的大脑会倾向忽略它们之间的大小区别。这两个数字看上去有点矛盾，其实它们是出现在不同的场景。4/3这个数字是出现在对很多物体需要快速按大小分类的时候。第二个数字是出现在你对两个物体的大小需要进行区分的时候，所以并不矛盾。而且接下来你会发现，这两个数字其实是有统一的来源的。</p>
+<p>Laan建筑师指出，这两个数字其实就是来源于黄金分割比的一个扩展。我们知道黄金分割比是这样定义，一根线段切成两段，我们要使的整个一段长度与较长的一段的比，等于较长的一段比较短的一段，而这个比值，约1.618就是黄金分割比。现在稍微扩展一下，请你考虑一下把一个线段取两个点分为长度不同三段。这样两个分点加线段两端点，我如果任取两点的话，可以得到6种不同的长度组合，如果我把这6段不同的长度组合按最长到最小排列起来，并且要求相邻的两段长度之间的比值都要相等，问这个分点取在哪里，比值又是多少？</p>
+<p style="text-align:center;"><img class="alignnone size-full wp-image-996" src="https://dalaoliblog.files.wordpress.com/2018/07/screen-shot-2018-07-18-at-8-56-23-pm.png" alt="Screen Shot 2018-07-18 at 8.56.23 PM.png" width="862" height="734" /><br />
+(上图左：黄金分割的来历。上图右：塑料常数的来历，相邻两段比例全部相等)</p>
+<p>如果你有时间，可以暂停一下，马上做做看这道智力题。这个问题答案就是塑料常数，约4/3。而那个1/7怎么来的呢，你把塑料常数的七次方非常接近7，它的倒数就是1/7。也就是一个线段长度按塑料常数的比例不断拉长7次后，它的长度接近原来的7倍，原来的长度是它的1/7。</p>
+<p>你也马上能发现，既然分成3点能得到一个常数，分成4个点，5个点，6个点，应该都可以啊。是的，Laan工程师发现，如果一个线段分成n个点，要使分出的线段之间的比例如之前例子中的“和谐”状态，那这个比例会符合方程$latex x^{n}=x+1$。如果n=2，这就是黄金分割，n=3，就是塑料常数。n&gt;3之后，也能求出一个在1与2之间的实数解，而且n越大，比值越小。Laan把这个数列第n个数，称为n维空间的和谐数（harmonious number，或Clarity number“清晰数”）。而因为人类生活在三维空间，所以人类无法感受n大于3之后的和谐数，但是我们能感受到n=2时，黄金分割比带来的美感和n=3时，这个塑料常数带来的和谐感和所谓“清晰感”（Clarity）。他的所谓“清晰感”是有点抽象的概念，之后你可以自己体会一下。</p>
+<p>据说有人做过实验，给人们从不同长宽比的矩形里找最具美感的，结果发现人们都选择长宽比接近黄金分割比的。而Laan认为，如果给人们从很多不同长宽高的立方体里面选择最美的，他们会选出符合塑料常数比值的立方体，而且他也发现古希腊人建筑中，不自觉的运用了这个比值。我在节目介绍里，也会放几张这样的立方体，大家感受一下，是不是比较有美感。</p>
+<p><img class="alignnone size-full wp-image-997" src="https://dalaoliblog.files.wordpress.com/2018/07/screen-shot-2018-07-18-at-9-02-54-pm.png" alt="Screen Shot 2018-07-18 at 9.02.54 PM.png" width="836" height="528" /></p>
+<p>(上图左：按黄金分割比例嵌套的正方形。上图右：长宽高之比符合塑料常数的立方体，你看的出美感吗？)</p>
+<p>那为什么要叫它塑料常数呢？其实按理说既然有黄金分割比，按接下来就应该是白银分割比，是吧？但一个是因为有另一个数字已经被称为白银分割比了，Laan建筑师也不想搞“圣斗士”那套东西，他就直接叫它“塑料常数”，因为塑料就是三维材料，而这个常数在三维世界发挥作用的一个常数。不过后来，确实也有人把这个常数称为“银数”。</p>
+<p><img class="alignnone size-full wp-image-1006" src="https://dalaoliblog.files.wordpress.com/2018/07/screen-shot-2018-07-18-at-9-32-12-pm.png" alt="Screen Shot 2018-07-18 at 9.32.12 PM.png" width="930" height="822" /></p>
+<p style="text-align:center;">(上图：Lann建筑师设计的一座修道院，你能看出其中“塑料常数”的运用吗？)</p>
+<p>好了，以上塑料常数的来历说完，说几个它的重要性质。一个是塑料常数是所谓佩兰数列和巴都万数列的两项之间的比值极限。佩兰数列和巴都万数列的定义跟斐波那契数列很像。斐波那契数列是当前项是前两项之和，而佩兰数列和巴都万数列是跳过上一项，取再前两项之和，也就是$latex a_{n}=a_{n-2}+a_{n-3}$。佩兰数列和巴都万数列的区别仅是起始的三项不同。斐波那契数列相邻两项之间的比值极限是黄金分割，而佩兰数列和巴都万数列相邻两项之间的比就是塑料常数，这里也可以看出塑料常数与黄金分割比的联系。</p>
+<p>而另一个性质是塑料常数是所谓皮索特-维贡伊拉卡文数(<b>Pisot–Vijayaraghavan number</b>)，简称PV数中最小的一个。PV数的一个有意思性质就是虽然pv数都是无理数，但是这些数的某些幂次会非常接近整数，比如这个塑料常数的15次方就非常接近70。如果你去看其他PV数的某些幂次，会更加接近整数，相当有意思。</p>
+<p>$latex (3+{\sqrt {10}})^{6}=27379+8658{\sqrt {10}}=54757.9999817\dots \approx 54758-{\frac {1}{54758}}$</p>
+<p>(上图：PV数$latex 3+{\sqrt {10}}$的6次方与整数是如此接近)</p>
+<p>最后值得一提的是有人分析了一下塑料常数与音阶联系，确实发现塑料常数与12平均律的音阶是有紧密联系的。我也随手找了一下所谓内六角扳手尺寸表(L值），发现里面很多不同规格的扳手的内径尺寸差距还真的很接近1/7，不知道这是不是不自觉中“塑料常数”在起作用，因为前面说过人们觉得两样东西的尺寸差距超过1/7了，这就算两样东西了，需要不同规格了。</p>
+<p><img class="alignnone size-full wp-image-1002" src="https://dalaoliblog.files.wordpress.com/2018/07/wkgknftmbtusgkcsaa1rkievmsw849.png" alt="wKgKnFtMBTuSGKCSAA1rkIeVMsw849.png" width="750" height="608" /></p>
+<p>我还想到的一个著名实验，是让你在心里想一个1到10之间的一个整数，据说2/3以上的人第一感想到7，我觉得是不是也与这个“塑料常数”有关呢？请听众朋友也能想想身边有没有什么事物可能是与塑料常数相关的，也欢迎你告诉我你的发现。我们下期再见！</p>
+<p>&nbsp;</p>
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

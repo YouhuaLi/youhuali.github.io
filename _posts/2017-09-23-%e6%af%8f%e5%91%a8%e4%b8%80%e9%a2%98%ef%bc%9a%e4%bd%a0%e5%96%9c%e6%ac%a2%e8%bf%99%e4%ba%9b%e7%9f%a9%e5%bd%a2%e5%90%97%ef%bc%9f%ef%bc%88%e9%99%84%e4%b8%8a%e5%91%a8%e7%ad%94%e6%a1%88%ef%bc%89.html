@@ -1,0 +1,65 @@
+---
+layout: post
+title: 每周一题：你喜欢这些矩形吗？（附上周答案）
+date: 2017-09-23 04:56:15.000000000 -07:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags: []
+meta:
+  _edit_last: '52356880'
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9574517982'
+author:
+  login: webcraft2013
+  email: webcraft@gmail.com
+  display_name: webcraft2013
+  first_name: ''
+  last_name: ''
+---
+<h1>本周题目：你喜欢这些矩形吗？</h1>
+<p>（来源：fivethirtyeight.com，原编辑<span class="author fn">Oliver Roeder</span>）</p>
+<p>本周题目很简单，根据下面这张矩形组成的图（第一次用“图床”，如果有图片显示不出来的情况，请反馈给我，谢谢），算出“?”所代表的面积：</p>
+<p><img class="alignnone size-full wp-image-38" src="https://dalaoliblog.files.wordpress.com/2017/09/roeder-riddler-0922-2.png" alt="roeder-riddler-0922-2" width="575" height="342" /></p>
+<p>这题还是比较简单的吧，希望能看到你的答案。</p>
+<h1>上周答案：</h1>
+<p>上周的题目是：</p>
+<p>“本周的题目表述很简单，属于经典概率题，从易到难：</p>
+<ul class="list-paddingleft-2">
+<li>你将一个木棍随机选两个点，折为三段，这三段能构成三角形的概率是多少？</li>
+<li>你随机取三根长度从0到1的木棍，这三根木棍能构成三角形的概率是多少？</li>
+<li>你将一个木棍随机选两个点，折为三段，这三段能构成<strong>锐角</strong>三角形的概率是多少？</li>
+<li>你随机取三根长度从0到1的木棍，这三根木棍能构成<strong>锐角</strong>三角形的概率是多少？”</li>
+</ul>
+<p>有两位读者，<strong>Magician</strong>和<strong>Φ </strong>答对了第一题。这四个问题的正确答案分别是1/4，1/2，ln(8)-2和1-π/4。让我们来分别解释下，会看到很多图。</p>
+<p>对<strong>第一题</strong>，设木棍阶段后的三段长度，分别是x, y, z。则它们能构成三角形的条件是两边之和大于第三边，即x+y&gt;z, y+z&gt;x, z+x&gt;y。此为“三角不等式”。</p>
+<p>然后对我们的木棍，设其总长度为1。两个切断点的位置设为a和b。则得到的三段木棍长度分别为a，b-a，和1-b。分别代入上述三角不等式，得：</p>
+<ul>
+<li>$latex x+y&gt;z\Rightarrow a+(b-a)&gt;1-b\Rightarrow 2b&gt;1 \Rightarrow b&gt;1/2$</li>
+<li>$latex y+z&gt;x\Rightarrow (b-a)+(1-b)&gt;a\Rightarrow 1-a&gt;a \Rightarrow a&lt;1/2$</li>
+<li>$latex x+z&gt;y\Rightarrow a+(1-b)&gt;b-a\Rightarrow 2a+1&gt;2b \Rightarrow b-a&lt;1/2$</li>
+</ul>
+<p>有了上述公式，我们可以把a，b的取值情况“可视化”如下：</p>
+<p><img class="alignnone size-full wp-image-82" src="https://dalaoliblog.files.wordpress.com/2017/09/sticks1.png" alt="sticks1" width="1131" height="1148" /></p>
+<p>以上阴影部分即为可以构成三角形的情况，很直观的可以看出答案是1/4！</p>
+<p>对<strong>第二题</strong>，情况略微复杂起来。第一题，我们可以只取两个变量，但是这一题我们是随机取丧偶木棍，必须取三个变量，这样如果想可视化，我们就必须画出一个边长为1的立方体来。</p>
+<p>为了帮助解决这个问题，我们考虑一下答案的反例，即何种情况不能构成三角形。比如考虑x&gt;y+z的情况，在这种情况下，所有不能构成三角形的点会位于以下若干平面包围的“金字塔”中：y=0, z=0, x=1和x=y+z。这个“金字塔”的体积正好是立方体的1/6。一共有三个这样的“金字塔”不能构成立方体，因此不能构成三角形的概率是3*(1/6)=1/2。则能构成三角形的概率也是1/2。</p>
+<p>对<strong>第三题</strong>, 本题更加困难起来，需要用到微积分！题目要求我们构成锐角三角形，不妨假设x&gt;y&gt;z。对直角三角形，我们会要求$latex x^2=y^2+z^2$。则对锐角三角形，我们希望$latex x^2&lt;y^2+z^2$。考虑到x+y+z=1和y&lt;x，我们可以推得$latex (1-x)^2&lt;y^2+(x-y)^2$，整理后得：</p>
+<p>$latex x&lt;\frac{1-2y^2}{2(1-y)}$</p>
+<p>这次因为我们还是只要处理两个变量，因此解第一题中用到的可视化图形还是有用的。这次我们我们会有6块相同的区域无法构成锐角三角形，每个区域的面积是（此处简写，参看后面的“可视化图”）：</p>
+<p>$latex \int_0^{1/2}\frac{1-2y^2}{2-2y}dy=\frac{1-ln(2)}{2}$</p>
+<p>一共六块这样的面积，因此总体概率是1-3(1-ln(2))=ln(8)-2。参看下图：</p>
+<p><img class="alignnone size-full wp-image-127" src="https://dalaoliblog.files.wordpress.com/2017/09/screen-shot-2017-09-19-at-5-59-19-pm.png" alt="screen-shot-2017-09-19-at-5-59-19-pm" width="1032" height="966" /></p>
+<p>其中绿线部分是可以构成三角形的，黑线以内是可以构成锐角三角形的，是不是很直观！</p>
+<p><strong>第四题：</strong>类似于第二题的方法，但我们要把立方体画出来，结果如下：</p>
+<p><img class="alignnone size-full wp-image-133" src="https://dalaoliblog.files.wordpress.com/2017/09/sticks4-1.gif" alt="sticks4-1.gif" width="500" height="515" /></p>
+<p>这个图看上去有点复杂，但是椎体表面其实就是满足$latex a^2+b^2=c^2$的，也就是水平面都是圆弧。而椎体体积公式已知，椎体内部是不能构成锐角三角形的区域，因此最终概率为：</p>
+<p>$latex 3(\frac{1}{3}-\frac{1}{4}\frac{\pi}{3})=1-\frac{4}{\pi}$</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

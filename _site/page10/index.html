@@ -1,0 +1,971 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>主页 - 大老李聊数学</title>
+
+<meta name="description" content="Your Site Description
+">
+<link rel="canonical" href="http://localhost:4000/page10/"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"></div>
+
+            <div class="col-main cell--auto"><article itemscope itemtype="http://schema.org/WebPage"><div class="article__header"><header style="display:none;"><h1>主页</h1></header></div><meta itemprop="headline" content="主页"><meta itemprop="author" content="大老李"/><div class="js-article-content"><div class="layout--home"><div class="items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2017/10/01/e8-b4-9d-e5-b0-94-e4-b8-8d-e7-ad-89-e5-bc-8f.html">贝尔不等式</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>（摘自维基百科）</p>
+<p>贝尔不等式为：<b>|Pxz-Pzy|≤1+Pxy</b>。</p>
+<p>其中，Ax为正的意思为在x轴上观察到A量子的自旋态为正，而Pxz代表Ax为正和Bz为正的<a class="mw-redirect" title="相关性" href="https://zh.wikipedia.org/wiki/%E7%9B%B8%E5%85%B3%E6%80%A7">相关性</a>。</p>
+<p>在<a class="mw-redirect" title="经典力学" href="https://zh.wikipedia.org/wiki/%E5%8F%A4%E5%85%B8%E5%8A%9B%E5%AD%B8">经典力学</a>中，此不等式成立。在<a title="量子" href="https://zh.wikipedia.org/wiki/%E9%87%8F%E5%AD%90">量子</a>世界中，此不等式却不成立。</p>
+<p>贝尔定理意味着，<a class="mw-redirect" title="阿尔伯特·爱因斯坦" href="https://zh.wikipedia.org/wiki/%E9%98%BF%E7%88%BE%E4%BC%AF%E7%89%B9%C2%B7%E6%84%9B%E5%9B%A0%E6%96%AF%E5%9D%A6">阿尔伯特·爱因斯坦</a>所主张的<a title="定域性原理" href="https://zh.wikipedia.org/wiki/%E5%AE%9A%E5%9F%9F%E6%80%A7%E5%8E%9F%E7%90%86">定域性原理</a>，其预测不符合量子力学理论。由于很多实验的结果与量子力学理论的预测一致，显示出的<span class="ilh-all"><span class="ilh-page"><a class="new" href="https://zh.wikipedia.org/w/index.php?title=%E9%87%8F%E5%AD%90%E5%85%B3%E8%81%94&amp;action=edit&amp;redlink=1">量子关联</a></span></span>远强过定域隐变数理论所能够解释，所以，物理学者拒绝接受定域实在论对于这些实验结果的解释。陷入找不到满意解答的窘境，物理学者只能无可奈何地勉强承认这是一种非因果关系的<span class="ilh-all"><span class="ilh-page"><a class="new" href="https://zh.wikipedia.org/w/index.php?title=%E8%B6%85%E5%85%89%E9%80%9F%E6%95%88%E5%BA%94&amp;action=edit&amp;redlink=1">超光速效应</a></span></span>。</p>
+<h1>贝尔实验的示意图：</h1>
+<p><img class="alignnone size-full wp-image-225" src="https://dalaoliblog.files.wordpress.com/2017/10/bell_test_for_spin-half_particles_entangled_qubits.png" alt="Bell_test_for_spin-half_particles_(entangled_qubits).png" width="700" height="280" /></p>
+<p>对于像光子一类的粒子，贝尔定理的实验验证示意图。不稳定粒子的衰变会生成<a class="mw-redirect" title="单态" href="https://zh.wikipedia.org/wiki/%E5%8D%95%E6%80%81">单态</a>粒子对，其两颗粒子会分别朝着相反方向移动。假设，在与衰变地点相隔一段距离的两个地点，分别以各种不同夹角角度 <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y"> θ </span></span> 任意设定为实验参数，然后测量这两颗粒子的自旋，则得到的数据可以计算出这系统的<a class="mw-redirect" title="量子纠缠" href="https://zh.wikipedia.org/wiki/%E9%87%8F%E5%AD%90%E7%BA%A0%E7%BC%A0">纠缠性质</a>。</p>
+<h1>隐变量与量子物理解释在自旋测量相关度上的差别：</h1>
+<p><img class="alignnone size-full wp-image-230" src="https://dalaoliblog.files.wordpress.com/2017/10/700px-straightlines.png" alt="700px-StraightLines.png" width="700" height="449" /></p>
+<p>对于自旋的量子相关性（假定100%侦测效率），局域隐变数理论的预测以实线显示，量子力学预测以虚线显示。</p>
+</div><p><a href="/2017/10/01/e8-b4-9d-e5-b0-94-e4-b8-8d-e7-ad-89-e5-bc-8f.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2017年 10月01日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2017-10-01T07:14:34+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2017/09/30/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-89-be-e5-87-ba-e5-81-87-e7-9a-84-e7-a1-ac-e5-b8-81-e9-9c-80-e8-a6-81-e5-a4-9a-e5-b0-91-e5-b0-9d-e8-af-95-ef-bc-9f-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8.html">每周一题：找出假的硬币需要多少尝试？（附上周答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本周题目：找出假的硬币需要多少尝试？</h1>
+<p>（来源：fivethirtyeight.com，原编辑<span class="author fn">Oliver Roeder</span>）</p>
+<p>你有一真一假两枚硬币，外观完全一样，重量也一样。真币投掷出去正面向上的概率为50%，假币为60%。请问你要经过至少多少次投掷，才能<strong>以95%概率</strong>，确定哪一枚是假币？</p>
+<p>为便于理解问题，请参考以下例子：如果假币总是正面向上，那么你投掷一次，如果一正一反，则你必知正面向上为假币，如果两枚都是正，则你只能随便猜一枚。因此，你总体上能找出假币的概率是1/2+1/4=3/4。</p>
+<p>延伸问题：如果假币正面向上概率为p，则你需要掷多少次，才能以95%的概率找出它？</p>
+<h1>上周答案：</h1>
+<p>上周题目：</p>
+<p>本周题目很简单，根据下面这张矩形组成的图（第一次用“图床”，如果有图片显示不出来的情况，请反馈给我，谢谢），算出“?”所代表的面积：</p>
+<p><img class="alignnone size-full wp-image-38" src="https://dalaoliblog.files.wordpress.com/2017/09/roeder-riddler-0922-2.png?w=1108" alt="roeder-riddler-0922-2" /></p>
+<p>这题还是比较简单的吧，希望能看到你的答案。</p>
+<p>
+
+</div><p><a href="/2017/09/30/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e6-89-be-e5-87-ba-e5-81-87-e7-9a-84-e7-a1-ac-e5-b8-81-e9-9c-80-e8-a6-81-e5-a4-9a-e5-b0-91-e5-b0-9d-e8-af-95-ef-bc-9f-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2017年 09月30日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2017-09-30T03:22:32+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2017/09/24/e6-9c-89-e5-85-b3-e6-8b-89-e5-a7-86-e9-bd-90-e7-90-86-e8-ae-ba.html">有关拉姆齐理论</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><p>5个点，对于R(5)不等于5的一个反例：</p>
+<p><img class="alignnone size-full wp-image-156" src="https://dalaoliblog.files.wordpress.com/2017/09/210px-ramseytheory_k5_no_mono_k3.png" alt="210px-RamseyTheory_K5_no_mono_K3" width="210" height="200" /></p>
+<h2><span id="R.283.2C3.29.E7.AD.89.E6.96.BC6.E7.9A.84.E8.AD.89.E6.98.8E" class="mw-headline">R(3,3)等于6的证明</span></h2>
+<div class="thumb tright">
+<div class="thumbinner">
+<div class="thumbcaption"></div>
+</div>
+</div>
+<p>证明：在一个<span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y"> K 6 {\displaystyle K_{6}} </span><img class="mwe-math-fallback-image-inline" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f6739d4144330840d9a11aa97b8af44cdf6ae52a" alt="K_{6}" /></span>的完全图内，每边涂上红或蓝色，必然有一个红色的三角形或蓝色的三角形。</p>
+<ul>
+<li>任意选取一个端点<span class="mwe-math-element"> <img class="mwe-math-fallback-image-inline" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b4dc73bf40314945ff376bd363916a738548d40a" alt="P" /></span>，它有5条边和其他端点相连。</li>
+<li>根据鸽巢原理，5条边的颜色至少有3条相同，不失一般性设这种颜色是红色。</li>
+<li>在这3条边除了<span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y">  </span><img class="mwe-math-fallback-image-inline" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b4dc73bf40314945ff376bd363916a738548d40a" alt="P" /></span>以外的3个端点，它们互相连结的边有3条。
+<ul>
+<li>若这3条边中任何一条是红色，这条边的两个端点和<span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y"> P {\displaystyle P} </span><img class="mwe-math-fallback-image-inline" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b4dc73bf40314945ff376bd363916a738548d40a" alt="P" /></span>相连的2边便组成一个红色三角形。</li>
+<li>若这3条边中任何一条都不是红色，它们必然是蓝色，因此，它们组成了一个蓝色三角形。</li>
+</ul>
+</li>
+</ul>
+<p>目前已知的拉姆齐数的一些情况：</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<th><i>r</i>,<i>s</i></th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+<tr>
+<th>3</th>
+<td>6</td>
+<td>9</td>
+<td>14</td>
+<td>18</td>
+<td>23</td>
+<td>28</td>
+<td>36</td>
+<td>40 – 42</td>
+</tr>
+<tr>
+<th>4</th>
+<td>9</td>
+<td>18</td>
+<td>25</td>
+<td>36 – 41</td>
+<td>49 – 61</td>
+<td>56 – 84</td>
+<td>73 – 115</td>
+<td>92 – 149</td>
+</tr>
+<tr>
+<th>5</th>
+<td>14</td>
+<td>25</td>
+<td>43 – 48</td>
+<td>58 – 87</td>
+<td>80 – 143</td>
+<td>101 – 216</td>
+<td>125 – 316</td>
+<td>143 – 442</td>
+</tr>
+<tr>
+<th>6</th>
+<td>18</td>
+<td>36 – 41</td>
+<td>58 – 87</td>
+<td>102 – 165</td>
+<td>113 – 298</td>
+<td>127 – 495</td>
+<td>169 – 780</td>
+<td>179 – 1171</td>
+</tr>
+<tr>
+<th>7</th>
+<td>23</td>
+<td>49 – 61</td>
+<td>80 – 143</td>
+<td>113 – 298</td>
+<td>205 – 540</td>
+<td>216 – 1031</td>
+<td>233 – 1713</td>
+<td>289 – 2826</td>
+</tr>
+<tr>
+<th>8</th>
+<td>28</td>
+<td>56 – 84</td>
+<td>101 – 216</td>
+<td>127 – 495</td>
+<td>216 – 1031</td>
+<td>282 – 1870</td>
+<td>317 – 3583</td>
+<td>317 – 6090</td>
+</tr>
+<tr>
+<th>9</th>
+<td>36</td>
+<td>73 – 115</td>
+<td>125 – 316</td>
+<td>169 – 780</td>
+<td>233 – 1713</td>
+<td>317 – 3583</td>
+<td>565 – 6588</td>
+<td>580 – 12677</td>
+</tr>
+<tr>
+<th>10</th>
+<td>40 – 42</td>
+<td>92 – 149</td>
+<td>143 – 442</td>
+<td>179 – 1171</td>
+<td>289 – 2826</td>
+<td>317 – 6090</td>
+<td>580 – 12677</td>
+<td>798 – 23556</td>
+</tr>
+</tbody>
+</table>
+<p>英国数学家，经济学和哲学家拉姆齐，Frank P. Ramsey（1903-1930）：</p>
+<p><img class=" aligncenter" src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Frank_Plumpton_Ramsey.JPG/200px-Frank_Plumpton_Ramsey.JPG" alt="Image result for frank ramsey" width="240" height="277" /></p>
+<p>匈牙利数学家厄多斯，Paul Erdős，（其实更准确发音是艾迪什，1913-1996）:</p>
+<p><img class=" aligncenter" src="https://i0.wp.com/www.nndb.com/people/401/000032305/erdos01-sm.jpg" alt="Image result for paul erdos" width="200" height="286" /></p>
+<p>本次突破的论文作者之一，澳大利亚数学家, Brendan McKay:</p>
+<p><img class="alignnone size-full wp-image-174" src="https://dalaoliblog.files.wordpress.com/2017/09/breandan-mckay.jpeg" alt="breandan-mckay" width="393" height="512" /></p>
+</div><p><a href="/2017/09/24/e6-9c-89-e5-85-b3-e6-8b-89-e5-a7-86-e9-bd-90-e7-90-86-e8-ae-ba.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2017年 09月24日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2017-09-24T06:54:19+00:00"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><h2 itemprop="headline" class="item__header"><a href="/2017/09/23/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e4-bd-a0-e5-96-9c-e6-ac-a2-e8-bf-99-e4-ba-9b-e7-9f-a9-e5-bd-a2-e5-90-97-ef-bc-9f-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8-e7-ad-94-e6-a1-88-ef-bc-89.html">每周一题：你喜欢这些矩形吗？（附上周答案）</a></h2></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody"><h1>本周题目：你喜欢这些矩形吗？</h1>
+<p>（来源：fivethirtyeight.com，原编辑<span class="author fn">Oliver Roeder</span>）</p>
+<p>本周题目很简单，根据下面这张矩形组成的图（第一次用“图床”，如果有图片显示不出来的情况，请反馈给我，谢谢），算出“?”所代表的面积：</p>
+<p><img class="alignnone size-full wp-image-38" src="https://dalaoliblog.files.wordpress.com/2017/09/roeder-riddler-0922-2.png" alt="roeder-riddler-0922-2" width="575" height="342" /></p>
+<p>这题还是比较简单的吧，希望能看到你的答案。</p>
+<h1>上周答案：</h1>
+<p>上周的题目是：</p>
+<p>“本周的题目表述很简单，属于经典概率题，从易到难：</p>
+<ul class="list-paddingleft-2">
+<li>你将一个木棍随机选两个点，折为三段，这三段能构成三角形的概率是多少？</li>
+<li>你随机取三根长度从0到1的木棍，这三根木棍能构成三角形的概率是多少？</li>
+<li>你将一个木棍随机选两个点，折为三段，这三段能构成<strong>锐角</strong>三角形的概率是多少？</li>
+<li>你随机取三根长度从0到1的木棍，这三根木棍能构成<strong>锐角</strong>三角形的概率是多少？”</li>
+</ul>
+<p>有两位读者，<strong>Magician</strong>和<strong>Φ </strong>答对了第一题。这四个问题的正确答案分别是1/4，1/2，ln(8)-2和1-π/4。让我们来分别解释下，会看到很多图。</p>
+<p>对<strong>第一题</strong>，设木棍阶段后的三段长度，分别是x, y, z。则它们能构成三角形的条件是两边之和大于第三边，即x+y&gt;z, y+z&gt;x, z+x&gt;y。此为“三角不等式”。</p>
+<p>然后对我们的木棍，设其总长度为1。两个切断点的位置设为a和b。则得到的三段木棍长度分别为a，b-a，和1-b。分别代入上述三角不等式，得：</p>
+<ul>
+<li>$latex x+y&gt;z\Rightarrow a+(b-a)&gt;1-b\Rightarrow 2b&gt;1 \Rightarrow b&gt;1/2$</li>
+<li>$latex y+z&gt;x\Rightarrow (b-a)+(1-b)&gt;a\Rightarrow 1-a&gt;a \Rightarrow a&lt;1/2$</li>
+<li>$latex x+z&gt;y\Rightarrow a+(1-b)&gt;b-a\Rightarrow 2a+1&gt;2b \Rightarrow b-a&lt;1/2$</li>
+</ul>
+<p>有了上述公式，我们可以把a，b的取值情况“可视化”如下：</p>
+<p><img class="alignnone size-full wp-image-82" src="https://dalaoliblog.files.wordpress.com/2017/09/sticks1.png" alt="sticks1" width="1131" height="1148" /></p>
+<p>以上阴影部分即为可以构成三角形的情况，很直观的可以看出答案是1/4！</p>
+<p>对<strong>第二题</strong>，情况略微复杂起来。第一题，我们可以只取两个变量，但是这一题我们是随机取丧偶木棍，必须取三个变量，这样如果想可视化，我们就必须画出一个边长为1的立方体来。</p>
+<p>为了帮助解决这个问题，我们考虑一下答案的反例，即何种情况不能构成三角形。比如考虑x&gt;y+z的情况，在这种情况下，所有不能构成三角形的点会位于以下若干平面包围的“金字塔”中：y=0, z=0, x=1和x=y+z。这个“金字塔”的体积正好是立方体的1/6。一共有三个这样的“金字塔”不能构成立方体，因此不能构成三角形的概率是3*(1/6)=1/2。则能构成三角形的概率也是1/2。</p>
+<p>对<strong>第三题</strong>, 本题更加困难起来，需要用到微积分！题目要求我们构成锐角三角形，不妨假设x&gt;y&gt;z。对直角三角形，我们会要求$latex x^2=y^2+z^2$。则对锐角三角形，我们希望$latex x^2&lt;y^2+z^2$。考虑到x+y+z=1和y&lt;x，我们可以推得$latex (1-x)^2&lt;y^2+(x-y)^2$，整理后得：</p>
+<p>$latex x&lt;\frac{1-2y^2}{2(1-y)}$</p>
+<p>这次因为我们还是只要处理两个变量，因此解第一题中用到的可视化图形还是有用的。这次我们我们会有6块相同的区域无法构成锐角三角形，每个区域的面积是（此处简写，参看后面的“可视化图”）：</p>
+<p>$latex \int_0^{1/2}\frac{1-2y^2}{2-2y}dy=\frac{1-ln(2)}{2}$</p>
+<p>一共六块这样的面积，因此总体概率是1-3(1-ln(2))=ln(8)-2。参看下图：</p>
+<p><img class="alignnone size-full wp-image-127" src="https://dalaoliblog.files.wordpress.com/2017/09/screen-shot-2017-09-19-at-5-59-19-pm.png" alt="screen-shot-2017-09-19-at-5-59-19-pm" width="1032" height="966" /></p>
+<p>其中绿线部分是可以构成三角形的，黑线以内是可以构成锐角三角形的，是不是很直观！</p>
+<p><strong>第四题：</strong>类似于第二题的方法，但我们要把立方体画出来，结果如下：</p>
+<p><img class="alignnone size-full wp-image-133" src="https://dalaoliblog.files.wordpress.com/2017/09/sticks4-1.gif" alt="sticks4-1.gif" width="500" height="515" /></p>
+<p>这个图看上去有点复杂，但是椎体表面其实就是满足$latex a^2+b^2=c^2$的，也就是水平面都是圆弧。而椎体体积公式已知，椎体内部是不能构成锐角三角形的区域，因此最终概率为：</p>
+<p>$latex 3(\frac{1}{3}-\frac{1}{4}\frac{\pi}{3})=1-\frac{4}{\pi}$</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div><p><a href="/2017/09/23/e6-af-8f-e5-91-a8-e4-b8-80-e9-a2-98-ef-bc-9a-e4-bd-a0-e5-96-9c-e6-ac-a2-e8-bf-99-e4-ba-9b-e7-9f-a9-e5-bd-a2-e5-90-97-ef-bc-9f-ef-bc-88-e9-99-84-e4-b8-8a-e5-91-a8-e7-ad-94-e6-a1-88-ef-bc-89.html">阅读更多</a></p></div><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2017年 09月23日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2017-09-23T11:56:15+00:00"></div>
+      </article></div><div class="pagination"><p>共计 76 篇文章，10 页。</p>
+    <div class="pagination__menu">
+      <ul class="menu menu--nowrap"><li><a class="button button--secondary button--circle" href="/page9">
+            <i class="fas fa-angle-left"></i>
+          </a></li><li>
+              <a class="button button--secondary button--circle" href="/"><span>1</span></a>
+            </li><li><span class="pagination__omit"><i class="fas fa-ellipsis-h"></i></span></li><li>
+                  <a class="button button--secondary button--circle" href="/page7"><span>7</span></a>
+                </li><li>
+                  <a class="button button--secondary button--circle" href="/page8"><span>8</span></a>
+                </li><li>
+                  <a class="button button--secondary button--circle" href="/page9"><span>9</span></a>
+                </li><li>
+              <div class="button button--primary button--circle focus"><span>10</span></div>
+            </li><li><div class="button button--secondary button--circle disabled">
+            <i class="fas fa-angle-right"></i>
+          </div></li></ul>
+    </div>
+  </div></div>
+<script>/*(function () {
+
+})();*/</script>
+
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>

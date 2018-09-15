@@ -1,0 +1,857 @@
+<!DOCTYPE html><html lang="zh">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>比特币原理浅说（下） - 大老李聊数学</title>
+
+<meta name="description" content="大家好，我是大老李，上一期跟大家聊了比特币当中的非对称加密体系和哈希函数原理，让我们继续来聊聊区块链这件事。前面说过区块链就是一个个区块的串联，现在系统当中比如已经有若干区块，那么是谁来增加区块链当中的下一个区块呢？这时候就是所谓的矿工角色出场。这个矿工是一种形象的比喻，等一会儿你就会知道为什么会叫他们为矿工。这...">
+<link rel="canonical" href="http://localhost:4000/2017/11/15/e6-af-94-e7-89-b9-e5-b8-81-e5-8e-9f-e7-90-86-e6-b5-85-e8-af-b4-ef-bc-88-e4-b8-8b-ef-bc-89.html"><link rel="alternate" type="application/rss+xml" title="大老李聊数学" href="/feed.xml">
+<!-- begin favicon --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicon --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" >
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.decodeUrl = function(str) {
+    return str ? decodeURIComponent(str.replace(/\+/g, '%20')) : '';
+  };
+
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i, cb; loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cb = cbs[i]; cb();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.1/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main has-aside">
+
+    <div class="page__main-inner">
+      <div></div><div class="page__header"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24">
+<style type="text/css">
+	.st0{fill:#515151;}
+</style>
+<path class="st0" d="M1.7,22.3c5.7-5.7,11.3-5.7,17,0c3.3-3.3,3.5-5.3,0.8-6c2.7,0.7,3.5-1.1,2.3-5.6s-3.3-5.2-6.3-2.1
+	c3-3,2.3-5.2-2.1-6.3S7,1.8,7.7,4.6C7,1.8,5,2.1,1.7,5.3C7.3,11,7.3,16.7,1.7,22.3"/>
+</svg><a title="Your Site Description
+" href="/">大老李聊数学</a></div>
+        <button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button>
+      </div><nav class="navigation">
+        <ul><li class="navigation__link"><a href="/archive.html">归档</a></li><li class="navigation__link"><a href="/about.html">关于</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li>
+        </ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+             <div class="col-aside js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div></aside></div>
+
+            <div class="col-main cell--auto"><article><div class="article__header"><header><h1>比特币原理浅说（下）</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="在 Github 上修改"
+            href="https://github.com/dalaoli-shuxue/dalaoli-shuxue/tree/master/_posts/2017-11-15-%e6%af%94%e7%89%b9%e5%b8%81%e5%8e%9f%e7%90%86%e6%b5%85%e8%af%b4%ef%bc%88%e4%b8%8b%ef%bc%89.html">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="比特币原理浅说（下）"><div class="article__info clearfix"><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>大老李</span></li><li><i class="far fa-calendar-alt"></i> <span>2017年 11月15日</span>
+            </li></ul></div><meta itemprop="author" content="大老李"/><meta itemprop="datePublished" content="2017-11-15T12:03:21+00:00"><div class="js-article-content"><p>大家好，我是大老李，上一期跟大家聊了比特币当中的非对称加密体系和哈希函数原理，让我们继续来聊聊区块链这件事。前面说过区块链就是一个个区块的串联，现在系统当中比如已经有若干区块，那么是谁来增加区块链当中的下一个区块呢？这时候就是所谓的矿工角色出场。这个矿工是一种形象的比喻，等一会儿你就会知道为什么会叫他们为矿工。</p>
+<p>这个矿工的主要任务就是不断为比特币的区块链增加新的区块，但他们添加新的区块是有一定的条件的，比特币的系统规定了每一个区块必须有一个区块的头部信息，这个头部信息包含以下一些内容：一个版本号，然后是前一个区块的哈希，即前一个区块的内容计算产生一个256个比特的哈希的结果，还有就是当前区块所包含的所有交易信息的一个哈希，也是256比特。另外还有时间戳和一个难度系数，这个难度系数的概念我等下再说。最后还有一段乱码，或者叫随机数，为什么要有这个随机数呢？</p>
+<p>系统里会有这样的规定，并不是所有人都可以轻易地添加新的一个区块，因为这个区块必须满足一个条件，这个区块的这一串头部信息用系统规定的那个哈希函数算出来之后，它的结果也会是一串哈希的结果，但这个哈希的数字的结果必须小于某一个值，就是说它的开头必须有很多很多的0，小于一定的值，它才是一个合法的区块。</p>
+<p>前面已经说过了，哈希函数有一个特点，逆运算是非常困难的，并没有一个简单的方法使哈希结果一定是若干个0为开头输出，使我能快速反推出一个特定的输入，这是做不到的。所以这时候，矿工能做能做的方法就是不断的在这样一些确定的信息之后，在最后尝试加入32位的随机数，不断的去尝试。就比如说你可以从00000001这样一个一个往前尝试，直到尝试出某一个恰好的数字，正好使得哈希的输出非常小，达到了系统的要求，这时候这块区块才是一个合法的区块，然后矿工才可以把这个区块广播给系统中的其他用户。</p>
+<p>区块链为什么要有这种设定呢？这个设定的主要思想就是为解决每一笔交易的时序问题，时间先后的问题。让这个区块的产生既不能太快，也不能太慢。为什么不能太快？还是前面说的那个双重消费问题，我同时发出两条交易信息，如果有一些交易信息到达了一些矿工，另外一些到另一批矿工那里，如果产生新区块太简单的话，那么很可能就是两条消息同时被处理。一批矿工是先收到我给张三转账的消息，然后他们拼命算出一个新的区块，加到这个链条里；然后另外一些旷工又算出我给李四转账这条交易信息，他们也算出了一个区块，也是很快就几秒。如果大家都是几秒钟就算出来的话，那等于这两条信息又差不多同一时间被广播到整个网络当中，那就跟没有矿工一样了。相当于是我同时把这条两条信息广播到网络里面，还是没有解决时序问题，如果产生区块太简单的话。</p>
+<p>但是也不能太难，如果太难，比如说产生一个区块要算一天才能算出来，那就导致这个交易系统实在太麻烦，我发起一笔交易，要到一天之后才能得到确认，那估计没有多少人能够接受这种货币结算方式。</p>
+<p>&nbsp;</p>
+<p>现在设定的情况是大概平均每十分钟能产生一个新块，十分钟产生一个新块会达到一种什么效果？如果再假设还是有一个坏人做这种双重消费，那两批矿工互相竞争，有一批矿工算我给张三转账的这个交易，计算新的区块。另有一批旷工算我给李四交易，也去计算新的区块，因为差不多要十多分钟才能算出来，就变成两批矿工之间的算力的一个比拼，这时候就应该是比较容易能够区分出两个两组矿工的计算效率。不管哪个矿工，如果第一个矿工先产生下一个区块，然后马上把这个信息广播出去，那第二个矿工，如果他坚持不放弃，还是算完另一笔交易，然后他也把这个信息广播出去，怎么解决这个问题？还是一个少数服从多数的原则，就是说这两条消息比如相差了十几秒钟，每个人都收到了，相当于这个区块链产生了一个分支，也就是收到两条分支了，这时候每个人都会把这两条分支临时的存储一下。</p>
+<p>但是因为系统当中还有不断有新的矿工，一旦有某一个分支里面的区块链条比另外一条更长的话，那每个人都会把那个比较短的那条放弃掉，所以整个来说就是算力的一个比拼，更多的算力支持哪一条分支，这条分支就会被大家接受，而另外一条分支就会被丢弃。按照中本聪的说法，这就是所谓CPU面前人人平等，反正有CPU的人都可以参与这种矿工的计算。</p>
+<p>这是不受中心化控制，受CPU控制的一套体系来确保交易的可信度。但这个方法有点小的缺陷，其实真正实际运行起来，离去中心化又稍微有点有点偏差。为什么会有偏差呢？这里就要先说一下为什么有人愿意当矿工，你听出来矿工所做的工作其实非常的无趣，而且繁重，就是说他要不停的进行哈希计算，然后看哈希结果是不是足够小，这种运算有什么意义呢？毫无意义吗？但中本聪在这里设定了一个激励机制，当一个新的区块加进系统的时候，算出这个区块的人，这个用户可以在这个区块中增加一条交易信息，说比特币的系统“送我”50块钱，就是他的账户里面会增加50块钱作为计算的奖励。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>还要说明一下，这个50块钱只是整个比特币游戏刚开始的奖励，中本聪这里又设定了另外一个条件，叫每产生21万个比特币之后这个奖励会减半，比如说第21万个比特币在系统中出现的时候，下一个区块的奖励就会减半，就变成25。而实际上已经发生过两次减半，上一次减半是在去年(2016年)的7月份，也就是说你现在作为旷工去进行这种挖矿运算的话，每次挖成功的奖励是12.5个比特币。顺便说一下，比特币是可以拆分，一块比特币可以拆成0.5，完全没有问题，它实际上可以支持到小数点后八位，也就是0.00000001，这才是比特币交易的最小单位，系统奖励也可以小到这样的。</p>
+<p>&nbsp;</p>
+<p>中本聪在他的那篇论文，网上也可以下载到一篇非常漂亮的11页的论文，他在这个论文里面也阐述了为什么要给矿工奖励，以及为什么每21万个比特币之后奖励要减半这样一个设定。给奖励的原因首先就是激励大家去做矿工，哪怕现在奖励是12.5，这笔奖励也是相当可观的。另外，这个奖励就起到了类似于货币发行的作用，矿工通过他不断的努力，像挖矿一样，从地下挖出来一些新的黄金，然后这个黄金作为货币发行，这就好比挖矿奖励加入整个比特币交易链的池子里面的过程。</p>
+<p>比特币刚开始运行的时候有一个所谓的创世纪交易，就是第一条交易，应该就是中本聪本人给自己账户加了若干钱，具体多少钱我没有好好去看，我记得好像他给自己的账户加了50块钱。有第一条区块之后整个系统就可以运行了。</p>
+<p>为什么要奖励要定期减半呢？这个减半奖励为了达到一个效果，使得比特币的总数是有限的，也就是不断地减半减半，迟早这个奖励会小于最小交易额，没办法再产生新的奖励了。总数上限是怎么算出来的？这是一个很好的数学问题。前21万个比特币，奖励是50，后面的21万个变成25，然后后面的21万个又变成12.5，你会看到这个总数，比特币的上限就变成21万，去乘以一个括号，里面是50去加50除以2，50÷4…(21000*(50+25+12.5+6.25+...))。后面这括号里面就是一个等比数列，而且公比是小于1的，根据初中的那个公比小于一的数列有一个有限的和，而这个和正好是一百，所以比特币的总数上限就是21万乘100是2100万。其实这是一个粗糙的计算，因为总有那个奖励已经小于最小交易单位的时候，奖励已经不产生了。</p>
+<p>中本聪也说了它为什么要给比特币设定一个上限，就是它会达到让人感觉到这个货币不会有通货膨胀的问题。像我们现实当中的钱的话，总有一个通胀的问题，我们其实平时自己也能感觉到物价会不断的上涨，可能就是因为央行又新发了多少的货币。而比特币的上限等于是提前公布给大家，就是两千一百万个，所以中本聪告诉大家这个货币是不会有通胀，因为我已经事先告诉大家这个上限，发行的方法也已经是公开的，所以大家都会有一个比较好的心理预期。</p>
+<p>&nbsp;</p>
+<p>根据现在的产生区快的速度来看，基本上每四年会发生一次奖励折半，大家也能推算出来。大概到2033年之后，比特币的总数会达到2100万，也就到那时候，就不会再有新的比特币产生。当然这是根据现在参与比特币游戏的人数和算力来估算的。如果有更多的人参与进来更多的人做矿工，那么这个达到上限的年限可能更提前到来。你可能会问如果将来做矿工都没有奖励的，那谁来挖矿呢？从这里又有一个新的设定，叫做交易费，也就说我在声明一条交易的时候我可以同时声明一下，我给产生区块，其实就是背书这条交易的人，给他一定的钱作为回馈。中本聪认为比特币总数到上限的时候，交易或者说对矿工的激励就是要靠交易费来刺激，但那个时间离还比较早，2033年。但现在也有人在担心是不是到那时候没有奖励就没有人做矿工了，这个比特币游戏就玩不下去了，也有这种担心，有各种各样的讨论，我也没办估计到那时候的形势。</p>
+<p>另外一点你可能会问，如果参与这个游戏的人太多，就是用太多的人做矿工，使得产生区块速度太快会怎么办。那我前面提到有一个叫难度系数的问题，就是每一个区块里面会一个当前的难度系数，这个难度系数决定了这个区块头的哈希结果需要达到多小才是有效的。这个难度系数是每产生2016块区块的时候会更新一次这个数值，比特币的软件里面写好的。也不知道中本聪怎么会设定2016这个数字，会不会他认为2016年会发生什么事情，但是也没有发生什么，他也没有暴露身份。2016年是去年，反正他是这样设定的。</p>
+<p>然后每到2016块新的区块产生的时候，整个系统就会来计算一下，前面这段时间里面平均产生一个新的区块的速度是多少，如果太快了，那就会增加难度系数，如果太慢了，它就会降低难度系数。根据现在每十分钟产生一个新块的速度的话，这个难度系数大约每两个星期会调整一次。每次调整的时候，如果参与的人一下子非常多，这个难度系数就会增加，如果有一批人退出的话，那么这个难度系数就会下降。反正每次调整之后都能保证整个系统差不多是十分钟产生一个新块。然后这个十分钟不会太快，也不算太慢。这是中本聪非常天才的一点，就是他在整个系统还没还没进行实际运转的时候就能考虑到这样一个问题，动态的去调整产生区快的这个速度问题。</p>
+<p>这样十分钟产生一个新块也就保证了，你可能在某些网站也看到说你有一笔交易的话，最好等待等待一个时间，比如十分钟之后，你可以看到你的这笔交易被一个新块确认了，然后你再等十分钟。如果你的交易区块，后面再有一个新快，那么你的这个交易就比较保险，而一般推荐等待一个小时，也就是产生六个新块来确认你的那个交易的时候，这时候你可以放心的跟对方进行交易。</p>
+<p>为什么会这样说呢？因为每产生一个新快，你要推翻这个新块前面的交易，等于先要推翻最新的一块，才能去推翻前一块的交易。如果已经产生了六块新的区块了，某一个坏人想推翻你的这笔交易，他就要把这个六块新块的数据全部重新计算，然而在他推算的这个过程中，即使它的算力非常强，但是别人已经在每十分钟里面又往那个原先的那个链条后面每十分钟补充一个区块，所以你可想而知那个推翻的难度是非常大，而且这个难度是随着每一个新块的增加呈指数上升，这就是为什么等待的时间越久，你的那个交易会越可靠。</p>
+<p>我们现在已经听出来就是整个交易的驱动是靠矿工不断的计算出新的区块来驱动的，而矿工之间是有一定竞争关系的，也就是说谁先产生这个区块，谁就会拿到奖励。而且这个奖励相当可观，所以就产生了所谓的矿场，即某些人就为获得这些奖励购买非常多计算力来去获得竞争当中的优势，而这个矿场是什么样的一个东西呢？</p>
+<p>因为很多哈希算法，它的本质其实矩阵计算，而矩阵计算又是显卡芯片，所谓的gpu芯片最擅长的领域。所以就有人这样，他把很多的显卡集中在一起，然后用打造特定的计算机，这个机器专门用来算比特币的哈希结果。如果你的计算力非常强大的话，那么你就可以很轻易的给这比特币区块链中增加新的区块。</p>
+<p>那这个矿场会是怎么样呢？，我看到去年纽约时报走访了在中国贵州的一个矿场。为什么会设在贵州，首先你可想而知，电费得便宜，因为运行那么多gpu，耗电量是非常巨大的。另外还有一个就是场地要便宜，如果在上海的话，你恐怕租不起这个房子来开这个矿场。另外一点就是要通风条件，散热条件也好，也就是气温不能太高。另外我觉得贵州还有一个优势，就是它可能离广东比较近，拿到显卡或者IT的设备是比较容易的。在这个矿场里面就是有密密麻麻的那些机架，但这个机架是非常简陋的，其实就是一些铁架子上有密密麻麻的一些电脑的电源，一些主板和gpu插在上面这些东西而且全部都是裸露在外面，因为他们也不需要美观，全部裸露在外面，没有机箱，线也全部裸露在外面，反正它们也不需要美观，主要考虑的是用来散热。</p>
+<p>那么多gpu串联在一起，它们的运算能力就会得到非常大的加强，每秒钟可以算出若干G的哈希结果，然后就从当中挑出一最小的那个哈希的结果去作为下一个区块的那个哈希结果。但我想说的是矿场的出现其实是违背了中本聪当初设想的这个“CPU面前人人平等”的这种理念，矿场其实是新的一个中心化，也就是说整个比特币交易的那个链条或多或少已经很大程度上被各种各样的矿厂垄断了，你个人想去做矿工已经肯定是不可能的，因为你的一两台电脑的计算能力跟人家这个成千上万的gpu去比拼的话完全不可比拟，所以这样是等于产生了新的中心化，这也是我觉得目前比特币交易当中一个让人不舒服的地方吧，包括我自己，可能也是我吃不到葡萄说葡萄酸。因为我自己上一段时间研究的时候，我也尝试去做矿工，但完全挖不到。</p>
+<p>现在你要做矿工的话，恐怕你要加入所谓的矿池，有很多人就是允许个人把自己的计算力贡献出来，叫大家把各自的计算力合并在一起，然后加入一个池子，叫所谓的矿区。如果我们矿区里面打到新的比特币的话，然后根据大家的计算力按照比例来分成。当然这种分成，你一两台电脑的贡献的比例，是完全没有利润可言，考虑到你的电脑的消耗，包括电的消耗是完全没有不划算的。我自己尝试了一下，我加入一个矿池的话，每小时还是每天只能打出价值0.01美元就是一美分到两美分左右的比特币了，反正这点钱完全抵不上我的电费，还有我的电脑的损耗，所以这完全不划算。可以说这个比特币现在交易是被矿场垄断，所以这又变成了一种新的中心化，这恐怕也是中本聪本人难以预料的一个结果。但现在你也没办法去阻止，本来这就是去中心化理念的东西，所以没有人可以去干预去说你不可以这样做，因为人家确实也贡献了这么大的计算能力，他的投资也是相当大。</p>
+<p>我们最后聊一聊比特币交易的一些特点。首先，比特币交易有一个很大特点，就是每一笔交易要有一个或多个输入和或者一个到多个输出。也就是说我一笔钱转出去，我要在我的交易当中声明我这笔钱的来源，是之前的哪些交易的产生的。然后我也可以同时转给很多人。这种多对多的特性就是使得洗钱变得非常容易了，如果有一笔钱变成比特币，然后把比特币拆分成若干份，转给许多人，这个许多人当中可能都有很多是自己的账户，然后再转给许多人。交易可以让警察来追踪或者让任何人来追踪。虽然这些信息都是公开的，但是那么多匿名的账户使得你的这个追踪非常困难，你完全搞不清楚这个钱的流向。</p>
+<p>另外一点就是比特币交易的匿名特性，也就是所谓公开信息，就只有一个账户，谁也不知道这个数字背后代表的是谁，所以这两个特点就是让比特币成为一些灰色交易热衷的一个东西。当然，这也是所谓去中心化理念必然会带来的一个副作用。</p>
+<p>&nbsp;</p>
+<p>另外还有一个就是比特币交易是不可撤销的，你一旦声明了你自己的一笔交易转给某个人，发到网上了，但你反悔了，要赶紧撤销这条消息，这是做不到的，你一旦做了就是不可撤销。</p>
+<p>它跟现在现实当中的货币比较有什么样的特点，它有没有可能取代现实的货币呢？我觉得短期内是不可能完全不可能，因为参与比特币交易难度是非常大的，说我前面我花了这么多时间才能把那个比特币的交易原理大致的说清楚，我想你听了之后应该也只能有一个大致的了解，你不真实地参与一下，恐怕还是没有一个切身的体会。</p>
+<p>另外一个就是它对参与者的安全意识的要求非常高，就像我前面说过了，你的那个私钥的安全性是非常重要，一旦你的私钥泄露，你什么东西都没了，没有任何地方去申诉。前几年也发生过，有些比特币交易的网站，因为用户把私钥托管到它的网站上，但是它的网站后来被泄露了，这些私钥也被曝光了，这些网站就倒闭了。一旦倒闭之后，用户也没有办法去索赔，因为这笔钱肯定都被各种方法转走到你想不到的地方去了。</p>
+<p>另外一点，它跟现实货币比有个明显缺陷，就是线下交易的困难。比特币交易，是必须要有线上有人帮你用新的区块来确认的，而新的区块产生就要十分钟，所以线下交易，如果有需要一手交钱一手交货的场合的话，就很麻烦，你付了十块钱，要买一样东西，然后你要等十分钟才能有一个区块。有时候对方说我还不放心，要等到六个区块，那得等一小时，这样太困难了，就是线下交易难度是非常大。这两点使我觉得它要取代现实货币还是非常困难的。</p>
+<p>&nbsp;</p>
+<p>当然最重要的一点就是我始终搞不懂这个比特币跟其他真实货币的这个汇率产生机制是怎么样？现在这个汇率是一比特币等于一千美元，这个汇率产生的依据是什么，我完全没有没有概念，我觉得这倒是一个经济学家应该好好研究的一个话题。那比特币也有到低谷的时候，震荡也是非常剧烈的，有段时间一个比特币可能只有三四百美元，但是现在又回到了一千美元。这个震荡的这个依据到底是什么，我是完全搞不懂，希望有经济学家能好好研究一下。如果有哪个经济学家能够很好地预测这种比特币的汇率变动的话，它有可能是可以拿诺贝尔经济学奖的一个成果。这种震荡那么巨大，所以大家参与的风险是非常大的，特别是如果你想用真金白银去交换比特币的话，这个交易风险非常大。</p>
+<p>另外如果你让我说的话，我觉得比特币更像一场网络游戏，这是我为什么前面一直用游戏来比喻它，因为它的很多特性就像网游中的一些货币，但是它跟网游中的货币最大的区别就在于“去中心化”，它并不是某个游戏公司来控制的一个货币。</p>
+<p>您如果坚持听到现在的话算是赚到了，因为接下来的内容是我今天加入的，算是一个彩蛋，因为<br />
+刚刚过去的星期，谷歌公司发布了一条新闻，就是他们找出了世界上第一个使用的SHA-1的碰撞。这个“碰撞”，如果你还记得我前面上一期讲的内容的话，就是说两个不同内容明文，如果产生的哈希的结果是一样的，那就是一个碰撞，但这种碰撞是非常难以发现的，但是谷歌在这个新闻里面公布了两个不一样的pdf文件，如果你把这两个pdf文件下载下来，然后用SHA-1命令去产生它们的哈希结果的话，它们的结果将是一模一样的。这是密码学界的一个非常大的新闻。那你可能会好奇这个新闻对比特币有没有什么影响呢？会不会影响比特币的安全性，我可以告诉大家目前来看或者将来的很长一段时间内对比特币都应该没有什么影响，因为谷歌这次攻击的算法叫SHA-1，就是相当于SHA最初的版本一一第一代的版本，而比特币用的哈希算法叫SHA256，他是属于SHA-2系列，是二代SHA算法中的一种，所以算法本身是不一样的。</p>
+<p>另外谷歌这个攻击其实是寻找碰撞，跟哈希值的逆运算还是有很大区别，寻找碰撞，就是说它已先设计出一个文件，找出它的哈希值，然后重新找一个其他的明文，产生同样的哈希。这跟我任意指定一个哈希结果，然后去反算出一个明文，这个两个问题还是有很大的差别的。直接逆运算问题的难度肯定要比找碰撞要难。</p>
+<p>如果我们再退一步说，即使有人已经有办法，就是进行这种逆运算了，但是他的这种攻击的时间<br />
+效率决定了攻击的有效性。我们前面已经说过现在比特币平均每产生一个区块，需要大概十分钟的时间。那么如果一个攻击者，即使有一个好的算法，只要一台电脑就能就能算出一个非常小的哈希值，那这个算法的效率必须是小于十分钟，否则就没有产生任何攻击效果。</p>
+<p>那我们看谷歌的这次找碰撞的这个算法，它用了多少时间计算呢？它给出了一些相当惊人的数字，这次攻击寻找碰撞的攻击他分了两个阶段，第一个阶段是要用CPU来进行计算，如果用单个CPU这种计算需要6500年。第二阶段是用GPU就是图形计算器来进行攻击，如果只用一个GPU，需要计算110年。</p>
+<p>谷歌有大量的硬件资源，它投入了成千上万个cpu/gpu计算，它才能把这次攻击缩短到几个月的时间，所以说比特币还是相当安全，因为现在有大量的矿工的使效率能够维持在十分钟。即使SH256算法有人发现了更快的攻击方法，但这个攻击方法如果不能小于十分钟的话，那它其实还是没有对比特币安全性产生太大影响。</p>
+<p>再退后一步，即使是将来的研究发展了，然后有更新更快的算法出来了，那么如果在2033年之前没有这种算法没有出现，那么比特币还是安全的，为什么？因为2033年就是差不多是我前面提到过就是比特币的挖矿奖励将为零的那一年。这一年之后，再做矿工的话，系统是不会产生新的比特币奖励了。那时候你的挖矿的激励就是靠每一笔交易里的交易费，但这个交易费是转账者自己来设定的，它可以设定得很低，也就是说到那时候做矿工的话有点像做活雷锋的感觉，即使有人有那个更快的算法，那么，但充其量也就是更方便别人去做活雷锋，那对比特币应该没有什么太大影响。</p>
+<p>另外，到那时候，即使这个哈希算法真的是有太严重的漏洞的话，还有一种可能性就是所有参与比特币游戏的人，大家软件一起升级，改用一个其他的哈希算法。那么前面也说过了这个比特币有一种少数服从多数的机制，如果大家多数人都已经换了一个新的算法，愿意把那个自己软件升级，你不升级，你没办法继续参与这个游戏，所以比特币在这方面安全性还是设定的相当好的。</p>
+<p>但这并不是说这你在其他场合就应该继续再用这种SHA-1的这个哈希算法，好的方法应该是你现在就应该用SHA二代或者三代的算法。我感觉对比特币来说最大的那个安全的挑战就是这个非对称加密体系，如果非对称加密体系被攻破了，那对比特币肯定是一个灭顶之灾（下一期节目里你会看到，中本聪对这一点也留了一手！），因为这个就等于每个人的账户都已经暴露了，这个才是最有风险的。但是这个非对称加密体系看起来是非常难以攻破的，因为你的攻破了这个加密体系的话，就相当于解决了一个数学上非常难的问题，是非常困难的。</p>
+<p>OK今天比特币的话题就聊到这里，希望大家喜欢。下一期，准备跟大家聊聊中本聪的身份，再见。</p>
+<p>收听“大老李聊数学”</p>
+<p><img class="alignnone size-full wp-image-380" src="https://dalaoliblog.files.wordpress.com/2017/10/ximalaya.png" alt="ximalaya" width="298" height="286" /></p>
+<p>订阅“大老李聊数学”</p>
+<p><img class="alignnone size-full wp-image-151" src="https://dalaoliblog.files.wordpress.com/2017/09/qrcode_for_gh_130ed4d8263c_344.jpg" alt="qrcode_for_gh_130ed4d8263c_344" width="344" height="344" /></p>
+</div></article>
+            </div>
+          </div></div></div>
+
+      <div class="page__footer">
+<div class="footer js-page-footer">
+  <div class="main"><aside  itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="大老李"><meta itemprop="url" content="https://dalaoli-shuxue.github.io/"><meta itemprop="description" content="I am an amazing person."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://dalaoli-shuxue.github.io/"><li title="给我发邮件。">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:liyouhua@gmail.com" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a></ul>
+</div>
+</div>
+    </aside>
+    <footer class="site-info"><p class="menu menu--center">
+        <span>© 大老李聊数学 2018</span>
+        <a type="application/rss+xml" href="/feed.xml">RSS</a>
+      </p>
+      <p>Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a succinct theme for blogging." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </p>
+    </footer>
+  </div>
+</div></div>
+    </div>
+  </div><div class="page__search-panel"><div class="search">
+  <div class="main">
+    <div class="search__header">搜索</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--secondary button--pill search__cancel js-search-toggle">
+        取消</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var searchData = window.TEXT_SEARCH_DATA ? initData(window.TEXT_SEARCH_DATA) : {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  function initData(data) {
+    var _data = [], i, j, key, keys, cur;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i], _data[key] = [];
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        cur.title = window.decodeUrl(cur.title);
+        cur.url = window.decodeUrl(cur.url);
+        _data[key].push(cur);
+      }
+    }
+    return _data;
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) {
+      return null;
+    }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $searchBox = $('.js-search-box');
+  var $searchInput = $searchBox.children('input');
+  var $searchClear = $searchBox.children('.js-icon-clear');
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function searchBoxEmpty() {
+    $searchBox.removeClass('not-empty'); $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+
+  $searchInput.on('input', window.throttle(function() {
+    var val = $(this).val();
+    if (val === '' || typeof val !== 'string') {
+      searchBoxEmpty();
+    } else {
+      $searchBox.addClass('not-empty'); $result.html(render(searchByQuery(val)));
+      $resultItems = $('.search-result__item'); activeIndex = 0;
+      $resultItems.eq(0).addClass('active');
+    }
+  }, 400));
+  $searchInput.on('focus', function() {
+    $(this).addClass('focus');
+  });
+  $searchInput.on('blur', function() {
+    $(this).removeClass('focus');
+  });
+  $searchClear.on('click', function() {
+    $searchInput.val(''); searchBoxEmpty();
+  });
+
+  // search panel
+  var $pageRoot = $('.js-page-root');
+  var $searchToggle = $('.js-search-toggle');
+  var showSearch = false;
+
+  function closeSearchPanel() {
+    $pageRoot.removeClass('show-search-panel');
+    $searchInput[0].blur();
+    setTimeout(function() {
+      $searchInput.val(''); searchBoxEmpty();
+      window.pageAsideAffix && window.pageAsideAffix.refresh();
+    }, 400);
+  }
+  function openSearchPanel() {
+    $pageRoot.addClass('show-search-panel');
+    $searchInput[0].focus();
+  }
+
+  // Char Code: 13  Enter, 27  ESC, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇, 83  S, 191 /
+  function isFormElement(e) {
+    var tagName = e.target.tagName || e.srcElement.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  }
+  function charCodeFilter(e) {
+    return e.target === $searchInput[0] && (e.which === 13 || e.which === 27 || e.which === 38 || e.which === 40);
+  }
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  $(document).on('keyup', function(e) {
+    if (!isFormElement(e) || charCodeFilter(e)) {
+      if (e.which === 83 || e.which === 191) {
+        showSearch || (showSearch = true, openSearchPanel());
+      } else if (e.which ===  27) {
+        showSearch && (showSearch = false, closeSearchPanel());
+      } else if (e.which === 38) {
+        showSearch && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        showSearch && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        showSearch && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+
+  $searchToggle.on('click', function() {
+    showSearch = !showSearch;
+    showSearch ? openSearchPanel() : closeSearchPanel();
+  });
+});</script></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $scroll;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop;
+    var offsetBottom = 0, disabled = false, scrollTarget = window, scroller = 'html, body', scroll = window.document;
+    var hasInit = false, isOverallScroller = true, curState;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.scroll && (scroll = _options.scroll);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+      isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+      $scroll = $(scroll);
+    }
+    function initData() {
+      top();
+      rootHeight = $root.outerHeight();
+      rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+      rootLeft = $root.offset().left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      if (curState !== 'top') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: 0
+        });
+        curState = 'top';
+      }
+    }
+    function fixed() {
+      if (curState !== 'fixed') {
+        $root.addClass('fixed').css({
+          left: rootLeft + 'px',
+          top: 0
+        });
+        curState = 'fixed';
+      }
+    }
+    function bottom() {
+      if (curState !== 'bottom') {
+        $root.removeClass('fixed').css({
+          left: 0,
+          top: rootBottomTop + 'px'
+        });
+        curState = 'bottom';
+      }
+    }
+    function setState() {
+      var scrollTop = $scrollTarget.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        fixed();
+      } else if (scrollTop < rootTop) {
+        top();
+      } else {
+        bottom();
+      }
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', function() {
+          disabled || (calc(true), setState());
+        });
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $scrollTarget, $scroller, $tocUl = $('<ul class="toc"></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+      _options.scroller && (scroller = _options.scroller);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      $scrollTarget = $(scrollTarget);
+      $scroller = $(scroller);
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).position().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $scrollTarget.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('active');
+      ($activeLast = $activeCur).addClass('active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 100 millisecond
+        interval = setInterval(function() {
+          calc();
+        }, 100);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 45000);
+        window.pageLoad.then(function() {
+          setTimeout(function() {
+            clearInterval(interval);
+            clearTimeout(timeout);
+          }, 3000);
+        });
+        $scrollTarget.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();/*(function () {
+
+})();*/</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();</script>
+  </body>
+</html>
