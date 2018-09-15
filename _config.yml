@@ -16,14 +16,15 @@
 
 ## => Site Settings
 ##############################
-text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
-highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-url     : # the base hostname & protocol for your site e.g. https://www.someone.com
+text_skin: ocean # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
+highlight_theme: tomorrow # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
+url     : https://dalaoli-shuxue.github.io # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : # does not include hostname
 title   : 大老李聊数学
 description: > # this means to ignore newlines until "Language & timezone"
-  Your Site Description
-
+  基本都是“大老李聊数学”音频节目讲稿
+  继续以半专业的好奇心解读专业的数学知识，给您轻松愉快的收听体验，带来更多好玩有意思的数学内容。
+  用收听的方式理解数学，跟您聊聊公理，悖论，数论，函数等各种数学相关话题。还会不定期汇报数学界最新成果和新闻。
 
 ## => Language and Timezone
 ##############################
@@ -38,7 +39,7 @@ author:
   name      : 大老李
   url       : https://dalaoli-shuxue.github.io/
   avatar    : # path or url of avatar image
-  bio       : I am an amazing person.
+  bio       : 爱数学的IT男，兼摇滚中年。
   email     : liyouhua@gmail.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
