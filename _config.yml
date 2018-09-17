@@ -22,9 +22,8 @@ url     : https://dalaoli-shuxue.github.io # the base hostname & protocol for yo
 baseurl : # does not include hostname
 title   : 大老李聊数学
 description: > # this means to ignore newlines until "Language & timezone"
-  基本都是“大老李聊数学”音频节目讲稿
+  “大老李聊数学”音频节目讲稿
   继续以半专业的好奇心解读专业的数学知识，给您轻松愉快的收听体验，带来更多好玩有意思的数学内容。
-  用收听的方式理解数学，跟您聊聊公理，悖论，数论，函数等各种数学相关话题。还会不定期汇报数学界最新成果和新闻。
 
 ## => Language and Timezone
 ##############################
@@ -95,7 +94,7 @@ chart: # false (default), true
 
 ## => Paginate
 ##############################
-paginate: 8
+paginate: 5
 paginate_path: /page:num # don't change this unless for special need
 
 
@@ -107,7 +106,8 @@ sources: # bootcdn (default), unpkg
 ## => Comments
 ##############################
 comments:
-  provider: disqus  # false (default), "disqus", "gitalk", "custom"
+  provider: disqus
+  #provider: disqus  # false (default), "disqus", "gitalk", "custom"
 
   ## Disqus
   disqus:
