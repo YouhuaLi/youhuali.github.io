@@ -1,6 +1,5 @@
 ---
----
-layout: page
+layout: article
 title: 24维晶体中特有的对称—有限单群分类定理（中）
 type: page
 parent_id: '0'
@@ -8,13 +7,12 @@ published: true
 status: publish
 key: page.youxiandanqun_zhong
 categories: 音频讲稿
-- 每周一题
-tags: []
+tags: ["群"]
 author:
   login: webcraft2013
   email: webcraft@gmail.com
   display_name: webcraft2013
-  first_name: '大老李'
+  first_name: ''
   last_name: ''
 ---
 
