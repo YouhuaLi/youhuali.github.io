@@ -1,0 +1,103 @@
+<h3 id="本期题目图中有多少个三角形">本期题目：图中有多少个三角形</h3>
+<p>题目来源: brilliant.org
+<img src="https://ds055uzetaobb.cloudfront.net/brioche/uploads/W4ARYDFaBX-frame.svg?width=400" alt="enter image description here" /></p>
+
+<p>请问：上图中一共有多少个三角形？</p>
+
+<p>请直接留言解答。</p>
+
+<hr />
+<h3 id="本期加餐题找出密码">本期加餐题：找出密码</h3>
+<p>题目来源：www.mathsisfun.com
+请找出一个6位数密码，它符合以下条件：</p>
+
+<ul>
+  <li>奇偶数交替出现（即没有连续的奇数和偶数，0算偶数）</li>
+  <li>相邻两个数字的差大于1</li>
+  <li>如果将6位数从左到右分为3组，则左边和中间的数是最右边的数的倍数。比如，如果密码是$\overline{abcdef}$，则$\overline{ef}$应该整除$\overline{ab}$和$\overline{cd}$。十位数可以是0。</li>
+</ul>
+
+<p>请找出所有这种6位数密码。
+请直接留言或发邮件至：liyouhua @gmail.com 解答</p>
+
+<hr />
+
+<h3 id="上周题目自我说明的数字">上周题目：自我说明的数字</h3>
+<blockquote>
+  <p>请你找一个10位数字，符合以下要求：</p>
+  <ul>
+    <li>第一位（最高位）恰好是这个数字中0的个数。</li>
+    <li>第二位恰好是这个数字中1的个数。</li>
+    <li>第三位恰好是这个数字中2的个数。</li>
+    <li>…..</li>
+    <li>第十位（个位）恰好是数字中9的个数。
+请找出这个数字（尝试找出所有答案）。</li>
+  </ul>
+</blockquote>
+
+<p>答案：6210001000，而且是唯一的答案。</p>
+
+<p>思路可以如此：首先稍加思索，你会注意到最终数字所有之和为10。
+先从考虑最高位，假设是9，其他各位上暂定都是0，因为0越多越容易处理。那么个位数必须是1，则第二位必须也是1，但这样产生矛盾。接下来类推最高位是8，7，6等等。最终你会发现唯一的答案是：</p>
+
+<p>6210001000，很有意思的一个数字！</p>
+
+<p>所有答对的答案已置为精华留言。</p>
+
+<hr />
+<h3 id="上期加餐题半球体的脱离角度">上期加餐题：半球体的脱离角度</h3>
+<blockquote>
+  <p>一个质量为m的质点，静止于一个表面光滑的，质量为M的半球体顶部。半球体静止在一个桌面上，接触面之间是光滑的。
+现在给m微小的向右速度，m开始滑落。</p>
+</blockquote>
+
+<p><img src="https://pic2.zhimg.com/80/v2-b7af375718470beed1a2bd2b12126771_hd.jpg" alt="enter image description here" /></p>
+<blockquote>
+  <p>问：在什么样的角度$\theta$时（从半球体顶部测量，即球心、半球最高点和m的位置构成的圆心角），质点m与半球体之间脱离接触？
+提示： 当m不等于M时，你找到一个以$\theta$为根的方程就足够了（是一个三次方程）。但m=M时，从方程中不难解出$\theta$的具体度数。</p>
+</blockquote>
+
+<p>答案：当m=M时，小球离开半球的角度约为$42.9^{\circ}$。解法：</p>
+
+<p>假设质点向右运动，$v_x$和$v_y$分别为水平和垂直速度，且规定向右和向下为正方向。记$V_x$为半球体的速度，且向左为正方向。水平方向上有动量守恒，则：</p>
+
+<script type="math/tex; mode=display">mv_x=MV_x\Rightarrow Vx=(\frac{m}{M})v_x</script>
+
+<p>考虑某个时刻，质点位于问题中，角度为$\theta$的某个位置。在局部，板球面等同于一个倾角为$\theta$的斜面，因此三个速度的相互关系为：</p>
+
+<script type="math/tex; mode=display">\frac{v_y}{v_x+V_x}=\tan \theta \Rightarrow v_y=\tan \theta (1+\frac{m}{M})v_x</script>
+
+<p>现在，让我们使用能量守恒定律。在质点位于角度$\theta$的位置时，质点下落的位移是：$R(1-\cos \theta)$，根据能量守恒定律，有：</p>
+
+<script type="math/tex; mode=display">\frac{1}{2}m(v_x^2+v_y^2)+\frac{1}{2}MV_x^2=mgR(1-\cos\theta)</script>
+
+<p>根据以上三式，可解出$v_x^2$为：</p>
+
+<script type="math/tex; mode=display">v_x^2=\frac{2gR(1-\cos\theta)}{(1+r)(1+(1+r)\tan^2\theta)}</script>
+
+<p>其中r定义为 $\frac{m}{M}$。</p>
+
+<p>以上解中，初始$v_x=0$，随$\theta$从0变化到某个最大值，再当$\theta=\frac{\pi}{2}$时，再次为0。但是实际运动中，$v_x$达到最大值后不会再变小，因为质点没有收到向左的力，使其“固定”在半球表面运动。</p>
+
+<p>实际情况中，当小球速度达到最大值后，其就与半球脱离了接触。因此问题就变为求上式中$v_x^2$的最大值。对该式关于$\theta$求导，可得当下式等于0时，$v_x^2$获得最大值：</p>
+
+<script type="math/tex; mode=display">r\cos^3{\theta}-3(1+r)\cos{\theta}+2(1+r)=0</script>
+
+<p>问题中，当r=1时，方程变为：</p>
+
+<script type="math/tex; mode=display">\cos^3{\theta}-6\cos{\theta}+4=0</script>
+
+<p>可解得$\theta$ 的实数解：</p>
+
+<p>$cos{\theta}=\sqrt{3}-1\Rightarrow \theta \approx 42.9^{\circ}$</p>
+
+<p>答对的有：闲来无事，张向阳。</p>
+
+<hr />
+
+<h3 id="在喜马拉雅fm收听大老李聊数学">在喜马拉雅FM收听：”大老李聊数学”：</h3>
+<p><img src="https://pic1.zhimg.com/80/v2-8d13d5180712a2921dbf634a4ab3ce78_hd.jpg" alt="enter image description here" /></p>
+
+<h3 id="关注大老李聊数学公众号-dalaoli_shuxue">关注“大老李聊数学”公众号： dalaoli_shuxue</h3>
+<h3 id="知乎专栏httpszhuanlanzhihucomdalaoli-shuxue">知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue</h3>
+
