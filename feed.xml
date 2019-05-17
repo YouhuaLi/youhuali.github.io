@@ -1,4 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-05-05T19:00:16-07:00</updated><id>/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">本期题目：图中有多少个三角形（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html" rel="alternate" type="text/html" title="本期题目：图中有多少个三角形（附上周答案）" /><published>2019-05-04T00:00:00-07:00</published><updated>2019-05-04T00:00:00-07:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98:%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2(%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88)</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html">&lt;h3 id=&quot;本期题目图中有多少个三角形&quot;&gt;本期题目：图中有多少个三角形&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-05-16T21:21:59-07:00</updated><id>/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">本期题目：砝码的设计（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1.html" rel="alternate" type="text/html" title="本期题目：砝码的设计（附上周答案）" /><published>2019-05-16T00:00:00-07:00</published><updated>2019-05-16T00:00:00-07:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1.html">&lt;h3 id=&quot;本期题目砝码的设计&quot;&gt;本期题目：砝码的设计&lt;/h3&gt;
+&lt;p&gt;题目来源: www.physics.harvard.edu
+&lt;img src=&quot;data:image/png;base64,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&quot; alt=&quot;enter image description here&quot; /&gt;
+你有一架天平。你想称量重量从1到121的所有物体（假设被称量物体重量总是整数）。你想用最少数量的砝码完成以上目标，请问应该如何设计砝码的重量，最少需要多少个砝码？&lt;/p&gt;
+
+&lt;p&gt;请直接留言解答。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h3 id=&quot;本期加餐题扩展的砝码设计&quot;&gt;本期加餐题：扩展的砝码设计&lt;/h3&gt;
+&lt;p&gt;题目来源：www.physics.harvard.ed
+&lt;img src=&quot;data:image/jpeg;base64,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&quot; alt=&quot;enter image description here&quot; /&gt;
+假设你有n个经过精妙重量设计的砝码，它们可以称量从1到W所有整数重量的物体，那么W的最大值是多少？ 这些砝码的重量是如何设计的？&lt;/p&gt;
+
+&lt;p&gt;请直接留言或发邮件至：liyouhua @gmail.com 解答&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;上周题目图中有多少个三角形&quot;&gt;上周题目：图中有多少个三角形&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://ds055uzetaobb.cloudfront.net/brioche/uploads/W4ARYDFaBX-frame.svg?width=400&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;请问：上图中一共有多少个三角形？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;答案：共有&lt;strong&gt;30&lt;/strong&gt;个三角形。强行数数也能数出来 ，不过我们还是用点数学的方法：&lt;/p&gt;
+
+&lt;p&gt;观察到这个图每旋转Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+2\pi/9\end{document}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;就能与自身重合，那么只要输出局部不含有中心的三角形，乘以9，就是所有不含有中心的三角形。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ds055uzetaobb.cloudfront.net/brioche/uploads/Pg9DGzoJnh-9star30t1.jpg?width=2400&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;局部这种三角形有三个（比如上图中绿色系的三个）。另外还有三个大三角形，因此三角形总是就是：&lt;/p&gt;
+
+&lt;p&gt;Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+9\times 3 +3=30\end{document}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;所有答对的答案已置为精华留言。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h3 id=&quot;上期加餐题找出密码&quot;&gt;上期加餐题：找出密码&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;请找出一个6位数密码，它符合以下条件：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;数字互不相同&lt;/li&gt;
+    &lt;li&gt;奇偶数交替出现（即没有连续的奇数和偶数，0算偶数）&lt;/li&gt;
+    &lt;li&gt;相邻两个数字的差大于1&lt;/li&gt;
+    &lt;li&gt;如果将6位数从左到右分为3组，则左边和中间的数是最右边的数的倍数。比如，如果密码是Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+\overline{abcdef}\end{document}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;，则Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+\overline{ef}\end{document}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;应该整除Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+\overline{ab}\end{document}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;和Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+\overline{cd}\end{document}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;。十位数可以是0。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;请找出所有这种6位数密码。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;答案：一共有5种这种密码，它们是：
+692703&lt;br /&gt;
+816903&lt;br /&gt;
+496307&lt;br /&gt;
+816309&lt;br /&gt;
+903618&lt;/p&gt;
+
+&lt;p&gt;一种可能的思考方法如下：&lt;/p&gt;
+
+&lt;p&gt;因为奇偶数字交替出现，且不重复，则找个密码的最末两位只可能是：
+03, 05, 07, 09, 14, 16, 18, 25, 27, 29, 30, 36, 38, 41, 47, 49。比它们再大的话，则不可能找出其他两位数是它的倍数。&lt;/p&gt;
+
+&lt;p&gt;对以上这些数依次检查其倍数，找出那些奇偶交错，且相差大于1的组合，只有：
+03的倍数：27, 63, 69, 81
+07的倍数：49, 63
+09的倍数： 27, 63, 81
+18的倍数 ： 36, 72, 90&lt;br /&gt;
+25没有符合条件的倍数。
+27没有符号条件的倍数。
+…
+此后再也没有 符合条件的数字了。
+根据以上的信息，就可以组合出那5组密码。&lt;/p&gt;
+
+&lt;p&gt;所有答对的答案已置为精华留言。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;在喜马拉雅fm收听大老李聊数学&quot;&gt;在喜马拉雅FM收听：”大老李聊数学”：&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://pic1.zhimg.com/80/v2-8d13d5180712a2921dbf634a4ab3ce78_hd.jpg&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;关注大老李聊数学公众号-dalaoli_shuxue&quot;&gt;关注“大老李聊数学”公众号： dalaoli_shuxue&lt;/h3&gt;
+&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：砝码的设计 题目来源: www.physics.harvard.edu 你有一架天平。你想称量重量从1到121的所有物体（假设被称量物体重量总是整数）。你想用最少数量的砝码完成以上目标，请问应该如何设计砝码的重量，最少需要多少个砝码？</summary></entry><entry><title type="html">本期题目：图中有多少个三角形（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html" rel="alternate" type="text/html" title="本期题目：图中有多少个三角形（附上周答案）" /><published>2019-05-04T00:00:00-07:00</published><updated>2019-05-04T00:00:00-07:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98:%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2(%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88)</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html">&lt;h3 id=&quot;本期题目图中有多少个三角形&quot;&gt;本期题目：图中有多少个三角形&lt;/h3&gt;
 &lt;p&gt;题目来源: brilliant.org
 &lt;img src=&quot;https://ds055uzetaobb.cloudfront.net/brioche/uploads/W4ARYDFaBX-frame.svg?width=400&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
 
