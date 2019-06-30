@@ -1,0 +1,99 @@
+<h3 id="本期题目-丢失的袜子">本期题目： 丢失的袜子</h3>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-FG7WD9DYykeAtOdEXqKwT9KyWz-5_L7fJh0a-Up7JaHmCwkjEg" alt="enter image description here" />
+题目来源：new scientist</p>
+
+<p>大老李的洗衣机会“吃”袜子，每洗一次后，总是会丢一只袜子（大老李深有体会！）。上周，大老李丢了所有袜子，只好新买了三双。每次我总是把所有袜子丢进洗衣机一起洗。</p>
+
+<p>那么，洗过三次之后，剩下三只单独袜子的概率是多少？或者说，大老李剩下至少一双完整的袜子的概率是多少？</p>
+
+<p>请直接留言或发邮件至：dalaoliliaoshuxue @gmail.com 解答</p>
+
+<hr />
+<h3 id="加餐题立方体的最大投影面积">加餐题：立方体的最大投影面积</h3>
+<p>题目来源：new scientist
+<img src="https://images.newscientist.com/wp-content/uploads/2019/05/14123104/g_puzzle_180519-300x547.jpg" alt="enter image description here" /></p>
+
+<p>大老李闲来无事，拿了一个骰子在太阳底下玩，我发现这个骰子在地面上能投下的阴影<strong>最小</strong>面积是一个正方形，面积为1平方米。</p>
+
+<p>请问：这个骰子能在地面投下的阴影面积<strong>最大</strong>是多少？</p>
+
+<p>请直接留言或发邮件至：dalaoliliaoshuxue @gmail.com 解答</p>
+
+<hr />
+
+<h3 id="上周题目书本的排列">上周题目：书本的排列</h3>
+<blockquote>
+  <p>书架上有六本数学书，六本语文书，四本英语书。每种科目的书都是一样的。问：把他们从左到右排成一排，共有多少种不一样的排法？</p>
+</blockquote>
+
+<p>答案: 1681680 。一种思路是先计算所有16本书的全排列数，为 <img src="/res/latex/latex-3393cc66f116ccef57ab997b6ab78f7f.png" />。</p>
+
+<p>在以上计算中，再去除其中重复计算的次数。考虑到有6本数学数，全排列数为6!，则排除因数学书排列造成的重复，应将<img src="/res/latex/latex-3393cc66f116ccef57ab997b6ab78f7f.png" />除以<img src="/res/latex/latex-af72175b5be05517ce6e83ab13fe860b.png" />。</p>
+
+<p>同样思路，则可知总的排列数为：</p>
+
+<p><img src="/res/latex/latex-7cd35a0504ef9a78f3514f408e17c63b.png" /></p>
+
+<hr />
+<h3 id="上期加餐题德国坦克问题">上期加餐题：德国坦克问题</h3>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Bundesarchiv_Bild_183-H26258,_Panzer_V_%22Panther%22.jpg/440px-Bundesarchiv_Bild_183-H26258,_Panzer_V_%22Panther%22.jpg" alt="enter image description here" /></p>
+<blockquote>
+  <p>二战中，英军情报人员得知，德国人生产某一批次坦克时，会对每一辆坦克进行标号，编号范围从1到N。
+某次，前线人员俘获德国某同一批次坦克四辆，其编号分别为：19，40，42，60。为这一批次，德国人最可能生产了多少量坦克？
+提示：此题用数学语言描述是：从1到N个数字中，进行4次随机（不重复）采样，得到19，40，42和60这四个数字，问：如何估计N的大小？</p>
+</blockquote>
+
+<p>答案：这是一道经典问题 ，很多朋友采用“期望值”估计法，即：</p>
+
+<p>因为样本均值为40.25，而总体均值为(1+N)/2，因此可以推出N≈79.5.</p>
+
+<p>但实践中更准确的是“频率论”的方法，记m为最大序号，k为采样次数， 则估计公式为：</p>
+
+<p><img src="/res/latex/latex-b34f716a7aac93bcd277a7544a9c6999.png" /></p>
+
+<p>按“贝叶斯分析”，则可求出N的估计函数为：</p>
+
+<p>Failed to render the following block of LaTeX:<br /></p>
+<pre><code>\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+\( {\displaystyle \Pr(N=n)={\begin{cases}0&amp;{\text{if }}n&lt;m\\{\frac {k-1}{k}}{\frac {\binom {m-1}{k-1}}{\binom {n}{k}}}&amp;{\text{if }}n\geq m,\end{cases}}}\)\end{document}</code></pre>
+
+<p>则可以得出以下估计：
+Failed to render the following block of LaTeX:<br /></p>
+<pre><code>\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+
+{\displaystyle {\begin{aligned}N&amp;\approx \mu \pm \sigma =88.5\pm 50.22,\\[5pt]\mu &amp;=(m-1){\frac {k-1}{k-2}},\\[5pt]\sigma &amp;={\sqrt {\frac {(k-1)(m-1)(m-k+1)}{(k-3)(k-2)^{2}}}}.\end{aligned}}}\)\end{document}</code></pre>
+
+<p>此题内容并非杜撰，而是历史史诗。以下摘自“维基百科”：</p>
+
+<hr />
+
+<p>在战争的过程中，<a href="https://zh.wikipedia.org/wiki/%E5%90%8C%E7%9B%9F%E5%9C%8B_(%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%B8%96%E7%95%8C%E5%A4%A7%E6%88%B0)" title="同盟国 (第二次世界大战)">西方盟国</a>一直在努力确定德国的生产速度，并以两种主要方式得到这个数据：常规情报收集和统计估计。大部分情况下，统计估计的可信度很大程度上决定于常规情报收集。而有时常规情报收集会和统计估计一起结合使用，如在D日前夕估计豹式坦克的生产速度。</p>
+
+<p>盟军指挥机构已经注意到了出现在意大利的<a href="https://zh.wikipedia.org/wiki/%E8%B1%B9%E5%BC%8F%E5%9D%A6%E5%85%8B" title="豹式坦克">五号坦克</a>（豹式坦克），速度快，装备有75 mm/L70长管战车炮，是很不寻常的重型坦克，但在法国北部编号就很小，就和<a href="https://zh.wikipedia.org/wiki/%E8%99%8EI%E5%9D%A6%E5%85%8B" title="虎I坦克">虎I坦克</a>在突尼斯那样。由于<a href="https://zh.wikipedia.org/wiki/%E8%B0%A2%E5%B0%94%E6%9B%BC%E5%9D%A6%E5%85%8B" title="谢尔曼坦克">谢尔曼坦克</a>在对阵<a href="https://zh.wikipedia.org/wiki/%E4%B8%89%E5%8F%B7%E5%9D%A6%E5%85%8B" title="三号坦克">三号坦克</a>和<a href="https://zh.wikipedia.org/wiki/%E5%9B%9B%E8%99%9F%E5%9D%A6%E5%85%8B" title="四号坦克">四号坦克</a>时表现良好，美国陆军对它非常自信，以至于迫不及待地希望与他们相遇<a href="https://zh.wikipedia.org/zh-cn/%E5%BE%B7%E5%9B%BD%E5%9D%A6%E5%85%8B%E9%97%AE%E9%A2%98#cite_note-2">[N 1]</a>。就在<a href="https://zh.wikipedia.org/wiki/D%E6%97%A5" title="D日">D日</a>的不久前，有消息称德国手中有大量的五号坦克。</p>
+
+<p>为了确定这种说法的真实性，盟军要尝试估计正在生产坦克的数量。为此，他们要使用被缴获或被摧毁的坦克的序列号。他们主要使用变速箱的号码，因为其为两个完整的序列。底盘和发动机号码也有使用，但它们的编号规则比较复杂。各种其他的零件用来对分析结果进行交叉检查。对轮胎也做了类似的分析，其上观察到了顺序编号（即1、2、3、……、<em>N</em>)。</p>
+
+<p>对坦克车轮的分析产生了对使用中的车轮模具数量的估计。在与英国车轮制造商讨论过后，他们估计了这么多的模具可以生产多少车轮，进而是每个月可生产的坦克数量。对两辆坦克（每辆32个车轮，总计64个车轮）车轮的分析的结果是1944年2月的生产数量估计在270左右，大大超出此前预期。</p>
+
+<p>德国战后公布的记录显示，1944年2月一个月的生产量是276辆。统计方法结果的精确度是常规情报收集方法所远远不能达到的，而“德国坦克问题”这个词也成为了这种统计分析问题的标志。</p>
+
+<p>估计产量并不是这种序列号分析的唯一应用。它也用于探查更多德国生产的信息，包括工厂数目、工厂的相对重要性、供应链长度（基于生产和使用之间的滞后程度）、生产工艺的改变、及对诸如橡胶等资源的使用。</p>
+
+<hr />
+
+<p>大老李考虑将来用音频专门讲解一次这个话题。</p>
+
+<hr />
+
+<h4 id="喜马拉雅fm大老李聊数学">喜马拉雅FM：”大老李聊数学”：</h4>
+<h4 id="关注大老李聊数学公众号-dalaoli_shuxue">关注“大老李聊数学”公众号： dalaoli_shuxue</h4>
+<h4 id="知乎专栏httpszhuanlanzhihucomdalaoli-shuxue">知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue</h4>
+

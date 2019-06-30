@@ -1,4 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-06-10T20:06:21-07:00</updated><id>/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Pvsnp</title><link href="/2019/06/10/pvsnp.html" rel="alternate" type="text/html" title="Pvsnp" /><published>2019-06-10T00:00:00-07:00</published><updated>2019-06-10T00:00:00-07:00</updated><id>/2019/06/10/pvsnp</id><content type="html" xml:base="/2019/06/10/pvsnp.html">&lt;p&gt;价值百万美元的问题 – P vs NP 问题&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-06-29T20:39:16-07:00</updated><id>/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">丢失的袜子</title><link href="/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90.html" rel="alternate" type="text/html" title="丢失的袜子" /><published>2019-06-29T00:00:00-07:00</published><updated>2019-06-29T00:00:00-07:00</updated><id>/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90</id><content type="html" xml:base="/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90.html">&lt;h3 id=&quot;本期题目-丢失的袜子&quot;&gt;本期题目： 丢失的袜子&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-FG7WD9DYykeAtOdEXqKwT9KyWz-5_L7fJh0a-Up7JaHmCwkjEg&quot; alt=&quot;enter image description here&quot; /&gt;
+题目来源：new scientist&lt;/p&gt;
+
+&lt;p&gt;大老李的洗衣机会“吃”袜子，每洗一次后，总是会丢一只袜子（大老李深有体会！）。上周，大老李丢了所有袜子，只好新买了三双。每次我总是把所有袜子丢进洗衣机一起洗。&lt;/p&gt;
+
+&lt;p&gt;那么，洗过三次之后，剩下三只单独袜子的概率是多少？或者说，大老李剩下至少一双完整的袜子的概率是多少？&lt;/p&gt;
+
+&lt;p&gt;请直接留言或发邮件至：dalaoliliaoshuxue @gmail.com 解答&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h3 id=&quot;加餐题立方体的最大投影面积&quot;&gt;加餐题：立方体的最大投影面积&lt;/h3&gt;
+&lt;p&gt;题目来源：new scientist
+&lt;img src=&quot;https://images.newscientist.com/wp-content/uploads/2019/05/14123104/g_puzzle_180519-300x547.jpg&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;大老李闲来无事，拿了一个骰子在太阳底下玩，我发现这个骰子在地面上能投下的阴影&lt;strong&gt;最小&lt;/strong&gt;面积是一个正方形，面积为1平方米。&lt;/p&gt;
+
+&lt;p&gt;请问：这个骰子能在地面投下的阴影面积&lt;strong&gt;最大&lt;/strong&gt;是多少？&lt;/p&gt;
+
+&lt;p&gt;请直接留言或发邮件至：dalaoliliaoshuxue @gmail.com 解答&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;上周题目书本的排列&quot;&gt;上周题目：书本的排列&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;书架上有六本数学书，六本语文书，四本英语书。每种科目的书都是一样的。问：把他们从左到右排成一排，共有多少种不一样的排法？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;答案: 1681680 。一种思路是先计算所有16本书的全排列数，为 &lt;img src=&quot;/res/latex/latex-3393cc66f116ccef57ab997b6ab78f7f.png&quot; /&gt;。&lt;/p&gt;
+
+&lt;p&gt;在以上计算中，再去除其中重复计算的次数。考虑到有6本数学数，全排列数为6!，则排除因数学书排列造成的重复，应将&lt;img src=&quot;/res/latex/latex-3393cc66f116ccef57ab997b6ab78f7f.png&quot; /&gt;除以&lt;img src=&quot;/res/latex/latex-af72175b5be05517ce6e83ab13fe860b.png&quot; /&gt;。&lt;/p&gt;
+
+&lt;p&gt;同样思路，则可知总的排列数为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-7cd35a0504ef9a78f3514f408e17c63b.png&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h3 id=&quot;上期加餐题德国坦克问题&quot;&gt;上期加餐题：德国坦克问题&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Bundesarchiv_Bild_183-H26258,_Panzer_V_%22Panther%22.jpg/440px-Bundesarchiv_Bild_183-H26258,_Panzer_V_%22Panther%22.jpg&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;二战中，英军情报人员得知，德国人生产某一批次坦克时，会对每一辆坦克进行标号，编号范围从1到N。
+某次，前线人员俘获德国某同一批次坦克四辆，其编号分别为：19，40，42，60。为这一批次，德国人最可能生产了多少量坦克？
+提示：此题用数学语言描述是：从1到N个数字中，进行4次随机（不重复）采样，得到19，40，42和60这四个数字，问：如何估计N的大小？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;答案：这是一道经典问题 ，很多朋友采用“期望值”估计法，即：&lt;/p&gt;
+
+&lt;p&gt;因为样本均值为40.25，而总体均值为(1+N)/2，因此可以推出N≈79.5.&lt;/p&gt;
+
+&lt;p&gt;但实践中更准确的是“频率论”的方法，记m为最大序号，k为采样次数， 则估计公式为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-b34f716a7aac93bcd277a7544a9c6999.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;按“贝叶斯分析”，则可求出N的估计函数为：&lt;/p&gt;
+
+&lt;p&gt;Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+\( {\displaystyle \Pr(N=n)={\begin{cases}0&amp;amp;{\text{if }}n&amp;lt;m\\{\frac {k-1}{k}}{\frac {\binom {m-1}{k-1}}{\binom {n}{k}}}&amp;amp;{\text{if }}n\geq m,\end{cases}}}\)\end{document}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;则可以得出以下估计：
+Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
+\usepackage{pst-all}
+\usepackage{pst-3dplot}
+\begin{document}
+\pagestyle{empty}
+
+{\displaystyle {\begin{aligned}N&amp;amp;\approx \mu \pm \sigma =88.5\pm 50.22,\\[5pt]\mu &amp;amp;=(m-1){\frac {k-1}{k-2}},\\[5pt]\sigma &amp;amp;={\sqrt {\frac {(k-1)(m-1)(m-k+1)}{(k-3)(k-2)^{2}}}}.\end{aligned}}}\)\end{document}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;此题内容并非杜撰，而是历史史诗。以下摘自“维基百科”：&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;在战争的过程中，&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%90%8C%E7%9B%9F%E5%9C%8B_(%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%B8%96%E7%95%8C%E5%A4%A7%E6%88%B0)&quot; title=&quot;同盟国 (第二次世界大战)&quot;&gt;西方盟国&lt;/a&gt;一直在努力确定德国的生产速度，并以两种主要方式得到这个数据：常规情报收集和统计估计。大部分情况下，统计估计的可信度很大程度上决定于常规情报收集。而有时常规情报收集会和统计估计一起结合使用，如在D日前夕估计豹式坦克的生产速度。&lt;/p&gt;
+
+&lt;p&gt;盟军指挥机构已经注意到了出现在意大利的&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E8%B1%B9%E5%BC%8F%E5%9D%A6%E5%85%8B&quot; title=&quot;豹式坦克&quot;&gt;五号坦克&lt;/a&gt;（豹式坦克），速度快，装备有75 mm/L70长管战车炮，是很不寻常的重型坦克，但在法国北部编号就很小，就和&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E8%99%8EI%E5%9D%A6%E5%85%8B&quot; title=&quot;虎I坦克&quot;&gt;虎I坦克&lt;/a&gt;在突尼斯那样。由于&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E8%B0%A2%E5%B0%94%E6%9B%BC%E5%9D%A6%E5%85%8B&quot; title=&quot;谢尔曼坦克&quot;&gt;谢尔曼坦克&lt;/a&gt;在对阵&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E4%B8%89%E5%8F%B7%E5%9D%A6%E5%85%8B&quot; title=&quot;三号坦克&quot;&gt;三号坦克&lt;/a&gt;和&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%9B%9B%E8%99%9F%E5%9D%A6%E5%85%8B&quot; title=&quot;四号坦克&quot;&gt;四号坦克&lt;/a&gt;时表现良好，美国陆军对它非常自信，以至于迫不及待地希望与他们相遇&lt;a href=&quot;https://zh.wikipedia.org/zh-cn/%E5%BE%B7%E5%9B%BD%E5%9D%A6%E5%85%8B%E9%97%AE%E9%A2%98#cite_note-2&quot;&gt;[N 1]&lt;/a&gt;。就在&lt;a href=&quot;https://zh.wikipedia.org/wiki/D%E6%97%A5&quot; title=&quot;D日&quot;&gt;D日&lt;/a&gt;的不久前，有消息称德国手中有大量的五号坦克。&lt;/p&gt;
+
+&lt;p&gt;为了确定这种说法的真实性，盟军要尝试估计正在生产坦克的数量。为此，他们要使用被缴获或被摧毁的坦克的序列号。他们主要使用变速箱的号码，因为其为两个完整的序列。底盘和发动机号码也有使用，但它们的编号规则比较复杂。各种其他的零件用来对分析结果进行交叉检查。对轮胎也做了类似的分析，其上观察到了顺序编号（即1、2、3、……、&lt;em&gt;N&lt;/em&gt;)。&lt;/p&gt;
+
+&lt;p&gt;对坦克车轮的分析产生了对使用中的车轮模具数量的估计。在与英国车轮制造商讨论过后，他们估计了这么多的模具可以生产多少车轮，进而是每个月可生产的坦克数量。对两辆坦克（每辆32个车轮，总计64个车轮）车轮的分析的结果是1944年2月的生产数量估计在270左右，大大超出此前预期。&lt;/p&gt;
+
+&lt;p&gt;德国战后公布的记录显示，1944年2月一个月的生产量是276辆。统计方法结果的精确度是常规情报收集方法所远远不能达到的，而“德国坦克问题”这个词也成为了这种统计分析问题的标志。&lt;/p&gt;
+
+&lt;p&gt;估计产量并不是这种序列号分析的唯一应用。它也用于探查更多德国生产的信息，包括工厂数目、工厂的相对重要性、供应链长度（基于生产和使用之间的滞后程度）、生产工艺的改变、及对诸如橡胶等资源的使用。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;大老李考虑将来用音频专门讲解一次这个话题。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;喜马拉雅fm大老李聊数学&quot;&gt;喜马拉雅FM：”大老李聊数学”：&lt;/h4&gt;
+&lt;h4 id=&quot;关注大老李聊数学公众号-dalaoli_shuxue&quot;&gt;关注“大老李聊数学”公众号： dalaoli_shuxue&lt;/h4&gt;
+&lt;h4 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h4&gt;</content><author><name></name></author><summary type="html">本期题目： 丢失的袜子 题目来源：new scientist</summary></entry><entry><title type="html">Pvsnp</title><link href="/2019/06/10/pvsnp.html" rel="alternate" type="text/html" title="Pvsnp" /><published>2019-06-10T00:00:00-07:00</published><updated>2019-06-10T00:00:00-07:00</updated><id>/2019/06/10/pvsnp</id><content type="html" xml:base="/2019/06/10/pvsnp.html">&lt;p&gt;价值百万美元的问题 – P vs NP 问题&lt;/p&gt;
 
 &lt;p&gt;大家好，我是大老李。今天跟大家聊聊算法复杂度(Complexcity)问题。学过计算机算法课程的听众肯定听说过“多项式复杂度”，“指数复杂度”这些名词，还有著名的“P vs NP问题”。本期节目就来聊聊“P vs NP问题”。&lt;/p&gt;
 
