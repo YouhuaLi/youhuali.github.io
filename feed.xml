@@ -1,4 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-06-29T20:39:16-07:00</updated><id>/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">丢失的袜子</title><link href="/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90.html" rel="alternate" type="text/html" title="丢失的袜子" /><published>2019-06-29T00:00:00-07:00</published><updated>2019-06-29T00:00:00-07:00</updated><id>/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90</id><content type="html" xml:base="/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90.html">&lt;h3 id=&quot;本期题目-丢失的袜子&quot;&gt;本期题目： 丢失的袜子&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-03T18:31:17+08:00</updated><id>/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">无理数与无理数还不一样–超越数简谈</title><link href="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2019/08/03/%E6%97%A0%E7%90%86%E6%95%B0%E4%B8%8E%E6%97%A0%E7%90%86%E6%95%B0%E8%BF%98%E4%B8%8D%E4%B8%80%E6%A0%B7-%E8%B6%85%E8%B6%8A%E6%95%B0%E7%AE%80%E8%B0%88.html" rel="alternate" type="text/html" title="无理数与无理数还不一样--超越数简谈" /><published>2019-08-03T00:00:00+08:00</published><updated>2019-08-03T00:00:00+08:00</updated><id>/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2019/08/03/%E6%97%A0%E7%90%86%E6%95%B0%E4%B8%8E%E6%97%A0%E7%90%86%E6%95%B0%E8%BF%98%E4%B8%8D%E4%B8%80%E6%A0%B7--%E8%B6%85%E8%B6%8A%E6%95%B0%E7%AE%80%E8%B0%88</id><content type="html" xml:base="/%E9%9F%B3%E9%A2%91%E8%AE%B2%E7%A8%BF/2019/08/03/%E6%97%A0%E7%90%86%E6%95%B0%E4%B8%8E%E6%97%A0%E7%90%86%E6%95%B0%E8%BF%98%E4%B8%8D%E4%B8%80%E6%A0%B7-%E8%B6%85%E8%B6%8A%E6%95%B0%E7%AE%80%E8%B0%88.html">&lt;p&gt;大家好，我是大老李。这期我们聊聊“超越数”，超越数是无理数的一种，所有超越数都无理数，但有些无理数不是超越数。我之前提到过，“如无必要，勿增实体”的奥卡姆剃刀原则，那我们为什么要在无理数集合内，再挖出一个超越数的坑呢？&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/NumberSetinC.svg/500px-NumberSetinC.svg.png&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以，我们一定要考虑一下，为什么要定义“超越数”？这个问题还是可以从我们熟悉的无理数开始说起。我们熟悉的无理数，比如有根号2，根号3，还有就是&lt;img src=&quot;/res/latex/latex-df093356d7b770c3e4fb64c4ea019413.png&quot; /&gt;, &lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;这种数学常数。但你有没有感觉根号2、根号3这种无理数，与同为无理数的e和pi的是不是有些区别呢？如果让你在无理数里面给数字分类，相信你肯定会把根号2和根号3分为一类，&lt;img src=&quot;/res/latex/latex-df093356d7b770c3e4fb64c4ea019413.png&quot; /&gt;和&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;分为另一类，那么它们的区别在哪里呢？&lt;/p&gt;
+
+&lt;p&gt;还是有区别的，这个区别可以用这智力题来体现：请你写一个方程，使它有一个根是&lt;img src=&quot;/res/latex/latex-6754e7f110293fc42b74e79e8eec10a8.png&quot; /&gt;，但是方程本身不能出现&lt;img src=&quot;/res/latex/latex-6754e7f110293fc42b74e79e8eec10a8.png&quot; /&gt;？这个问题是不是太简单了，比如&lt;img src=&quot;/res/latex/latex-d445634e909eba59cd7a69044842623f.png&quot; /&gt;就可以了。&lt;/p&gt;
+
+&lt;p&gt;同样，这个问题你也可以换成其他数字，比如&lt;img src=&quot;/res/latex/latex-6e13c3c5e01b1084b186e536ed50f121.png&quot; /&gt;。找一个方程，它有一个解是&lt;img src=&quot;/res/latex/latex-6e13c3c5e01b1084b186e536ed50f121.png&quot; /&gt;，但方程本身不能出现&lt;img src=&quot;/res/latex/latex-6e13c3c5e01b1084b186e536ed50f121.png&quot; /&gt;。这个问题也挺简单的，你可以先设&lt;img src=&quot;/res/latex/latex-6151845b4b05b572ac46bd401a66a365.png&quot; /&gt;，然后两边平方，再移项，再作平方等等。反正你只要知道平方能起到消根号的作用。具体过程留给听众推导了。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;构造一个代数方程（系数为有理数的一元n次方程），使其有一个根为&lt;img src=&quot;/res/latex/latex-6e13c3c5e01b1084b186e536ed50f121.png&quot; /&gt;的简单过程：
+设：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-6151845b4b05b572ac46bd401a66a365.png&quot; /&gt;，两边平方，得：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-dfcd793bb8e3d2ff43722efb5b71bc91.png&quot; /&gt;，移项：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-61970ccb672cb83176843205021a5adf.png&quot; /&gt;，再两边平方即可。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;但现在我把数字换成&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;会如何？找一个方程，它有一个解&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;，但是方程本身不能出现&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;？你是不是一下子傻了？你不能说&lt;img src=&quot;/res/latex/latex-be117d7e71b403d66fbc2cc36eda7d6a.png&quot; /&gt;这种方程，因为我规定方程里不能有&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;。这里面你就能看出，一个根号2与&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;的本质区别，&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;不能用若干根号的加减乘除组合表示出来的，所以它不能成为我们 课堂上所学的那种代数方程的根。&lt;/p&gt;
+
+&lt;p&gt;代数方程就是我们在学校里学的一元二次方程的扩展为一元n次方程。这里面n是自然数，且方程的系数都是有理数。&lt;/p&gt;
+
+&lt;p&gt;而显然&lt;img src=&quot;/res/latex/latex-df093356d7b770c3e4fb64c4ea019413.png&quot; /&gt;和&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;都不能用若干根号表示出来，否则我们很可能就不用引入&lt;img src=&quot;/res/latex/latex-df093356d7b770c3e4fb64c4ea019413.png&quot; /&gt;和&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;这两个符号了对不对？因此数学家定义了，那种可以是代数方程根的数为“代数数”，这其中包括了所有有理数和那种可以用若干根号组合表示出来的无理数。而不可以的成为代数方程根的数，就叫做“超越数”。&lt;/p&gt;
+
+&lt;p&gt;那你可能又有问题了，区分代数数和超越数有意义吗？没有意义的话，就不应该引入对不对？你这个思路非常对，那么数学家既然定义了超越数，那必然有用。&lt;/p&gt;
+
+&lt;p&gt;首先数学家发现，“几乎”所有的实数都是超越数。哇，这是不是很吃惊？首先，这里的“几乎”这次词是数学用语，如果你不知道“几乎”的含义，那你可以搜索我之前的一期题为“我几乎懂了”的节目。&lt;/p&gt;
+
+&lt;p&gt;“几乎”所有的实数都是超越数这句话告诉我们：实数里超越数是占主要部分的，代数数与超越数相比是可以忽略不计的。对这个结论，了解一点无穷基数理论的听众可以这样理解：我们知道有理数是可数集，也就是我们有一个方法可以把所有有理数一个一个写下来，写成一个序列，这个序列包含所有有理数。这样感觉它们就可以数数一样，所以称为“可数”集。&lt;/p&gt;
+
+&lt;p&gt;然后数学家还发现如果把有理数扩展到代数数，仍然是可数的，代数数仍然是可以排队排出来的。那我们已经知道实数是不可数，那么结论就只有超越数是真正不可数的，所以说“几乎所有实数都是超越数”。这是很反直觉的对不对？所以定义超越数就太有必要了，原来我们一直讨论的实数，其实基本都是超越数啊。&lt;/p&gt;
+
+&lt;p&gt;但是，虽然我们知道“几乎所有实数都是超越数”，证明一个数字是超越数却非常难。比如你要证明&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;不能用若干根号表示出来，你怎么证明呢？其实到1768年，才第一次证明&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;是无理数，而证明&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;是超越数又过了100多年，要迟到1882年。也正因为证明了&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;是超越数，人类才彻底解决了古希腊三大几何难题中最难的一个“化圆为方”问题。&lt;/p&gt;
+
+&lt;p&gt;其原因在于我们已经证明尺规作图只能作出特定形状的一些代数数长度的线段，超越数长度的线段是不可能作出来的。所以证明pi为超越数，就证明“化圆为方”问题无解。&lt;/p&gt;
+
+&lt;p&gt;除了&lt;img src=&quot;/res/latex/latex-0671e127be52886bc54dbfe1e58e5446.png&quot; /&gt;，数学家也证明了比如&lt;img src=&quot;/res/latex/latex-df093356d7b770c3e4fb64c4ea019413.png&quot; /&gt;, &lt;img src=&quot;/res/latex/latex-7ab685f68d36cdfefc8d0cabde8d2ece.png&quot; /&gt;，
+&lt;img src=&quot;/res/latex/latex-ad8cdd8e2ecfb718c9503a9f1dfd4448.png&quot; /&gt;，这些数都是超越数。但是目前已经被被证明是超越数的数非常少，倒是很多感觉上必须是超越数的数，我们都还不能证明：比如&lt;img src=&quot;/res/latex/latex-220abd684662464fe0a22b150add0472.png&quot; /&gt;，&lt;img src=&quot;/res/latex/latex-8dc3fdaefa380e6dd61f7245834dd525.png&quot; /&gt;，&lt;img src=&quot;/res/latex/latex-9972ddc2d6c73ddff1f68503c64107f2.png&quot; /&gt;, &lt;img src=&quot;/res/latex/latex-052e1e01f6d4ab09ddbd3e700e6c9a5b.png&quot; /&gt;，&lt;img src=&quot;/res/latex/latex-4ffbd37070bbcd6a1f1e3f67a8a6aece.png&quot; /&gt;, &lt;img src=&quot;/res/latex/latex-28ea6fafc3691d05adcf3aa4eb1b482a.png&quot; /&gt;等等，这些数是否是超越数，都未能证明。再比如以前节目中提到过的欧拉-马斯刻若尼常数，虽然猜想是超越数，但现在都没能证明这个数字是无理数。&lt;/p&gt;
+
+&lt;p&gt;由此可见，超越数虽然多，但是却很神秘。&lt;/p&gt;
+
+&lt;p&gt;以上我们说明了无理数跟无理数还不一样，那有没有办法更精细的对无理数分类的，比一比无理数中谁的“无理”程度“更高”呢？还真有人真么做了。1932年，荷兰数学家库尔特·马勒就提出了一个实数的“无理性”度量，就是度量一个实数到底“无理”到什么程度，取值范围从0到无穷大的整数。对有理数来说，这个度量值就是0，因为它有理，一点不无理。对根号2来说就是1，这就是无理数里面“无理”程度最小的。而超越数的无理数度量最小是2，比如现在知道&lt;img src=&quot;/res/latex/latex-54cf29c57a2af0c5a219f0a691b49e56.png&quot; /&gt;的无理性度量上限是2.5等等。&lt;/p&gt;
+
+&lt;p&gt;好了，以上就是简单介绍了一下超越数概念。其实它本身概念不难，但因为在今后节目中，大老李会时不时提到超越数这个概念，所以简单介绍一下，下期再见！&lt;/p&gt;
+
+&lt;p&gt;参考链接：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://mathworld.wolfram.com/TranscendentalNumber.html&quot;&gt;http://mathworld.wolfram.com/TranscendentalNumber.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E8%B6%85%E8%B6%8A%E6%95%B8&quot;&gt;https://zh.wikipedia.org/wiki/%E8%B6%85%E8%B6%8A%E6%95%B8&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;login&quot;=&gt;&quot;大老李&quot;, &quot;email&quot;=&gt;&quot;dalaoliliaoshuxue@gmail.com&quot;, &quot;display_name&quot;=&gt;&quot;大老李&quot;, &quot;first_name&quot;=&gt;&quot;&quot;, &quot;last_name&quot;=&gt;&quot;&quot;}</name><email>dalaoliliaoshuxue@gmail.com</email></author><category term="音频讲稿" /><summary type="html">大家好，我是大老李。这期我们聊聊“超越数”，超越数是无理数的一种，所有超越数都无理数，但有些无理数不是超越数。我之前提到过，“如无必要，勿增实体”的奥卡姆剃刀原则，那我们为什么要在无理数集合内，再挖出一个超越数的坑呢？</summary></entry><entry><title type="html">无理数与无理数还不一样 超越数简谈.md.bak</title><link href="/2019/08/03/%E6%97%A0%E7%90%86%E6%95%B0%E4%B8%8E%E6%97%A0%E7%90%86%E6%95%B0%E8%BF%98%E4%B8%8D%E4%B8%80%E6%A0%B7-%E8%B6%85%E8%B6%8A%E6%95%B0%E7%AE%80%E8%B0%88.md.bak.html" rel="alternate" type="text/html" title="无理数与无理数还不一样  超越数简谈.md.bak" /><published>2019-08-03T00:00:00+08:00</published><updated>2019-08-03T00:00:00+08:00</updated><id>/2019/08/03/%E6%97%A0%E7%90%86%E6%95%B0%E4%B8%8E%E6%97%A0%E7%90%86%E6%95%B0%E8%BF%98%E4%B8%8D%E4%B8%80%E6%A0%B7--%E8%B6%85%E8%B6%8A%E6%95%B0%E7%AE%80%E8%B0%88.md.bak</id><content type="html" xml:base="/2019/08/03/%E6%97%A0%E7%90%86%E6%95%B0%E4%B8%8E%E6%97%A0%E7%90%86%E6%95%B0%E8%BF%98%E4%B8%8D%E4%B8%80%E6%A0%B7-%E8%B6%85%E8%B6%8A%E6%95%B0%E7%AE%80%E8%B0%88.md.bak.html">&lt;p&gt;大家好，我是大老李。这期我们聊聊“超越数”，超越数是无理数的一种，所有超越数都无理数，但有些无理数不是超越数。我之前提到过，“如无必要，勿增实体”的奥卡姆剃刀原则，那我们为什么要在无理数集合内，再挖出一个超越数的坑呢？&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/NumberSetinC.svg/500px-NumberSetinC.svg.png&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以，我们一定要考虑一下，为什么要定义“超越数”？这个问题还是可以从我们熟悉的无理数开始说起。我们熟悉的无理数，比如有根号2，根号3，还有就是$e$, $\pi$这种数学常数。但你有没有感觉根号2、根号3这种无理数，与同为无理数的e和pi的是不是有些区别呢？如果让你在无理数里面给数字分类，相信你肯定会把根号2和根号3分为一类，$e$和$\pi$分为另一类，那么它们的区别在哪里呢？&lt;/p&gt;
+
+&lt;p&gt;还是有区别的，这个区别可以用这智力题来体现：请你写一个方程，使它有一个根是$\sqrt{2}$，但是方程本身不能出现$\sqrt{2}$？这个问题是不是太简单了，比如$x^2=2$就可以了。&lt;/p&gt;
+
+&lt;p&gt;同样，这个问题你也可以换成其他数字，比如$\sqrt{2}+\sqrt{3}$。找一个方程，它有一个解是$\sqrt{2}+\sqrt{3}$，但方程本身不能出现$\sqrt{2}+\sqrt{3}$。这个问题也挺简单的，你可以先设$x=\sqrt{2}+\sqrt{3}$，然后两边平方，再移项，再作平方等等。反正你只要知道平方能起到消根号的作用。具体过程留给听众推导了。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;构造一个代数方程（系数为有理数的一元n次方程），使其有一个根为$\sqrt{2}+\sqrt{3}$的简单过程：
+设：&lt;/p&gt;
+
+&lt;p&gt;$x=\sqrt{2}+\sqrt{3}$，两边平方，得：&lt;/p&gt;
+
+&lt;p&gt;$x^2=5+2\sqrt{6}$，移项：&lt;/p&gt;
+
+&lt;p&gt;$x^2-5=2\sqrt{6}$，再两边平方即可。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;但现在我把数字换成$\pi$会如何？找一个方程，它有一个解$\pi$，但是方程本身不能出现$\pi$？你是不是一下子傻了？你不能说$x^2=\pi^2$这种方程，因为我规定方程里不能有$\pi$。这里面你就能看出，一个根号2与$\pi$的本质区别，$\pi$不能用若干根号的加减乘除组合表示出来的，所以它不能成为我们 课堂上所学的那种代数方程的根。&lt;/p&gt;
+
+&lt;p&gt;代数方程就是我们在学校里学的一元二次方程的扩展为一元n次方程。这里面n是自然数，且方程的系数都是有理数。&lt;/p&gt;
+
+&lt;p&gt;而显然$e$和$\pi$都不能用若干根号表示出来，否则我们很可能就不用引入$e$和$\pi$这两个符号了对不对？因此数学家定义了，那种可以是代数方程根的数为“代数数”，这其中包括了所有有理数和那种可以用若干根号组合表示出来的无理数。而不可以的成为代数方程根的数，就叫做“超越数”。&lt;/p&gt;
+
+&lt;p&gt;那你可能又有问题了，区分代数数和超越数有意义吗？没有意义的话，就不应该引入对不对？你这个思路非常对，那么数学家既然定义了超越数，那必然有用。&lt;/p&gt;
+
+&lt;p&gt;首先数学家发现，“几乎”所有的实数都是超越数。哇，这是不是很吃惊？首先，这里的“几乎”这次词是数学用语，如果你不知道“几乎”的含义，那你可以搜索我之前的一期题为“我几乎懂了”的节目。&lt;/p&gt;
+
+&lt;p&gt;“几乎”所有的实数都是超越数这句话告诉我们：实数里超越数是占主要部分的，代数数与超越数相比是可以忽略不计的。对这个结论，了解一点无穷基数理论的听众可以这样理解：我们知道有理数是可数集，也就是我们有一个方法可以把所有有理数一个一个写下来，写成一个序列，这个序列包含所有有理数。这样感觉它们就可以数数一样，所以称为“可数”集。&lt;/p&gt;
+
+&lt;p&gt;然后数学家还发现如果把有理数扩展到代数数，仍然是可数的，代数数仍然是可以排队排出来的。那我们已经知道实数是不可数，那么结论就只有超越数是真正不可数的，所以说“几乎所有实数都是超越数”。这是很反直觉的对不对？所以定义超越数就太有必要了，原来我们一直讨论的实数，其实基本都是超越数啊。&lt;/p&gt;
+
+&lt;p&gt;但是，虽然我们知道“几乎所有实数都是超越数”，证明一个数字是超越数却非常难。比如你要证明$\pi$不能用若干根号表示出来，你怎么证明呢？其实到1768年，才第一次证明$\pi$是无理数，而证明$\pi$是超越数又过了100多年，要迟到1882年。也正因为证明了$\pi$是超越数，人类才彻底解决了古希腊三大几何难题中最难的一个“化圆为方”问题。&lt;/p&gt;
+
+&lt;p&gt;其原因在于我们已经证明尺规作图只能作出特定形状的一些代数数长度的线段，超越数长度的线段是不可能作出来的。所以证明pi为超越数，就证明“化圆为方”问题无解。&lt;/p&gt;
+
+&lt;p&gt;除了$\pi$，数学家也证明了比如$e$, $e^\pi$，
+$sin1$，这些数都是超越数。但是目前已经被被证明是超越数的数非常少，倒是很多感觉上必须是超越数的数，我们都还不能证明：比如$e+\pi$，$e-\pi$，$e\times  \pi$, $e/\pi$，$e^e$, $\pi^\pi$等等，这些数是否是超越数，都未能证明。再比如以前节目中提到过的欧拉-马斯刻若尼常数，虽然猜想是超越数，但现在都没能证明这个数字是无理数。&lt;/p&gt;
+
+&lt;p&gt;由此可见，超越数虽然多，但是却很神秘。&lt;/p&gt;
+
+&lt;p&gt;以上我们说明了无理数跟无理数还不一样，那有没有办法更精细的对无理数分类的，比一比无理数中谁的“无理”程度“更高”呢？还真有人真么做了。1932年，荷兰数学家库尔特·马勒就提出了一个实数的“无理性”度量，就是度量一个实数到底“无理”到什么程度，取值范围从0到无穷大的整数。对有理数来说，这个度量值就是0，因为它有理，一点不无理。对根号2来说就是1，这就是无理数里面“无理”程度最小的。而超越数的无理数度量最小是2，比如现在知道$pi$的无理性度量上限是2.5等等。&lt;/p&gt;
+
+&lt;p&gt;好了，以上就是简单介绍了一下超越数概念。其实它本身概念不难，但因为在今后节目中，大老李会时不时提到超越数这个概念，所以简单介绍一下，下期再见！&lt;/p&gt;
+
+&lt;p&gt;参考链接：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://mathworld.wolfram.com/TranscendentalNumber.html&quot;&gt;http://mathworld.wolfram.com/TranscendentalNumber.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E8%B6%85%E8%B6%8A%E6%95%B8&quot;&gt;https://zh.wikipedia.org/wiki/%E8%B6%85%E8%B6%8A%E6%95%B8&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">大家好，我是大老李。这期我们聊聊“超越数”，超越数是无理数的一种，所有超越数都无理数，但有些无理数不是超越数。我之前提到过，“如无必要，勿增实体”的奥卡姆剃刀原则，那我们为什么要在无理数集合内，再挖出一个超越数的坑呢？</summary></entry><entry><title type="html">丢失的袜子</title><link href="/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90.html" rel="alternate" type="text/html" title="丢失的袜子" /><published>2019-06-29T00:00:00+08:00</published><updated>2019-06-29T00:00:00+08:00</updated><id>/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90</id><content type="html" xml:base="/2019/06/29/%E4%B8%A2%E5%A4%B1%E7%9A%84%E8%A2%9C%E5%AD%90.html">&lt;h3 id=&quot;本期题目-丢失的袜子&quot;&gt;本期题目： 丢失的袜子&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-FG7WD9DYykeAtOdEXqKwT9KyWz-5_L7fJh0a-Up7JaHmCwkjEg&quot; alt=&quot;enter image description here&quot; /&gt;
 题目来源：new scientist&lt;/p&gt;
 
@@ -59,17 +167,15 @@
 \usepackage{pst-3dplot}
 \begin{document}
 \pagestyle{empty}
-\( {\displaystyle \Pr(N=n)={\begin{cases}0&amp;amp;{\text{if }}n&amp;lt;m\\{\frac {k-1}{k}}{\frac {\binom {m-1}{k-1}}{\binom {n}{k}}}&amp;amp;{\text{if }}n\geq m,\end{cases}}}\)\end{document}&lt;/code&gt;&lt;/pre&gt;
+\(\Pr(N=n)={\begin{cases}0&amp;amp;{\text{if }}n&amp;lt;m\{\frac {k-1}{k}}{\frac {\binom {m-1}{k-1}}{\binom {n}{k}}}&amp;amp;{\text{if }}n\geq m,\end{cases}}\)\end{document}&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;则可以得出以下估计：
-Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;\documentclass[letterpaper,dvips]{article}
-\usepackage{pst-all}
-\usepackage{pst-3dplot}
-\begin{document}
-\pagestyle{empty}
+&lt;p&gt;则可以得出以下估计：&lt;/p&gt;
 
-{\displaystyle {\begin{aligned}N&amp;amp;\approx \mu \pm \sigma =88.5\pm 50.22,\\[5pt]\mu &amp;amp;=(m-1){\frac {k-1}{k-2}},\\[5pt]\sigma &amp;amp;={\sqrt {\frac {(k-1)(m-1)(m-k+1)}{(k-3)(k-2)^{2}}}}.\end{aligned}}}\)\end{document}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-cf7f047c63e2c1d89b81bb3420d23756.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-ba02f76571c6b6ee8bc8439bd0fd99ac.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-e4182954b640a2f3a1a1ebc3828d4457.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;此题内容并非杜撰，而是历史史诗。以下摘自“维基百科”：&lt;/p&gt;
 
@@ -95,7 +201,7 @@ Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;喜马拉雅fm大老李聊数学&quot;&gt;喜马拉雅FM：”大老李聊数学”：&lt;/h4&gt;
 &lt;h4 id=&quot;关注大老李聊数学公众号-dalaoli_shuxue&quot;&gt;关注“大老李聊数学”公众号： dalaoli_shuxue&lt;/h4&gt;
-&lt;h4 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h4&gt;</content><author><name></name></author><summary type="html">本期题目： 丢失的袜子 题目来源：new scientist</summary></entry><entry><title type="html">Pvsnp</title><link href="/2019/06/10/pvsnp.html" rel="alternate" type="text/html" title="Pvsnp" /><published>2019-06-10T00:00:00-07:00</published><updated>2019-06-10T00:00:00-07:00</updated><id>/2019/06/10/pvsnp</id><content type="html" xml:base="/2019/06/10/pvsnp.html">&lt;p&gt;价值百万美元的问题 – P vs NP 问题&lt;/p&gt;
+&lt;h4 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h4&gt;</content><author><name></name></author><summary type="html">本期题目： 丢失的袜子 题目来源：new scientist</summary></entry><entry><title type="html">Pvsnp</title><link href="/2019/06/10/pvsnp.html" rel="alternate" type="text/html" title="Pvsnp" /><published>2019-06-10T00:00:00+08:00</published><updated>2019-06-10T00:00:00+08:00</updated><id>/2019/06/10/pvsnp</id><content type="html" xml:base="/2019/06/10/pvsnp.html">&lt;p&gt;价值百万美元的问题 – P vs NP 问题&lt;/p&gt;
 
 &lt;p&gt;大家好，我是大老李。今天跟大家聊聊算法复杂度(Complexcity)问题。学过计算机算法课程的听众肯定听说过“多项式复杂度”，“指数复杂度”这些名词，还有著名的“P vs NP问题”。本期节目就来聊聊“P vs NP问题”。&lt;/p&gt;
 
@@ -233,7 +339,7 @@ Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;最后，如果你目前还只在喜马拉雅上订阅了我第二季节目的话，请一定搜索一下“大老李聊数学第三季”或“大老李聊数学全集”，以便得到后续节目的通知。第二季的专辑我就关闭了。&lt;/p&gt;
 
-&lt;p&gt;今天节目到这里，下期再见！&lt;/p&gt;</content><author><name></name></author><summary type="html">价值百万美元的问题 – P vs NP 问题</summary></entry><entry><title type="html">本期题目：人类与异鬼的战斗（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/26/%E4%BA%BA%E4%B8%8E%E5%BC%82%E9%AC%BC%E7%9A%84%E6%88%98%E6%96%97.html" rel="alternate" type="text/html" title="本期题目：人类与异鬼的战斗（附上周答案）" /><published>2019-05-26T00:00:00-07:00</published><updated>2019-05-26T00:00:00-07:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/26/%E4%BA%BA%E4%B8%8E%E5%BC%82%E9%AC%BC%E7%9A%84%E6%88%98%E6%96%97</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/26/%E4%BA%BA%E4%B8%8E%E5%BC%82%E9%AC%BC%E7%9A%84%E6%88%98%E6%96%97.html">&lt;h3 id=&quot;本期题目分豆子挑战&quot;&gt;本期题目：分豆子挑战&lt;/h3&gt;
+&lt;p&gt;今天节目到这里，下期再见！&lt;/p&gt;</content><author><name></name></author><summary type="html">价值百万美元的问题 – P vs NP 问题</summary></entry><entry><title type="html">本期题目：人类与异鬼的战斗（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/26/%E4%BA%BA%E4%B8%8E%E5%BC%82%E9%AC%BC%E7%9A%84%E6%88%98%E6%96%97.html" rel="alternate" type="text/html" title="本期题目：人类与异鬼的战斗（附上周答案）" /><published>2019-05-26T00:00:00+08:00</published><updated>2019-05-26T00:00:00+08:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/26/%E4%BA%BA%E4%B8%8E%E5%BC%82%E9%AC%BC%E7%9A%84%E6%88%98%E6%96%97</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/26/%E4%BA%BA%E4%B8%8E%E5%BC%82%E9%AC%BC%E7%9A%84%E6%88%98%E6%96%97.html">&lt;h3 id=&quot;本期题目分豆子挑战&quot;&gt;本期题目：分豆子挑战&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&quot;https://ds055uzetaobb.cloudfront.net/brioche/uploads/N720yZF1uC-beans.svg?width=1000&quot; alt=&quot;enter image description here&quot; /&gt;
  你和你的朋友一共四个人，围坐一圈。每个人有2颗豆子。每颗豆子经过一下步骤都可以变为2颗：&lt;/p&gt;
 
@@ -307,7 +413,7 @@ Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://pic1.zhimg.com/80/v2-8d13d5180712a2921dbf634a4ab3ce78_hd.jpg&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;关注大老李聊数学公众号-dalaoli_shuxue&quot;&gt;关注“大老李聊数学”公众号： dalaoli_shuxue&lt;/h3&gt;
-&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：分豆子挑战 你和你的朋友一共四个人，围坐一圈。每个人有2颗豆子。每颗豆子经过一下步骤都可以变为2颗：</summary></entry><entry><title type="html">本期题目：砝码的设计（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1.html" rel="alternate" type="text/html" title="本期题目：砝码的设计（附上周答案）" /><published>2019-05-16T00:00:00-07:00</published><updated>2019-05-16T00:00:00-07:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1.html">&lt;h3 id=&quot;本期题目砝码的设计&quot;&gt;本期题目：砝码的设计&lt;/h3&gt;
+&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：分豆子挑战 你和你的朋友一共四个人，围坐一圈。每个人有2颗豆子。每颗豆子经过一下步骤都可以变为2颗：</summary></entry><entry><title type="html">本期题目：砝码的设计（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1.html" rel="alternate" type="text/html" title="本期题目：砝码的设计（附上周答案）" /><published>2019-05-16T00:00:00+08:00</published><updated>2019-05-16T00:00:00+08:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/16/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E7%A0%9D%E7%A0%81%E7%9A%84%E8%AE%BE%E8%AE%A1.html">&lt;h3 id=&quot;本期题目砝码的设计&quot;&gt;本期题目：砝码的设计&lt;/h3&gt;
 &lt;p&gt;题目来源: www.physics.harvard.edu
 &lt;img src=&quot;data:image/png;base64,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&quot; alt=&quot;enter image description here&quot; /&gt;
 你有一架天平。你想称量重量从1到121的所有物体（假设被称量物体重量总是整数）。你想用最少数量的砝码完成以上目标，请问应该如何设计砝码的重量，最少需要多少个砝码？&lt;/p&gt;
@@ -385,7 +491,23 @@ Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://pic1.zhimg.com/80/v2-8d13d5180712a2921dbf634a4ab3ce78_hd.jpg&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;关注大老李聊数学公众号-dalaoli_shuxue&quot;&gt;关注“大老李聊数学”公众号： dalaoli_shuxue&lt;/h3&gt;
-&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：砝码的设计 题目来源: www.physics.harvard.edu 你有一架天平。你想称量重量从1到121的所有物体（假设被称量物体重量总是整数）。你想用最少数量的砝码完成以上目标，请问应该如何设计砝码的重量，最少需要多少个砝码？</summary></entry><entry><title type="html">本期题目：图中有多少个三角形（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html" rel="alternate" type="text/html" title="本期题目：图中有多少个三角形（附上周答案）" /><published>2019-05-04T00:00:00-07:00</published><updated>2019-05-04T00:00:00-07:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98:%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2(%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88)</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html">&lt;h3 id=&quot;本期题目图中有多少个三角形&quot;&gt;本期题目：图中有多少个三角形&lt;/h3&gt;
+&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：砝码的设计 题目来源: www.physics.harvard.edu 你有一架天平。你想称量重量从1到121的所有物体（假设被称量物体重量总是整数）。你想用最少数量的砝码完成以上目标，请问应该如何设计砝码的重量，最少需要多少个砝码？</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="/jekyll/update/2019/05/04/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2019-05-04T13:31:21+08:00</published><updated>2019-05-04T13:31:21+08:00</updated><id>/jekyll/update/2019/05/04/welcome-to-jekyll</id><content type="html" xml:base="/jekyll/update/2019/05/04/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;行内公式&lt;img src=&quot;/res/latex/latex-6fdeb5b258cb16c82c126009acf48fa2.png&quot; /&gt;测试&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/res/latex/latex-5824255887c6e479f3a24cb9874e4238.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">本期题目：图中有多少个三角形（附上周答案）</title><link href="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html" rel="alternate" type="text/html" title="本期题目：图中有多少个三角形（附上周答案）" /><published>2019-05-04T00:00:00+08:00</published><updated>2019-05-04T00:00:00+08:00</updated><id>/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98:%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2(%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88)</id><content type="html" xml:base="/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98/2019/05/04/%E6%AF%8F%E5%91%A8%E4%B8%80%E9%A2%98-%E6%95%B0%E4%B8%89%E8%A7%92%E5%BD%A2-%E9%99%84%E4%B8%8A%E5%91%A8%E7%AD%94%E6%A1%88.html">&lt;h3 id=&quot;本期题目图中有多少个三角形&quot;&gt;本期题目：图中有多少个三角形&lt;/h3&gt;
 &lt;p&gt;题目来源: brilliant.org
 &lt;img src=&quot;https://ds055uzetaobb.cloudfront.net/brioche/uploads/W4ARYDFaBX-frame.svg?width=400&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
 
@@ -487,20 +609,4 @@ Failed to render the following block of LaTeX:&lt;br /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://pic1.zhimg.com/80/v2-8d13d5180712a2921dbf634a4ab3ce78_hd.jpg&quot; alt=&quot;enter image description here&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;关注大老李聊数学公众号-dalaoli_shuxue&quot;&gt;关注“大老李聊数学”公众号： dalaoli_shuxue&lt;/h3&gt;
-&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：图中有多少个三角形 题目来源: brilliant.org</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="/jekyll/update/2019/05/03/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2019-05-03T22:31:21-07:00</published><updated>2019-05-03T22:31:21-07:00</updated><id>/jekyll/update/2019/05/03/welcome-to-jekyll</id><content type="html" xml:base="/jekyll/update/2019/05/03/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;行内公式&lt;img src=&quot;/res/latex/latex-6fdeb5b258cb16c82c126009acf48fa2.png&quot; /&gt;测试&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/res/latex/latex-5824255887c6e479f3a24cb9874e4238.png&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>
+&lt;h3 id=&quot;知乎专栏httpszhuanlanzhihucomdalaoli-shuxue&quot;&gt;知乎专栏：https://zhuanlan.zhihu.com/dalaoli-shuxue&lt;/h3&gt;</content><author><name></name></author><category term="每周一题" /><summary type="html">本期题目：图中有多少个三角形 题目来源: brilliant.org</summary></entry></feed>
